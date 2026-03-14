@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Change Frameworks — Adam Leibler</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ── NAV ── -->
+  <nav role="banner">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo" aria-label="Adam Leibler — home">Adam Leibler</a>
+      <ul class="nav-links" role="list">
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="frameworks.html" aria-current="page">Change Frameworks</a></li>
+        <li><a href="operations.html">Operations</a></li>
+        <li><a href="lab.html">The Lab</a></li>
+      </ul>
+      <a href="index.html#contact" class="btn-slate" id="nav-contact-desktop">Contact Me</a>
+      <button class="nav-toggle" aria-label="Open navigation menu" aria-expanded="false" id="nav-toggle">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="nav-mobile-menu" id="nav-mobile-menu" role="navigation" aria-label="Mobile navigation">
+      <a href="index.html#about" class="mobile-link">About</a>
+      <a href="frameworks.html" class="mobile-link" aria-current="page">Change Frameworks</a>
+      <a href="operations.html" class="mobile-link">Operations</a>
+      <a href="lab.html" class="mobile-link">The Lab</a>
+      <a href="index.html#contact" class="btn-slate mobile-link">Contact Me</a>
+    </div>
+  </nav>
+
+  <!-- ── PAGE HERO ── -->
+  <section id="page-hero" aria-labelledby="page-heading">
+    <div class="container">
+      <div class="pill">Change Frameworks</div>
+      <h1 id="page-heading" class="heading">
+        The Models Behind<br/>
+        <span style="color: var(--orange);">The Mission</span>
+      </h1>
+      <p>
+        Change doesn't fail because of bad technology — it fails because of
+        under-prepared people. These are the evidence-based frameworks I use
+        to close that gap and build workforces that are ready before go-live.
+      </p>
+    </div>
+  </section>
+
+  <!-- ── FRAMEWORKS OVERVIEW ── -->
+  <section id="frameworks" aria-labelledby="frameworks-heading">
+    <div class="container">
+      <span class="label">The Frameworks</span>
+      <h2 id="frameworks-heading" class="heading" style="font-size: 24px; font-weight: 700;">
+        Proven Models, Applied with Precision
+      </h2>
+      <div class="frameworks-grid reveal">
+
+        <!-- ADKAR -->
+        <div class="framework-card">
+          <span class="framework-tag tag-blue">Prosci / Individual Change</span>
+          <h3>ADKAR Model</h3>
+          <p class="sub">Awareness · Desire · Knowledge · Ability · Reinforcement</p>
+          <p>
+            ADKAR is my go-to lens for individual-level change. It diagnoses
+            exactly where a person is breaking down in the transition — not the
+            project, the person — and prescribes targeted interventions rather
+            than blanket training.
+          </p>
+          <ul>
+            <li>Used during workforce readiness assessments to triage adoption risk</li>
+            <li>Maps directly to learning interventions at each stage</li>
+            <li>Drives reinforcement planning post-go-live to prevent regression</li>
+          </ul>
+        </div>
+
+        <!-- Kotter -->
+        <div class="framework-card">
+          <span class="framework-tag tag-orange">Kotter / Organizational Change</span>
+          <h3>Kotter's 8-Step Model</h3>
+          <p class="sub">Create Urgency → Anchor Change in Culture</p>
+          <p>
+            Where ADKAR works at the individual level, Kotter operates at the
+            organizational level. I use it to ensure leadership is aligned,
+            the coalition is built, and wins are visible before momentum stalls.
+          </p>
+          <ul>
+            <li>Guides executive stakeholder alignment and sponsorship strategy</li>
+            <li>Structures communication plans around urgency and early wins</li>
+            <li>Ensures change is institutionalized — not just launched</li>
+          </ul>
+        </div>
+
+        <!-- SAM -->
+        <div class="framework-card">
+          <span class="framework-tag tag-purple">SAM / Learning Design</span>
+          <h3>Successive Approximation Model</h3>
+          <p class="sub">Prepare → Iterative Design → Iterative Development</p>
+          <p>
+            SAM replaces the slow, waterfall ADDIE process with an agile
+            design loop. It lets me build and test learning solutions fast —
+            critical when a go-live date won't move.
+          </p>
+          <ul>
+            <li>Rapid prototyping of training deliverables for stakeholder review</li>
+            <li>Iterative feedback loops prevent costly late-stage redesigns</li>
+            <li>Ideal for complex technical training with shifting requirements</li>
+          </ul>
+        </div>
+
+        <!-- 70-20-10 -->
+        <div class="framework-card">
+          <span class="framework-tag tag-green">70-20-10 / Learning Strategy</span>
+          <h3>70-20-10 Learning Framework</h3>
+          <p class="sub">Experience · Social · Formal</p>
+          <p>
+            Most organizations over-invest in the 10% (formal training) and
+            neglect the 90% where real learning happens. I use this model to
+            architect blended learning ecosystems that build capability on the job.
+          </p>
+          <ul>
+            <li>Shifts training budgets toward higher-impact on-the-job interventions</li>
+            <li>Designs peer coaching and knowledge-sharing structures (the 20%)</li>
+            <li>Positions formal training as a complement, not a cure-all</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- ── PROCESS DIAGRAM: ADKAR ── -->
+  <section id="process" aria-labelledby="process-heading">
+    <div class="container">
+      <span class="label">How It Works</span>
+      <h2 id="process-heading" class="heading" style="font-size: 24px; font-weight: 700;">
+        The ADKAR Journey
+      </h2>
+      <p style="margin-top: 12px; max-width: 600px; font-size: 15px;">
+        Each stage of ADKAR is a barrier point. Progress stalls when one element
+        is missing. The model is applied sequentially — you can't shortcut it.
+      </p>
+
+      <div class="process-steps reveal" role="list">
+
+        <div class="process-step" role="listitem">
+          <div class="step-circle" style="background: rgba(0,210,255,0.15); border: 1px solid rgba(0,210,255,0.4); color: var(--blue);">A</div>
+          <div>
+            <h4>Awareness</h4>
+            <p>Why does the change need to happen? People won't move without a clear, credible reason.</p>
+          </div>
+        </div>
+
+        <div class="process-step" role="listitem">
+          <div class="step-circle" style="background: rgba(255,107,53,0.15); border: 1px solid rgba(255,107,53,0.4); color: var(--orange);">D</div>
+          <div>
+            <h4>Desire</h4>
+            <p>Do they want to participate? Motivation is personal — it can't be mandated.</p>
+          </div>
+        </div>
+
+        <div class="process-step" role="listitem">
+          <div class="step-circle" style="background: rgba(167,139,250,0.15); border: 1px solid rgba(167,139,250,0.4); color: var(--purple);">K</div>
+          <div>
+            <h4>Knowledge</h4>
+            <p>Do they know how to change? This is where training and learning design enter.</p>
+          </div>
+        </div>
+
+        <div class="process-step" role="listitem">
+          <div class="step-circle" style="background: rgba(74,222,128,0.15); border: 1px solid rgba(74,222,128,0.4); color: #4ADE80;">A</div>
+          <div>
+            <h4>Ability</h4>
+            <p>Can they demonstrate the change? Knowing how and being able to do it are different.</p>
+          </div>
+        </div>
+
+        <div class="process-step" role="listitem">
+          <div class="step-circle" style="background: rgba(250,204,21,0.15); border: 1px solid rgba(250,204,21,0.4); color: #FBBF24;">R</div>
+          <div>
+            <h4>Reinforcement</h4>
+            <p>What keeps the change in place? Without reinforcement, people revert.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Kotter 8 Steps -->
+      <div style="margin-top: 72px;">
+        <h3 class="heading" style="font-size: 18px; font-weight: 700; margin-bottom: 8px;">
+          Kotter's 8 Steps at the Org Level
+        </h3>
+        <p style="font-size: 14px; max-width: 560px; margin-bottom: 0;">
+          Applied in parallel with ADKAR to ensure the organization's leadership
+          structure supports the individual change journey.
+        </p>
+        <div class="kotter-grid reveal">
+          <div class="kotter-step">
+            <div class="kotter-num" style="color: var(--blue);">01</div>
+            <h4>Create Urgency</h4>
+            <p>Build a compelling case for why the status quo is no longer an option.</p>
+          </div>
+          <div class="kotter-step">
+            <div class="kotter-num" style="color: var(--blue);">02</div>
+            <h4>Build the Coalition</h4>
+            <p>Assemble a team with the authority, credibility, and energy to lead change.</p>
+          </div>
+          <div class="kotter-step">
+            <div class="kotter-num" style="color: var(--blue);">03</div>
+            <h4>Form a Vision</h4>
+            <p>Define where you're going and what it looks like when you get there.</p>
+          </div>
+          <div class="kotter-step">
+            <div class="kotter-num" style="color: var(--blue);">04</div>
+            <h4>Communicate the Vision</h4>
+            <p>Repeat it relentlessly through every channel and every leader.</p>
+          </div>
+          <div class="kotter-step">
+            <div class="kotter-num" style="color: var(--orange);">05</div>
+            <h4>Remove Obstacles</h4>
+            <p>Identify structural and cultural barriers and eliminate them proactively.</p>
+          </div>
+          <div class="kotter-step">
+            <div class="kotter-num" style="color: var(--orange);">06</div>
+            <h4>Create Quick Wins</h4>
+            <p>Generate visible, early successes to sustain momentum and silence skeptics.</p>
+          </div>
+          <div class="kotter-step">
+            <div class="kotter-num" style="color: var(--orange);">07</div>
+            <h4>Build on the Change</h4>
+            <p>Use early wins as a platform to tackle bigger, deeper systemic changes.</p>
+          </div>
+          <div class="kotter-step">
+            <div class="kotter-num" style="color: var(--orange);">08</div>
+            <h4>Anchor in Culture</h4>
+            <p>Connect new behaviors to organizational identity so they outlast the project.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- ── CASE STUDY ── -->
+  <section id="case-study" aria-labelledby="case-heading">
+    <div class="container">
+      <span class="label">Case Study</span>
+      <h2 id="case-heading" class="heading" style="font-size: 24px; font-weight: 700;">
+        Federal Agency EHR Rollout
+      </h2>
+      <p style="margin-top: 12px; font-size: 15px; max-width: 640px;">
+        A federal health agency deploying a new Electronic Health Records system
+        to 4,000+ employees across 12 regional sites. Go-live in 90 days.
+        Workforce readiness score at intake: 34%.
+      </p>
+
+      <div class="case-grid reveal">
+        <!-- Before -->
+        <div class="case-col">
+          <div class="case-col-header">
+            <span class="badge badge-before">Before</span>
+            <h3>The Starting State</h3>
+          </div>
+          <div class="case-item">
+            <div class="case-icon" style="background: rgba(74,85,104,0.3);">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <div class="case-item-text">
+              <strong>No change strategy</strong>
+              <span>Project managed as a technical deployment with no formal change plan</span>
+            </div>
+          </div>
+          <div class="case-item">
+            <div class="case-icon" style="background: rgba(74,85,104,0.3);">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <div class="case-item-text">
+              <strong>Resistance at all levels</strong>
+              <span>Staff unaware of timeline, leadership not visibly sponsoring the change</span>
+            </div>
+          </div>
+          <div class="case-item">
+            <div class="case-icon" style="background: rgba(74,85,104,0.3);">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <div class="case-item-text">
+              <strong>One-size training</strong>
+              <span>Single 4-hour classroom session planned for all 4,000 employees</span>
+            </div>
+          </div>
+          <div class="case-item">
+            <div class="case-icon" style="background: rgba(74,85,104,0.3);">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <div class="case-item-text">
+              <strong>No reinforcement plan</strong>
+              <span>Post-go-live support undefined; no super-user network in place</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- After -->
+        <div class="case-col">
+          <div class="case-col-header">
+            <span class="badge badge-after">After</span>
+            <h3>The Transformed State</h3>
+          </div>
+          <div class="case-item">
+            <div class="case-icon" style="background: rgba(74,222,128,0.1);">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div class="case-item-text">
+              <strong>Full OCM strategy deployed</strong>
+              <span>ADKAR assessments, stakeholder mapping, and communication plan in place within 2 weeks</span>
+            </div>
+          </div>
+          <div class="case-item">
+            <div class="case-icon" style="background: rgba(74,222,128,0.1);">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div class="case-item-text">
+              <strong>Executive sponsorship secured</strong>
+              <span>Agency leadership delivering weekly change updates; Kotter coalition formalized</span>
+            </div>
+          </div>
+          <div class="case-item">
+            <div class="case-icon" style="background: rgba(74,222,128,0.1);">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div class="case-item-text">
+              <strong>Role-based learning paths</strong>
+              <span>8 role-specific curricula built using SAM; average training time reduced from 4 hrs to 90 min</span>
+            </div>
+          </div>
+          <div class="case-item">
+            <div class="case-icon" style="background: rgba(74,222,128,0.1);">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div class="case-item-text">
+              <strong>Super-user network of 120</strong>
+              <span>On-the-floor support at every site on day one; 70-20-10 model embedded into onboarding</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Outcome metrics -->
+      <div class="case-outcomes reveal">
+        <div class="outcome-card">
+          <span class="outcome-number">91%</span>
+          <span class="outcome-label">Workforce readiness score at go-live</span>
+        </div>
+        <div class="outcome-card">
+          <span class="outcome-number">0</span>
+          <span class="outcome-label">Critical go-live failures attributed to user error</span>
+        </div>
+        <div class="outcome-card">
+          <span class="outcome-number">60%</span>
+          <span class="outcome-label">Reduction in help desk tickets in the first 30 days</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- ── WORK WITH ME ── -->
+  <section id="work-with-me" aria-labelledby="wwm-heading">
+    <div class="container">
+      <span class="label" style="display: block; text-align: center;">Work With Me</span>
+      <h2 id="wwm-heading" class="heading" style="font-size: 26px; font-weight: 700; margin-bottom: 16px;">
+        Ready to Close the Gap?
+      </h2>
+      <p>
+        Whether you're 90 days from go-live or still in the planning phase —
+        the earlier change management is embedded, the better the outcome.
+        Let's talk about what your workforce needs.
+      </p>
+      <div class="cta-row">
+        <a href="/cdn-cgi/l/email-protection#e69f899394a6838b878f8ac885898b" class="btn-primary">Start the Conversation</a>
+        <a href="index.html" class="btn-ghost">&larr; Back to Home</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer role="contentinfo">
+    <span style="color: var(--text);">&copy; 2026 Adam Leibler &mdash; Built with intention.</span>
+    <nav class="footer-links" aria-label="Social links">
+      <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      <a href="https://github.com" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a href="https://twitch.tv" target="_blank" rel="noopener noreferrer">Twitch</a>
+    </nav>
+  </footer>
+
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    // Nav contact — show on desktop
+    const dc = document.getElementById('nav-contact-desktop');
+    if (window.innerWidth > 768) dc.style.display = 'inline-block';
+
+    // Hamburger toggle
+    const toggle = document.getElementById('nav-toggle');
+    const mobileMenu = document.getElementById('nav-mobile-menu');
+    toggle.addEventListener('click', () => {
+      const isOpen = mobileMenu.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', isOpen);
+      toggle.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu');
+    });
+    document.querySelectorAll('.mobile-link').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.setAttribute('aria-label', 'Open navigation menu');
+      });
+    });
+
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visib
