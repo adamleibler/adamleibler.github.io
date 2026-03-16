@@ -1,5 +1,5 @@
 /* ============================================================
-   Adam Leibler — adamleibler.github.io
+   Adam Leibler — AdamLeibler.com (adamleibler.github.io)
    Shared stylesheet — applies to all pages
    ============================================================ */
 
@@ -317,19 +317,13 @@ nav {
 
 .about-photo,
 .ripley-photo {
-  background: var(--surface);
-  border: 0.5px solid var(--border);
   border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  color: #2A4060;
-  font-size: 12px;
+  display: block;
+  width: 100%;
+  object-fit: cover;
 }
-.about-photo  { height: 320px; }
-.ripley-photo { height: 300px; }
+.about-photo  { height: 380px; object-position: center 18%; }
+.ripley-photo { height: 380px; object-position: center 20%; }
 
 
 /* ── HOMEPAGE ANIMATIONS ── */

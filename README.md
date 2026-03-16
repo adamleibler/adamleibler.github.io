@@ -1,14 +1,14 @@
-# adamleibler.github.io
+# AdamLeibler.com (adamleibler.github.io)
 
 Personal website for Adam Leibler — Change Enablement, Operational Readiness, and Learning Architecture consultant.
 
-Live site: [https://adamleibler.github.io](https://adamleibler.github.io)
+Live site: [https://adamleibler.com](https://adamleibler.com)
 
 ---
 
 ## About This Site
 
-Built collaboratively with Claude (Anthropic). Five plain files — HTML, CSS, and JavaScript. No frameworks, no build tools, no dependencies. Fast, mobile-friendly, and editable in any text editor. Hosted free on GitHub Pages.
+Built collaboratively with Claude (Anthropic). Five plain files — HTML, CSS, and JavaScript. No frameworks, no build tools, no code dependencies. Fast, mobile-friendly, and editable in any text editor. Hosted free on GitHub Pages.
 
 ---
 
@@ -22,9 +22,9 @@ Built collaboratively with Claude (Anthropic). Five plain files — HTML, CSS, a
 ├── lab.html            # The Lab — research, writing, projects
 ├── style.css           # Shared stylesheet — edit this to change colors, fonts, layout
 ├── README.md           # This file
-└── assets/             # Add this folder when you have photos
-    ├── adam.jpg        # Professional headshot
-    └── ripley.jpg      # Ripley photo
+└── assets/             # Photos used by the site
+    ├── portrait_adamLeibler.jpg   # Professional headshot (about section)
+    └── portrait_ripley.jpg        # Ripley photo (human element section)
 ```
 
 ---
@@ -85,6 +85,20 @@ This site deploys automatically via GitHub Pages on every push to `main`. No bui
 To update the site:
 1. Edit `index.html` directly on GitHub (click the pencil icon), or
 2. Edit locally and push your changes
+
+---
+
+## Social Media Bios
+
+**LinkedIn**
+```
+Organizational Learning Strategist | Change Enablement Leader | Building Mission-Ready Workforces in VUCA Environments | Helping Organizations Survive Their Own Evolution | U.S. Army Veteran | UofL Scholar. Ripley's human.
+```
+
+**Twitter / X**
+```
+Organizational Learning Strategist | Change Enablement Leader | Helping Organizations Survive Their Own Evolution | US Army Vet | UofL Scholar | Ripley's human
+```
 
 ---
 
