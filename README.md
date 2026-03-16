@@ -26,11 +26,12 @@ Built collaboratively with Claude (Anthropic). Five plain files — HTML, CSS, a
 ├── CNAME               # Custom domain mapping for GitHub Pages
 ├── README.md           # This file
 └── assets/
-    ├── portrait_adamLeibler.jpg               # Professional headshot — 1200×900px (about section)
-    ├── portrait_ripley.jpg                    # Ripley photo — 1200×900px (human element section)
+    ├── portrait_adamLeibler.webp              # Professional headshot — 1200×900px (about section)
+    ├── portrait_ripley.webp                   # Ripley photo — 1200×900px (human element section)
     ├── banner-x.svg                           # X/Twitter header banner — 1500×500px
     ├── banner-linkedin.svg                    # LinkedIn header banner — 1584×396px
-    └── Adam_Leibler_Change_Enablement_Resume.pdf  # Resume PDF download
+    ├── Adam_Leibler_Change_Enablement_Resume.pdf  # Resume PDF download
+    └── uofl-logo.webp                         # University of Louisville logo (lab page)
 ```
 
 ---
