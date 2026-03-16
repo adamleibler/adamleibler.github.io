@@ -18,6 +18,7 @@
         <li><a href="frameworks.html">Change Frameworks</a></li>
         <li><a href="operations.html" aria-current="page">Operations</a></li>
         <li><a href="lab.html">The Lab</a></li>
+        <li><a href="resume.html">Resume</a></li>
       </ul>
       <a href="index.html#contact" class="btn-slate" id="nav-contact-desktop">Contact Me</a>
       <button class="nav-toggle" aria-label="Open navigation menu" aria-expanded="false" id="nav-toggle">
@@ -29,6 +30,7 @@
       <a href="frameworks.html" class="mobile-link">Change Frameworks</a>
       <a href="operations.html" class="mobile-link" aria-current="page">Operations</a>
       <a href="lab.html" class="mobile-link">The Lab</a>
+      <a href="resume.html" class="mobile-link">Resume</a>
       <a href="index.html#contact" class="btn-slate mobile-link">Contact Me</a>
     </div>
   </nav>
@@ -391,7 +393,7 @@
         organization is and what it takes to get mission-ready.
       </p>
       <div class="cta-row">
-        <a href="/cdn-cgi/l/email-protection#4f36203a3d0f2a222e2623612c2022" class="btn-primary">Start the Conversation</a>
+        <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#97;&#100;&#97;&#109;&#64;&#97;&#100;&#97;&#109;&#108;&#101;&#105;&#98;&#108;&#101;&#114;&#46;&#99;&#111;&#109;" class="btn-primary">Start the Conversation</a>
         <a href="frameworks.html" class="btn-ghost">View the Frameworks &rarr;</a>
       </div>
     </div>
@@ -401,70 +403,13 @@
   <footer role="contentinfo">
     <span style="color: var(--text);">&copy; 2026 Adam Leibler &mdash; Built with intention.</span>
     <nav class="footer-links" aria-label="Social links">
-      <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-      <a href="https://github.com" target="_blank" rel="noopener noreferrer">GitHub</a>
-      <a href="https://twitch.tv" target="_blank" rel="noopener noreferrer">Twitch</a>
-    </nav>
+      <a href="https://linkedin.com/in/adamleibler" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      <a href="https://github.com/adamleibler" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a href="https://x.com/adamleibler" target="_blank" rel="noopener noreferrer">X</a>
+      <a href="https://twitch.tv/malforthewin" target="_blank" rel="noopener noreferrer">Twitch</a>
+        </nav>
   </footer>
 
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-    // Nav
-    const dc = document.getElementById('nav-contact-desktop');
-    if (window.innerWidth > 768) dc.style.display = 'inline-block';
-    const toggle = document.getElementById('nav-toggle');
-    const mobileMenu = document.getElementById('nav-mobile-menu');
-    toggle.addEventListener('click', () => {
-      const isOpen = mobileMenu.classList.toggle('open');
-      toggle.setAttribute('aria-expanded', isOpen);
-      toggle.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu');
-    });
-    document.querySelectorAll('.mobile-link').forEach(link => {
-      link.addEventListener('click', () => {
-        mobileMenu.classList.remove('open');
-        toggle.setAttribute('aria-expanded', 'false');
-        toggle.setAttribute('aria-label', 'Open navigation menu');
-      });
-    });
-
-    // Scroll reveal
-    const observer = new IntersectionObserver(
-      entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
-      { threshold: 0.1 }
-    );
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-    // Checklist
-    const items = document.querySelectorAll('.checklist-item');
-    const scoreNumber = document.getElementById('score-number');
-    const scoreRing = document.getElementById('score-ring');
-    const scoreVerdict = document.getElementById('score-verdict');
-    const total = items.length;
-
-    function getVerdict(pct) {
-      if (pct === 0)  return { text: 'No items checked',     bg: 'rgba(74,85,104,0.2)',    color: '#94A3B8' };
-      if (pct < 40)   return { text: 'High risk',            bg: 'rgba(239,68,68,0.15)',   color: '#F87171' };
-      if (pct < 70)   return { text: 'Needs attention',      bg: 'rgba(251,191,36,0.15)',  color: '#FCD34D' };
-      if (pct < 90)   return { text: 'On the right track',   bg: 'rgba(0,210,255,0.12)',   color: '#00D2FF' };
-      return              { text: 'Mission ready',           bg: 'rgba(74,222,128,0.15)',  color: '#4ADE80' };
-    }
-
-    function updateScore() {
-      const checked = document.querySelectorAll('.checklist-item.checked').length;
-      const pct = Math.round((checked / total) * 100);
-      scoreNumber.textContent = pct + '%';
-      const v = getVerdict(pct);
-      scoreVerdict.textContent = v.text;
-      scoreVerdict.style.background = v.bg;
-      scoreVerdict.style.color = v.color;
-      scoreRing.style.borderColor = pct === 0 ? 'var(--border)' : v.color;
-      scoreNumber.style.color = pct === 0 ? 'var(--white)' : v.color;
-    }
-
-    items.forEach(item => {
-      function toggle() {
-        const isChecked = item.classList.toggle('checked');
-        item.setAttribute('aria-checked', isChecked);
-        updateScore();
-      }
-      item.addEventListener('click', toggle);
-      item.addEv
+  <script src="main.js"></script>
+</body>
+</html>

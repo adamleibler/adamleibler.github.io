@@ -18,6 +18,7 @@
         <li><a href="frameworks.html" aria-current="page">Change Frameworks</a></li>
         <li><a href="operations.html">Operations</a></li>
         <li><a href="lab.html">The Lab</a></li>
+        <li><a href="resume.html">Resume</a></li>
       </ul>
       <a href="index.html#contact" class="btn-slate" id="nav-contact-desktop">Contact Me</a>
       <button class="nav-toggle" aria-label="Open navigation menu" aria-expanded="false" id="nav-toggle">
@@ -29,6 +30,7 @@
       <a href="frameworks.html" class="mobile-link" aria-current="page">Change Frameworks</a>
       <a href="operations.html" class="mobile-link">Operations</a>
       <a href="lab.html" class="mobile-link">The Lab</a>
+      <a href="resume.html" class="mobile-link">Resume</a>
       <a href="index.html#contact" class="btn-slate mobile-link">Contact Me</a>
     </div>
   </nav>
@@ -383,7 +385,7 @@
         Let's talk about what your workforce needs.
       </p>
       <div class="cta-row">
-        <a href="/cdn-cgi/l/email-protection#e69f899394a6838b878f8ac885898b" class="btn-primary">Start the Conversation</a>
+        <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#97;&#100;&#97;&#109;&#64;&#97;&#100;&#97;&#109;&#108;&#101;&#105;&#98;&#108;&#101;&#114;&#46;&#99;&#111;&#109;" class="btn-primary">Start the Conversation</a>
         <a href="index.html" class="btn-ghost">&larr; Back to Home</a>
       </div>
     </div>
@@ -393,33 +395,13 @@
   <footer role="contentinfo">
     <span style="color: var(--text);">&copy; 2026 Adam Leibler &mdash; Built with intention.</span>
     <nav class="footer-links" aria-label="Social links">
-      <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-      <a href="https://github.com" target="_blank" rel="noopener noreferrer">GitHub</a>
-      <a href="https://twitch.tv" target="_blank" rel="noopener noreferrer">Twitch</a>
-    </nav>
+      <a href="https://linkedin.com/in/adamleibler" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      <a href="https://github.com/adamleibler" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a href="https://x.com/adamleibler" target="_blank" rel="noopener noreferrer">X</a>
+      <a href="https://twitch.tv/malforthewin" target="_blank" rel="noopener noreferrer">Twitch</a>
+        </nav>
   </footer>
 
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-    // Nav contact — show on desktop
-    const dc = document.getElementById('nav-contact-desktop');
-    if (window.innerWidth > 768) dc.style.display = 'inline-block';
-
-    // Hamburger toggle
-    const toggle = document.getElementById('nav-toggle');
-    const mobileMenu = document.getElementById('nav-mobile-menu');
-    toggle.addEventListener('click', () => {
-      const isOpen = mobileMenu.classList.toggle('open');
-      toggle.setAttribute('aria-expanded', isOpen);
-      toggle.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu');
-    });
-    document.querySelectorAll('.mobile-link').forEach(link => {
-      link.addEventListener('click', () => {
-        mobileMenu.classList.remove('open');
-        toggle.setAttribute('aria-expanded', 'false');
-        toggle.setAttribute('aria-label', 'Open navigation menu');
-      });
-    });
-
-    // Scroll reveal
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visib
+  <script src="main.js"></script>
+</body>
+</html>

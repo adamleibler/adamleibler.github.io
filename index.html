@@ -18,6 +18,7 @@
         <li><a href="frameworks.html">Change Frameworks</a></li>
         <li><a href="operations.html">Operations</a></li>
         <li><a href="lab.html">The Lab</a></li>
+        <li><a href="resume.html">Resume</a></li>
       </ul>
       <a href="#contact" class="btn-slate" style="display:none;" id="nav-contact-desktop">Contact Me</a>
       <button class="nav-toggle" aria-label="Open navigation menu" aria-expanded="false" id="nav-toggle">
@@ -29,6 +30,7 @@
       <a href="frameworks.html" class="mobile-link">Change Frameworks</a>
       <a href="operations.html" class="mobile-link">Operations</a>
       <a href="lab.html" class="mobile-link">The Lab</a>
+      <a href="resume.html" class="mobile-link">Resume</a>
       <a href="#contact" class="btn-slate mobile-link">Contact Me</a>
     </div>
   </nav>
@@ -176,7 +178,8 @@
         Whether you're navigating a major system rollout or building your
         change strategy from the ground up — let's connect.
       </p>
-      <a href="/cdn-cgi/l/email-protection#87fee8f2f5c7e2eae6eeeba9e4e8ea" class="btn-primary">Send Me a Message</a>
+      <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#97;&#100;&#97;&#109;&#64;&#97;&#100;&#97;&#109;&#108;&#101;&#105;&#98;&#108;&#101;&#114;&#46;&#99;&#111;&#109;" class="btn-primary">Send Me a Message</a>
+      <p id="contact-email" style="margin-top: 16px; font-size: 13px; color: var(--text); letter-spacing: 0.5px;"></p>
     </div>
   </section>
 
@@ -184,47 +187,15 @@
   <footer role="contentinfo">
     <span style="color: var(--text);">&copy; 2026 Adam Leibler &mdash; Built with intention.</span>
     <nav class="footer-links" aria-label="Social links">
-      <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-      <a href="https://github.com" target="_blank" rel="noopener noreferrer">GitHub</a>
-      <a href="https://twitch.tv" target="_blank" rel="noopener noreferrer">Twitch</a>
-    </nav>
+      <a href="https://linkedin.com/in/adamleibler" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      <a href="https://github.com/adamleibler" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a href="https://x.com/adamleibler" target="_blank" rel="noopener noreferrer">X</a>
+      <a href="https://twitch.tv/malforthewin" target="_blank" rel="noopener noreferrer">Twitch</a>
+        </nav>
   </footer>
 
   <!-- ── JAVASCRIPT ── -->
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-    // Nav contact button — show on desktop only
-    const desktopContact = document.getElementById('nav-contact-desktop');
-    if (window.innerWidth > 768) desktopContact.style.display = 'inline-block';
 
-    // Hamburger menu toggle
-    const toggle = document.getElementById('nav-toggle');
-    const mobileMenu = document.getElementById('nav-mobile-menu');
-
-    toggle.addEventListener('click', () => {
-      const isOpen = mobileMenu.classList.toggle('open');
-      toggle.setAttribute('aria-expanded', isOpen);
-      toggle.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu');
-    });
-
-    // Close mobile menu when a link is clicked
-    document.querySelectorAll('.mobile-link').forEach(link => {
-      link.addEventListener('click', () => {
-        mobileMenu.classList.remove('open');
-        toggle.setAttribute('aria-expanded', 'false');
-        toggle.setAttribute('aria-label', 'Open navigation menu');
-      });
-    });
-
-    // Scroll-triggered fade-in for sections
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.style.opacity = '1';
-          entry.target.style.transform = 'translateY(0)';
-        }
-      });
-    }, { threshold: 0.12 });
-
-    document.querySelectorAll('.pillar-card, .about-grid, .ripley-grid').forEach(el => {
-      el.style.opacity = '0';
-      el.style.transform = 'translate
+  <script src="main.js"></script>
+</body>
+</html>

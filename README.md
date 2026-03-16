@@ -20,43 +20,18 @@ Built collaboratively with Claude (Anthropic). Five plain files — HTML, CSS, a
 ├── frameworks.html     # Change Frameworks page — ADKAR, Kotter, case study
 ├── operations.html     # Operations page — services, readiness checklist, case study
 ├── lab.html            # The Lab — research, writing, projects
+├── resume.html         # Resume — native HTML with PDF download
 ├── style.css           # Shared stylesheet — edit this to change colors, fonts, layout
+├── main.js             # Shared JavaScript — nav, scroll reveal, email assembly, checklist
+├── CNAME               # Custom domain mapping for GitHub Pages
 ├── README.md           # This file
-└── assets/             # Photos used by the site
-    ├── portrait_adamLeibler.jpg   # Professional headshot (about section)
-    └── portrait_ripley.jpg        # Ripley photo (human element section)
+└── assets/
+    ├── portrait_adamLeibler.jpg               # Professional headshot — 1200×900px (about section)
+    ├── portrait_ripley.jpg                    # Ripley photo — 1200×900px (human element section)
+    ├── banner-x.svg                           # X/Twitter header banner — 1500×500px
+    ├── banner-linkedin.svg                    # LinkedIn header banner — 1584×396px
+    └── Adam_Leibler_Change_Enablement_Resume.pdf  # Resume PDF download
 ```
-
----
-
-## How to Make Common Edits
-
-**Change a color or font across the whole site**
-Open `style.css` and edit the CSS variables at the top of the file:
-```css
-:root {
-  --orange: #FF6B35;   /* Action Orange — CTAs */
-  --blue:   #00D2FF;   /* Electric Blue — accents */
-  --bg:     #060D1A;   /* Page background */
-  --text:   #CBD5E0;   /* Body text */
-}
-```
-One edit here updates every page simultaneously.
-Search for `your@email.com` in `index.html` and replace it with your real address.
-
-**Add a photo**
-1. Create an `assets/` folder in the repository
-2. Upload your photo (e.g. `adam.jpg`)
-3. In `index.html`, find the `about-photo` div and replace it with:
-   ```html
-   <img src="assets/adam.jpg" alt="Adam Leibler" class="about-photo" />
-   ```
-
-**Update social links**
-Search for `https://linkedin.com`, `https://github.com`, and `https://twitch.tv` in `index.html` and replace with your full profile URLs.
-
-**Change any text**
-Open `index.html`, use Ctrl+F (or Cmd+F on Mac) to find the text you want to change, and edit it directly.
 
 ---
 
@@ -82,9 +57,16 @@ All text/background combinations meet WCAG 2.1 AA contrast standards.
 
 This site deploys automatically via GitHub Pages on every push to `main`. No build step required.
 
-To update the site:
-1. Edit `index.html` directly on GitHub (click the pencil icon), or
-2. Edit locally and push your changes
+---
+
+## Social Media Links
+
+| Platform | URL |
+|---|---|
+| LinkedIn | https://linkedin.com/in/adamleibler |
+| GitHub | https://github.com/adamleibler |
+| X / Twitter | https://x.com/adamleibler |
+| Twitch | https://twitch.tv/malforthewin |
 
 ---
 

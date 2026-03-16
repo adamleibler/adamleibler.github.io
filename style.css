@@ -1,5 +1,5 @@
 /* ============================================================
-   Adam Leibler — AdamLeibler.com (adamleibler.github.io)
+   Adam Leibler — adamleibler.github.io
    Shared stylesheet — applies to all pages
    ============================================================ */
 
@@ -33,6 +33,22 @@ body {
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
 }
+
+/* ── NEBULA BACKGROUND ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 55% 45% at 22% 14%, rgba(64,224,255,0.28) 0%, rgba(0,153,204,0.12) 40%, transparent 70%),
+    radial-gradient(ellipse 45% 40% at 8%  34%, rgba(221,68,204,0.22) 0%, rgba(136,17,102,0.10) 40%, transparent 70%),
+    radial-gradient(ellipse 25% 20% at 15% 22%, rgba(255,255,255,0.06) 0%, transparent 100%);
+}
+
+/* Ensure all content sits above the nebula layer */
+body > * { position: relative; z-index: 1; }
 
 a { color: inherit; text-decoration: none; }
 img { display: block; max-width: 100%; border-radius: 10px; }
