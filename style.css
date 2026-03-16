@@ -59,7 +59,7 @@ img { display: block; max-width: 100%; border-radius: 10px; }
 .heading { font-family: var(--font-head); color: var(--white); }
 
 .label {
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -70,7 +70,7 @@ img { display: block; max-width: 100%; border-radius: 10px; }
 
 .pill {
   display: inline-block;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.09em;
   text-transform: uppercase;
@@ -99,7 +99,7 @@ section    { padding: 72px 0; }
   border: none;
   border-radius: 8px;
   padding: 14px 28px;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -257,7 +257,7 @@ nav {
   padding: 0 48px;
 }
 .proof-label {
-  font-size: 11px;
+  font-size: 13px;
   color: var(--text);
   letter-spacing: 0.09em;
   text-transform: uppercase;
@@ -265,7 +265,7 @@ nav {
   margin-right: 12px;
 }
 .proof-name {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   color: var(--text);
   letter-spacing: 0.07em;
@@ -370,7 +370,7 @@ nav {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.07em;
   text-transform: uppercase;
@@ -407,7 +407,7 @@ nav {
 .framework-card:hover { border-color: rgba(0,210,255,0.3); }
 .framework-tag {
   display: inline-block;
-  font-size: 10px;
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -428,7 +428,7 @@ nav {
   margin-bottom: 8px;
   letter-spacing: 0.03em;
 }
-.framework-card .sub { font-size: 12px; color: var(--blue); margin-bottom: 14px; }
+.framework-card .sub { font-size: 13px; color: var(--blue); margin-bottom: 14px; }
 .framework-card p    { font-size: 14px; line-height: 1.75; margin-bottom: 20px; }
 .framework-card ul   { list-style: none; display: flex; flex-direction: column; gap: 8px; }
 .framework-card ul li {
@@ -491,14 +491,14 @@ nav {
 }
 .process-step h4 {
   font-family: var(--font-head);
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
   color: var(--white);
   letter-spacing: 0.04em;
   margin-bottom: 8px;
   text-transform: uppercase;
 }
-.process-step p { font-size: 12px; line-height: 1.6; }
+.process-step p { font-size: 13px; line-height: 1.6; }
 
 .kotter-grid {
   display: grid;
@@ -520,12 +520,12 @@ nav {
   line-height: 1;
 }
 .kotter-step h4 {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   color: var(--white);
   margin-bottom: 6px;
 }
-.kotter-step p { font-size: 12px; line-height: 1.6; }
+.kotter-step p { font-size: 13px; line-height: 1.6; }
 
 
 /* ── CASE STUDY (frameworks page) ── */
@@ -544,7 +544,7 @@ nav {
 }
 .case-col-header { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
 .case-col-header .badge {
-  font-size: 10px;
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -606,7 +606,7 @@ nav {
   display: block;
   margin-bottom: 4px;
 }
-.outcome-label { font-size: 11px; color: var(--text); line-height: 1.4; }
+.outcome-label { font-size: 13px; color: var(--text); line-height: 1.4; }
 
 
 /* ── SERVICES (operations page) ── */
@@ -644,7 +644,7 @@ nav {
 .service-card p { font-size: 13px; line-height: 1.75; margin-bottom: 20px; }
 .service-deliverables { list-style: none; display: flex; flex-direction: column; gap: 7px; }
 .service-deliverables li {
-  font-size: 12px;
+  font-size: 13px;
   display: flex;
   align-items: flex-start;
   gap: 8px;
@@ -697,7 +697,7 @@ nav {
   color: var(--white);
   transition: color 0.3s;
 }
-.score-label    { font-size: 12px; color: var(--text); margin-bottom: 8px; }
+.score-label    { font-size: 13px; color: var(--text); margin-bottom: 8px; }
 .score-verdict {
   font-size: 13px;
   font-weight: 700;
@@ -710,7 +710,7 @@ nav {
 .checklist-categories { display: flex; flex-direction: column; gap: 32px; }
 .checklist-category h4 {
   font-family: var(--font-head);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   color: var(--white);
   letter-spacing: 0.05em;
@@ -756,7 +756,7 @@ nav {
   color: var(--white);
   margin-bottom: 2px;
 }
-.checklist-item-text span { font-size: 12px; line-height: 1.5; }
+.checklist-item-text span { font-size: 13px; line-height: 1.5; }
 
 
 /* ── METRICS & CASE STUDY (operations page) ── */
@@ -781,7 +781,7 @@ nav {
   display: block;
   margin-bottom: 6px;
 }
-.metric-label { font-size: 12px; line-height: 1.5; }
+.metric-label { font-size: 13px; line-height: 1.5; }
 
 .case-narrative {
   display: grid;
@@ -797,7 +797,7 @@ nav {
 }
 .case-block h4 {
   font-family: var(--font-head);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   color: var(--white);
   letter-spacing: 0.05em;
@@ -860,7 +860,7 @@ nav {
 }
 .research-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
 .tag {
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -880,7 +880,7 @@ nav {
 }
 .sidebar-card h4 {
   font-family: var(--font-head);
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
   color: var(--white);
   letter-spacing: 0.05em;
@@ -895,7 +895,7 @@ nav {
 }
 .reading-item:last-child { border-bottom: none; padding-bottom: 0; }
 .reading-item strong { display: block; color: var(--white); font-weight: 700; font-size: 13px; margin-bottom: 2px; }
-.reading-item span { font-size: 12px; }
+.reading-item span { font-size: 13px; }
 
 .writing-grid {
   display: grid;
@@ -917,11 +917,11 @@ nav {
 .writing-card.placeholder { opacity: 0.5; cursor: default; }
 .writing-card.placeholder:hover { border-color: var(--border); }
 .writing-meta { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-.writing-date { font-size: 11px; color: var(--text); }
+.writing-date { font-size: 13px; color: var(--text); }
 .writing-card h3 { font-size: 15px; font-weight: 700; color: var(--white); line-height: 1.4; }
 .writing-card p  { font-size: 13px; line-height: 1.7; flex: 1; }
 .writing-link {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   color: var(--blue);
   letter-spacing: 0.04em;
@@ -983,7 +983,7 @@ nav {
   padding: 22px;
 }
 .now-category {
-  font-size: 10px;
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
