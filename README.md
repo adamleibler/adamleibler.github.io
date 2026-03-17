@@ -1,6 +1,6 @@
 # AdamLeibler.com (adamleibler.github.io)
 
-Personal website for Adam Leibler — Change Enablement, Operational Readiness, and Learning Architecture consultant.
+Personal website for Adam Leibler — Change Enablement, Operational Readiness, and Organizational Learning Strategy consultant.
 
 Live site: [https://adamleibler.com](https://adamleibler.com)
 
@@ -8,7 +8,11 @@ Live site: [https://adamleibler.com](https://adamleibler.com)
 
 ## About This Site
 
-Built collaboratively with Claude (Anthropic). Five plain files — HTML, CSS, and JavaScript. No frameworks, no build tools, no code dependencies. Fast, mobile-friendly, and editable in any text editor. Hosted free on GitHub Pages.
+Built collaboratively with Claude (Anthropic). Five HTML files, a shared CSS file, a shared JS file, and a small assets folder. No frameworks, no build tools, no code dependencies. Fast, mobile-friendly, and editable in any text editor. Hosted free on GitHub Pages.
+
+## Background
+
+At a career tipping point, Adam reimagined this site as a personal brand vehicle to support his consulting work in change enablement, instructional design, and organizational learning strategy. Adam is an Organizational Leadership and Learning scholar at the University of Louisville and a Twitch Partner.
 
 ---
 
@@ -82,9 +86,3 @@ Organizational Learning Strategist | Change Enablement Leader | Building Mission
 ```
 Organizational Learning Strategist | Change Enablement Leader | Helping Organizations Survive Their Own Evolution | US Army Vet | UofL Scholar | Ripley's human
 ```
-
----
-
-## Background
-
-Built as a personal brand site to support consulting work in change management, instructional design, and organizational leadership. Adam is an Organizational Leadership and Learning scholar at the University of Louisville and a Twitch partner.

@@ -254,7 +254,6 @@ nav {
   align-items: center;
   gap: 10px;
   flex-wrap: wrap;
-  padding: 0 48px;
 }
 .proof-label {
   font-size: 13px;
@@ -1060,8 +1059,6 @@ button:focus-visible {
   .hero-ctas  { flex-direction: column; align-items: stretch; }
   .hero-ctas .btn-primary,
   .hero-ctas .btn-ghost { text-align: center; padding: 14px; }
-
-  .proof-inner { padding: 0 20px; }
 
   .pillars-grid   { grid-template-columns: 1fr; }
   .frameworks-grid { grid-template-columns: 1fr; }
