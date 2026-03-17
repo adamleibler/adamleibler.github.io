@@ -15,9 +15,7 @@
     }
 
     #resume { padding: 64px 0 80px; }
-
     .resume-wrap { max-width: 860px; margin: 0 auto; }
-
     .r-section { margin-bottom: 48px; }
 
     .r-section-title {
@@ -38,7 +36,6 @@
 
     .r-entry { margin-bottom: 36px; }
     .r-entry:last-child { margin-bottom: 0; }
-
     .r-entry-header { display: grid; grid-template-columns: 1fr auto; gap: 8px 24px; align-items: baseline; margin-bottom: 4px; }
     .r-title { font-family: var(--font-head); font-size: 13px; font-weight: 700; color: var(--white); letter-spacing: 0.03em; }
     .r-dates { font-size: 12px; font-weight: 400; color: var(--blue); letter-spacing: 0.04em; white-space: nowrap; }
@@ -61,6 +58,26 @@
     .r-tech-card h4 { font-family: var(--font-head); font-size: 11px; font-weight: 700; color: var(--white); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 10px; }
     .r-tech-card p { font-size: 13px; font-weight: 300; color: var(--text); line-height: 1.7; }
 
+    .r-award {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      background: rgba(255,107,53,0.06);
+      border: 0.5px solid rgba(255,107,53,0.25);
+      border-radius: 8px;
+      padding: 18px 20px;
+      margin-bottom: 12px;
+    }
+    .r-award-icon {
+      width: 32px; height: 32px;
+      background: rgba(255,107,53,0.12);
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .r-award-text h4 { font-size: 14px; font-weight: 700; color: var(--white); margin-bottom: 4px; }
+    .r-award-text p { font-size: 13px; color: var(--text); line-height: 1.5; }
+
     .resume-bottom-cta { text-align: center; padding: 48px 0 0; border-top: 0.5px solid var(--border-lt); margin-top: 16px; }
     .resume-bottom-cta p { font-size: 14px; color: var(--text); margin-bottom: 20px; }
 
@@ -81,8 +98,8 @@
       <a href="index.html" class="nav-logo" aria-label="Adam Leibler — home">Adam Leibler</a>
       <ul class="nav-links" role="list">
         <li><a href="index.html#about">About</a></li>
-        <li><a href="operations.html">Operations</a></li>
-        <li><a href="frameworks.html">Change Frameworks</a></li>
+        <li><a href="work.html">Work</a></li>
+        <li><a href="craft.html">Craft</a></li>
         <li><a href="lab.html">The Lab</a></li>
         <li><a href="resume.html" aria-current="page">Resume</a></li>
       </ul>
@@ -93,8 +110,8 @@
     </div>
     <div class="nav-mobile-menu" id="nav-mobile-menu" role="navigation" aria-label="Mobile navigation">
       <a href="index.html#about" class="mobile-link">About</a>
-      <a href="operations.html" class="mobile-link">Operations</a>
-      <a href="frameworks.html" class="mobile-link">Change Frameworks</a>
+      <a href="work.html" class="mobile-link">Work</a>
+      <a href="craft.html" class="mobile-link">Craft</a>
       <a href="lab.html" class="mobile-link">The Lab</a>
       <a href="resume.html" class="mobile-link" aria-current="page">Resume</a>
       <a href="index.html#contact" class="btn-slate mobile-link">Contact Me</a>
@@ -104,7 +121,7 @@
   <!-- ── PAGE HERO ── -->
   <section id="page-hero" aria-labelledby="page-heading">
     <div class="container">
-      <div class="pill">Organizational Learning Strategist &amp; Change Enablement Leader</div>
+      <div class="pill">E-Learning Developer &amp; Learning Experience Architect</div>
       <h1 id="page-heading" class="heading">
         Adam Leibler<br/>
         <span class="text-orange">Resume</span>
@@ -114,7 +131,7 @@
         <a href="https://linkedin.com/in/adamleibler" target="_blank" rel="noopener noreferrer" class="text-blue">linkedin.com/in/adamleibler</a>
       </p>
       <div class="resume-actions">
-        <a href="assets/Adam_Leibler_Change_Enablement_Resume.pdf" download="Adam_Leibler_Resume.pdf" class="btn-primary">Download PDF</a>
+        <a href="assets/Adam_Leibler_LXD_Resume_2026.pdf" download="Adam_Leibler_Resume.pdf" class="btn-primary">Download PDF</a>
         <a href="index.html#contact" class="btn-ghost">Get in Touch &rarr;</a>
       </div>
     </div>
@@ -129,24 +146,54 @@
         <div class="r-section reveal">
           <h2 class="r-section-title">Professional Summary</h2>
           <p class="r-summary">
-            Organizational Learning Strategist and Change Enablement Leader with over 15 years of
-            experience bridging the gap between technical innovation and human capability. Specialized
-            in navigating <span class="text-blue">VUCA</span> environments to ensure
-            mission-critical readiness across federal agencies (NASA, HHS, VA) and global tech leaders
-            (Twitch). Expert in architecting strategic adoption frameworks that turn complex
-            organizational shifts into seamless, high-performance workflows.
+            Award-winning multimedia e-learning developer and instructional design expert with 15+ years
+            of experience designing, developing, and scaling transformative digital learning ecosystems.
+            Proven success translating complex instructional concepts into visually engaging, high-fidelity
+            learning materials for highly regulated industries including healthcare, banking, and government.
+            Expert in leveraging emerging technologies and <span class="text-blue">AI-driven workflows</span>
+            to enhance learner engagement and knowledge retention — while maintaining rigorous technical and
+            compliance standards. Secondary expertise in organizational change strategy supports learning
+            that doesn't just get completed, but actually gets adopted.
           </p>
+        </div>
+
+        <!-- AWARDS -->
+        <div class="r-section reveal">
+          <h2 class="r-section-title">Recognition &amp; Awards</h2>
+          <div class="r-award">
+            <div class="r-award-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF6B35" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/>
+              </svg>
+            </div>
+            <div class="r-award-text">
+              <h4>Brandon Hall Award — Excellence in Learning</h4>
+              <p>Best Use of Games and Simulation in Learning &nbsp;&middot;&nbsp; ELB Learning</p>
+            </div>
+          </div>
+          <div class="r-award">
+            <div class="r-award-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF6B35" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/>
+              </svg>
+            </div>
+            <div class="r-award-text">
+              <h4>U.S. Army Award for Maintenance Excellence</h4>
+              <p>European Theater — Satellite Communications Certification Training</p>
+            </div>
+          </div>
         </div>
 
         <!-- CORE COMPETENCIES -->
         <div class="r-section reveal">
           <h2 class="r-section-title">Core Competencies</h2>
           <ul class="r-competencies">
-            <li><span><strong>Strategic Change Management:</strong> Prosci-aligned frameworks, stakeholder alignment, risk mitigation.</span></li>
-            <li><span><strong>Workforce Transformation:</strong> Technical adoption, digital migration, large-scale upskilling.</span></li>
-            <li><span><strong>Operational Readiness:</strong> Deployment strategy, Just-in-Time support, performance metrics.</span></li>
-            <li><span><strong>Learning Architecture:</strong> Ecosystem design, Human Performance Technology (HPT), ROI mapping.</span></li>
-            <li><span><strong>VUCA Leadership:</strong> Crisis management, agile decision-making, adaptive communication.</span></li>
+            <li><span><strong>E-Learning Development:</strong> Storyline 360, Rise, Captivate, Lectora — high-fidelity, interactive courseware.</span></li>
+            <li><span><strong>Multimedia Production:</strong> Adobe Creative Suite, Vyond, Camtasia, AI voiceovers, synthetic avatars.</span></li>
+            <li><span><strong>Instructional Design:</strong> ADDIE, SAM, Agile/Scrum, performance-based objectives, needs analysis.</span></li>
+            <li><span><strong>Learning Systems:</strong> LMS/LXP administration, xAPI, SCORM, Kirkpatrick L1–L4 evaluation.</span></li>
+            <li><span><strong>Accessibility &amp; Standards:</strong> Section 508, WCAG 2.1, IACET compliance, regulated-industry content.</span></li>
+            <li><span><strong>AI-Enhanced Workflows:</strong> AI-assisted production pipelines that cut timelines without cutting quality.</span></li>
           </ul>
         </div>
 
@@ -156,14 +203,15 @@
 
           <div class="r-entry">
             <div class="r-entry-header">
-              <span class="r-title">Learning &amp; Change Enablement Consultant</span>
-              <span class="r-dates">Oct 2017 – Present</span>
+              <span class="r-title">Learning Experience Designer (Independent Contractor)</span>
+              <span class="r-dates">Oct 2022 – Present</span>
             </div>
             <p class="r-org">Leibler Learning LLC &nbsp;<span class="r-location">Louisville, KY (Remote)</span></p>
+            <p class="r-org" style="font-size:12px; font-weight:300; color:var(--text); margin-top:-8px; margin-bottom:12px;">Clients: U.S. Dept. of Health &amp; Human Services (HHS), Frontdoor, U.S. Dept. of Veterans Affairs (VA), Diversified</p>
             <ul class="r-bullets">
-              <li><span><strong>Federal Strategy Lead (HHS &amp; VA):</strong> Architected human-centric change frameworks for high-stakes digital migrations, ensuring 10k+ workforce members were mission-ready for legislative and technical shifts.</span></li>
-              <li><span><strong>Stakeholder Alignment:</strong> Facilitated critical alignment between policy experts and IT departments to reduce adoption friction during national-scale system overhauls.</span></li>
-              <li><span><strong>Adoption Analytics:</strong> Developed feedback loops and readiness assessments to identify resistance points, reducing operational downtime during transition phases.</span></li>
+              <li><span><strong>AI-Enhanced Multimedia Production:</strong> Developed high-stakes healthcare training for HHS utilizing AI-generated voiceovers and synthetic avatars, reducing production timelines by 40% while ensuring IACET compliance.</span></li>
+              <li><span><strong>Interactive E-Learning Solutions:</strong> Architected personalized compliance training for Frontdoor using complex branching scenarios and real-time performance-based adaptations.</span></li>
+              <li><span><strong>Immersive Video Simulations:</strong> Designed and implemented hybrid training systems for Diversified using AI-augmented prototyping to create scenario-based video simulations for global deployment.</span></li>
             </ul>
           </div>
 
@@ -174,45 +222,57 @@
             </div>
             <p class="r-org">Twitch Interactive &nbsp;<span class="r-location">San Francisco, CA (Remote)</span></p>
             <ul class="r-bullets">
-              <li><span><strong>Global Technical Transformation:</strong> Led the end-to-end adoption strategy for new engineering standards and internal tools across a distributed international workforce.</span></li>
-              <li><span><strong>Change Fatigue Mitigation:</strong> Leveraged platform engagement data to design targeted communication streams that maintained developer velocity during structural shifts.</span></li>
-              <li><span><strong>Community-Led Adoption:</strong> Built internal advocacy programs that turned technical leads into Change Champions, accelerating the adoption of new DevOps methodologies.</span></li>
+              <li><span><strong>Scalable Learning Systems:</strong> Designed immersive technical onboarding frameworks for software engineers, emphasizing instructional scaffolding to reduce time to first contribution to under 30 days.</span></li>
+              <li><span><strong>Data-Driven Optimization:</strong> Utilized performance analytics to iterate on large-scale technical training, aligning multimedia content delivery with strategic business objectives and achieving a 40% increase in learner satisfaction.</span></li>
             </ul>
           </div>
 
           <div class="r-entry">
             <div class="r-entry-header">
-              <span class="r-title">Operational Readiness Lead (ID II)</span>
+              <span class="r-title">Instructional Designer II</span>
               <span class="r-dates">Sep 2017 – Mar 2021</span>
             </div>
             <p class="r-org">Terminix International &nbsp;<span class="r-location">Memphis, TN</span></p>
             <ul class="r-bullets">
-              <li><span><strong>Frontline Adoption Strategy:</strong> Spearheaded the readiness phase for mobile tool deployments impacting 5,000+ technicians, bridging the gap between Corporate IT and field operations.</span></li>
-              <li><span><strong>Performance Optimization:</strong> Identified adoption barriers in underperforming markets and deployed targeted intervention strategies that increased proficiency within 90 days.</span></li>
+              <li><span><strong>Immersive Scenario Design:</strong> Developed complex branching scenarios and custom gamified environments for a diverse workforce, focusing on high-stakes safety and sales performance.</span></li>
+              <li><span><strong>Strategic Collaboration:</strong> Partnered with SMEs to translate operational gaps into technology-based interventions, ensuring all media assets met rigid safety standards.</span></li>
             </ul>
           </div>
 
           <div class="r-entry">
             <div class="r-entry-header">
-              <span class="r-title">Senior eLearning Developer</span>
+              <span class="r-title">Learning Experience Designer (Independent Contractor)</span>
+              <span class="r-dates">Apr 2016 – Sep 2017</span>
+            </div>
+            <p class="r-org">Leibler Learning LLC &nbsp;<span class="r-location">Remote</span></p>
+            <p class="r-org" style="font-size:12px; font-weight:300; color:var(--text); margin-top:-8px; margin-bottom:12px;">Clients: Vyond (GoAnimate), Ally Financial, USAA</p>
+            <ul class="r-bullets">
+              <li><span><strong>Interactive Video Certification:</strong> Designed the comprehensive global certification program for Vyond, establishing proficiency benchmarks for their web-based video production platform.</span></li>
+              <li><span><strong>Regulated Industry Architecture:</strong> Developed rigorous, ADDIE-based digital learning modules for high-regulation financial institutions (Ally Financial &amp; USAA), ensuring 100% compliance with banking standards.</span></li>
+            </ul>
+          </div>
+
+          <div class="r-entry">
+            <div class="r-entry-header">
+              <span class="r-title">E-Learning Developer</span>
               <span class="r-dates">Jul 2012 – Apr 2016</span>
             </div>
-            <p class="r-org">eLB Learning &nbsp;<span class="r-location">Remote</span></p>
+            <p class="r-org">ELB Learning (formerly eLearning Brothers) &nbsp;<span class="r-location">Remote</span></p>
             <ul class="r-bullets">
-              <li><span><strong>Enterprise-Level Transformation:</strong> Architected multi-year learning ecosystems for Fortune 500 clients undergoing digital transformation, focusing on scalability and user-centric adoption.</span></li>
-              <li><span><strong>Strategic Consulting:</strong> Partnered with C-suite executives to translate complex business pivots into actionable skills frameworks and performance-mapped curricula.</span></li>
+              <li><span><strong>Award-Winning Development:</strong> Produced bespoke, high-fidelity e-learning for Fortune 500 clients, earning a Brandon Hall Award for Excellence in Learning for Best Use of Games and Simulation.</span></li>
+              <li><span><strong>Modular Design Libraries:</strong> Engineered a modular library of interactive templates for Storyline and Captivate, enabling thousands of users to achieve rapid, high-quality development.</span></li>
             </ul>
           </div>
 
           <div class="r-entry">
             <div class="r-entry-header">
-              <span class="r-title">Operations &amp; Mission Readiness</span>
+              <span class="r-title">Operations &amp; Training — Communications Specialist</span>
               <span class="r-dates"></span>
             </div>
             <p class="r-org">U.S. Army &nbsp;<span class="r-location">Overseas / Various Locations</span></p>
             <ul class="r-bullets">
-              <li><span><strong>VUCA Leadership:</strong> Led cross-functional teams through volatile operational transitions during two overseas tours, maintaining 100% accountability and readiness in high-stakes environments.</span></li>
-              <li><span><strong>Crisis Change Management:</strong> Executed logistics and personnel re-alignment strategies under pressure, ensuring mission continuity during rapid structural pivots.</span></li>
+              <li><span>Led satellite communications certification training in a zero-fail operational environment — earning an Army Award for Maintenance Excellence for training outcomes in the European Theater.</span></li>
+              <li><span>Cross-functional team leadership through volatile operational transitions during two overseas tours.</span></li>
             </ul>
           </div>
 
@@ -220,12 +280,19 @@
 
         <!-- EDUCATION -->
         <div class="r-section reveal">
-          <h2 class="r-section-title">Education &amp; Professional Development</h2>
+          <h2 class="r-section-title">Education</h2>
           <div>
             <div class="r-edu-entry">
               <div>
+                <p class="r-edu-degree">M.S. in Instructional Design &amp; Technology</p>
+                <p class="r-edu-school">University of Kentucky</p>
+              </div>
+              <span class="r-edu-year">Beginning Jan 2027</span>
+            </div>
+            <div class="r-edu-entry">
+              <div>
                 <p class="r-edu-degree">B.S. in Organizational Leadership and Learning</p>
-                <p class="r-edu-school">University of Louisville</p>
+                <p class="r-edu-school">University of Louisville &nbsp;&middot;&nbsp; 4.0 GPA</p>
               </div>
               <span class="r-edu-year">Expected 2026</span>
             </div>
@@ -244,20 +311,20 @@
           <h2 class="r-section-title">Technical &amp; Platform Expertise</h2>
           <div class="r-tech-grid">
             <div class="r-tech-card">
-              <h4>Engagement</h4>
-              <p>Twitch Partner (MalForTheWin), Global Audience Engagement.</p>
+              <h4>Authoring Tools</h4>
+              <p>Articulate Storyline 360, Rise 360, Adobe Captivate, Lectora, Vyond, Camtasia, Veed.io</p>
             </div>
             <div class="r-tech-card">
-              <h4>Systems</h4>
-              <p>Salesforce, SAP Litmos, Workday Learn, Sum Total, Cornerstone.</p>
+              <h4>Multimedia &amp; AI</h4>
+              <p>Adobe Creative Suite (PS, AI, Premiere, AE), AI voiceovers, synthetic avatars, instructional animation</p>
             </div>
             <div class="r-tech-card">
-              <h4>Architectures</h4>
-              <p>LMS/LXP, xAPI, ADDIE, Kirkpatrick, Agile/Scrum, SAM.</p>
+              <h4>LMS &amp; Systems</h4>
+              <p>Cornerstone, Workday Learn, Moodle, SAP Litmos, xAPI, SCORM, HTML/CSS</p>
             </div>
             <div class="r-tech-card">
-              <h4>Tools</h4>
-              <p>Articulate 360, Adobe Creative Cloud, Data Analytics Dashboards.</p>
+              <h4>Methods &amp; Standards</h4>
+              <p>ADDIE, SAM, Agile, Kirkpatrick L1–L4, Section 508, WCAG 2.1, IACET compliance</p>
             </div>
           </div>
         </div>
@@ -265,7 +332,7 @@
         <!-- BOTTOM CTA -->
         <div class="resume-bottom-cta reveal">
           <p>Want a copy for your records?</p>
-          <a href="assets/Adam_Leibler_Change_Enablement_Resume.pdf" download="Adam_Leibler_Resume.pdf" class="btn-primary">Download PDF</a>
+          <a href="assets/Adam_Leibler_LXD_Resume_2026.pdf" download="Adam_Leibler_Resume.pdf" class="btn-primary">Download PDF</a>
         </div>
 
       </div>
