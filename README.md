@@ -1,6 +1,6 @@
 # AdamLeibler.com (adamleibler.github.io)
 
-Personal website for Adam Leibler — Change Enablement, Operational Readiness, and Organizational Learning Strategy consultant.
+Personal website for Adam Leibler — Senior Learning Experience Designer, E-Learning Developer, and Instructional Architect.
 
 Live site: [https://adamleibler.com](https://adamleibler.com)
 
@@ -12,7 +12,7 @@ Built collaboratively with Claude (Anthropic). Five HTML files, a shared CSS fil
 
 ## Background
 
-At a career tipping point, Adam reimagined this site as a personal brand vehicle to support his consulting work in change enablement, instructional design, and organizational learning strategy. Adam is an Organizational Leadership and Learning scholar at the University of Louisville and a Twitch Partner.
+Adam Leibler is an award-winning e-learning developer and learning experience designer with 15+ years of experience building high-fidelity, multimedia-rich learning for federal agencies, Fortune 500 companies, and global tech teams. Brandon Hall Award recipient. Organizational Leadership and Learning scholar at the University of Louisville. Twitch Partner.
 
 ---
 
@@ -21,12 +21,12 @@ At a career tipping point, Adam reimagined this site as a personal brand vehicle
 ```
 /
 ├── index.html          # Homepage — hero, pillars, about, Ripley
-├── frameworks.html     # Change Frameworks page — ADKAR, Kotter, case study
-├── operations.html     # Operations page — services, readiness checklist, case study
-├── lab.html            # The Lab — research, writing, projects
+├── work.html           # Work — portfolio case studies and industry experience
+├── craft.html          # Craft — tools, process, design philosophy
+├── lab.html            # The Lab — research, writing, side projects
 ├── resume.html         # Resume — native HTML with PDF download
 ├── style.css           # Shared stylesheet — edit this to change colors, fonts, layout
-├── main.js             # Shared JavaScript — nav, scroll reveal, email assembly, checklist
+├── main.js             # Shared JavaScript — nav, scroll reveal, email assembly
 ├── CNAME               # Custom domain mapping for GitHub Pages
 ├── README.md           # This file
 └── assets/
@@ -34,7 +34,7 @@ At a career tipping point, Adam reimagined this site as a personal brand vehicle
     ├── portrait_ripley.webp                   # Ripley photo — 1200×900px (human element section)
     ├── banner-x.svg                           # X/Twitter header banner — 1500×500px
     ├── banner-linkedin.svg                    # LinkedIn header banner — 1584×396px
-    ├── Adam_Leibler_Change_Enablement_Resume.pdf  # Resume PDF download
+    ├── Adam_Leibler_LXD_Resume_2026.pdf       # Resume PDF download
     └── uofl-logo.webp                         # University of Louisville logo (lab page)
 ```
 
@@ -79,10 +79,10 @@ This site deploys automatically via GitHub Pages on every push to `main`. No bui
 
 **LinkedIn**
 ```
-Organizational Learning Strategist | Change Enablement Leader | Building Mission-Ready Workforces in VUCA Environments | Helping Organizations Survive Their Own Evolution | U.S. Army Veteran | UofL Scholar. Ripley's human.
+Senior Learning Experience Designer & E-Learning Developer | Building Learning Experiences That Actually Change Behavior | Brandon Hall Award Recipient | U.S. Army Veteran | UofL Scholar. Ripley's human.
 ```
 
 **Twitter / X**
 ```
-Organizational Learning Strategist | Change Enablement Leader | Helping Organizations Survive Their Own Evolution | US Army Vet | UofL Scholar | Ripley's human
+Senior LXD & E-Learning Developer | Building learning that actually changes behavior | Brandon Hall Award | Army Vet | UofL Scholar | Ripley's human
 ```
