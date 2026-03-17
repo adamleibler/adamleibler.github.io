@@ -551,7 +551,7 @@ footer span         { font-size: 13px; font-weight: 300; }
   display:   flex;
   gap:       12px;
   width:     max-content;
-  animation: marquee-scroll 28s linear infinite;
+  animation: marquee-scroll 60s linear infinite;
 }
 .proof-marquee:hover { animation-play-state: paused; }
 
