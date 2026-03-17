@@ -6,163 +6,6 @@
   <title>Craft — Adam Leibler</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
-  <style>
-    /* ── CRAFT PAGE STYLES ── */
-    .toolbox-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
-      margin-top: 40px;
-    }
-    .tool-card {
-      background: var(--surface);
-      border: 0.5px solid var(--border);
-      border-radius: 10px;
-      padding: 28px 24px;
-      transition: border-color 0.2s;
-    }
-    .tool-card:hover { border-color: rgba(0,210,255,0.3); }
-    .tool-card-label {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--text);
-      margin-bottom: 12px;
-    }
-    .tool-card h3 {
-      font-family: var(--font-head);
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--white);
-      letter-spacing: 0.04em;
-      margin-bottom: 12px;
-    }
-    .tool-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-    .tool-pill {
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      background: rgba(0,210,255,0.08);
-      color: var(--blue);
-      border: 0.5px solid rgba(0,210,255,0.25);
-      border-radius: 4px;
-      padding: 4px 10px;
-    }
-    .tool-pill.orange {
-      background: rgba(255,107,53,0.08);
-      color: var(--orange);
-      border-color: rgba(255,107,53,0.25);
-    }
-    .tool-pill.purple {
-      background: rgba(167,139,250,0.08);
-      color: var(--purple);
-      border-color: rgba(167,139,250,0.25);
-    }
-    .tool-pill.green {
-      background: rgba(74,222,128,0.08);
-      color: #4ADE80;
-      border-color: rgba(74,222,128,0.25);
-    }
-
-    /* ── PROCESS SECTION ── */
-    .process-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-      margin-top: 40px;
-    }
-    .process-card {
-      background: var(--surface);
-      border: 0.5px solid var(--border);
-      border-radius: 10px;
-      padding: 32px 28px;
-    }
-    .process-card-num {
-      font-family: var(--font-head);
-      font-size: 32px;
-      font-weight: 900;
-      color: var(--border);
-      margin-bottom: 16px;
-      display: block;
-    }
-    .process-card h3 {
-      font-family: var(--font-head);
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--white);
-      letter-spacing: 0.04em;
-      margin-bottom: 12px;
-    }
-    .process-card p { font-size: 14px; line-height: 1.75; }
-
-    /* ── PHILOSOPHY PULLQUOTE ── */
-    .pullquote {
-      border-left: 2px solid var(--orange);
-      padding: 20px 28px;
-      margin: 40px 0;
-      background: var(--surface);
-      border-radius: 0 10px 10px 0;
-    }
-    .pullquote p {
-      font-size: 18px;
-      font-weight: 300;
-      color: var(--white);
-      line-height: 1.65;
-      font-style: italic;
-    }
-    .pullquote cite {
-      display: block;
-      margin-top: 12px;
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--text);
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      font-style: normal;
-    }
-
-    /* ── APPROACH BLOCKS ── */
-    .approach-list {
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-      margin-top: 32px;
-    }
-    .approach-item {
-      display: grid;
-      grid-template-columns: 48px 1fr;
-      gap: 20px;
-      align-items: flex-start;
-    }
-    .approach-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-    .approach-item h4 {
-      font-family: var(--font-head);
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--white);
-      letter-spacing: 0.04em;
-      margin-bottom: 8px;
-    }
-    .approach-item p { font-size: 14px; line-height: 1.75; }
-
-    @media (max-width: 768px) {
-      .toolbox-grid { grid-template-columns: 1fr; }
-      .process-grid  { grid-template-columns: 1fr; }
-    }
-  </style>
 </head>
 <body>
 
@@ -407,11 +250,11 @@
   </section>
 
   <!-- ── CTA ── -->
-  <section id="work-with-me" aria-label="Work with me" style="padding: 72px 0;">
+  <section id="work-with-me" aria-label="Work with me" class="wwm-section">
     <div class="container">
       <span class="label text-center-block">Ready to Work Together?</span>
       <h2 class="heading section-h2-lg">Let's Talk About Your Project.</h2>
-      <p style="font-size:15px; max-width:520px; margin: 0 auto 32px; text-align:center;">
+      <p class="section-intro">
         Whether you need a single course or a full learning system — I'd rather
         understand the problem first and scope from there.
       </p>

@@ -6,161 +6,6 @@
   <title>Work — Adam Leibler</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
-  <style>
-    /* ── WORK PAGE STYLES ── */
-    .case-studies-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-      margin-top: 40px;
-    }
-    .cs-card {
-      background: var(--surface);
-      border: 0.5px solid var(--border);
-      border-radius: 10px;
-      padding: 32px 28px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      transition: border-color 0.2s;
-    }
-    .cs-card:hover { border-color: rgba(0,210,255,0.3); }
-    .cs-tag {
-      display: inline-block;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      border-radius: 4px;
-      padding: 3px 10px;
-      width: fit-content;
-    }
-    .cs-client {
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--text);
-      margin-bottom: 4px;
-    }
-    .cs-title {
-      font-family: var(--font-head);
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--white);
-      letter-spacing: 0.03em;
-      line-height: 1.3;
-      margin-bottom: 4px;
-    }
-    .cs-desc {
-      font-size: 14px;
-      line-height: 1.75;
-      flex-grow: 1;
-    }
-    .cs-outcomes {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      border-top: 0.5px solid var(--border-lt);
-      padding-top: 16px;
-    }
-    .cs-outcome-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      font-size: 13px;
-      line-height: 1.5;
-    }
-    .cs-outcome-item::before {
-      content: '';
-      display: block;
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: var(--blue);
-      flex-shrink: 0;
-      margin-top: 6px;
-    }
-    .cs-outcome-item strong { color: var(--white); }
-    .cs-placeholder {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-      background: rgba(74,85,104,0.2);
-      color: #94A3B8;
-      border-radius: 4px;
-      padding: 3px 10px;
-      margin-top: 4px;
-      width: fit-content;
-    }
-    .cs-placeholder-dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: #94A3B8;
-    }
-
-    /* ── METRICS STRIP ── */
-    .metrics-strip {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-      margin-top: 40px;
-    }
-    .metric-strip-card {
-      background: var(--surface);
-      border: 0.5px solid var(--border);
-      border-radius: 10px;
-      padding: 24px 20px;
-      text-align: center;
-    }
-    .metric-strip-number {
-      font-family: var(--font-head);
-      font-size: 28px;
-      font-weight: 800;
-      display: block;
-      margin-bottom: 6px;
-    }
-    .metric-strip-label { font-size: 13px; line-height: 1.5; }
-
-    /* ── INDUSTRIES ── */
-    .industries-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-      margin-top: 32px;
-    }
-    .industry-card {
-      background: var(--surface);
-      border: 0.5px solid var(--border);
-      border-radius: 8px;
-      padding: 20px;
-      text-align: center;
-    }
-    .industry-card h4 {
-      font-family: var(--font-head);
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--white);
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-    .industry-card p { font-size: 13px; line-height: 1.6; }
-
-    @media (max-width: 768px) {
-      .case-studies-grid { grid-template-columns: 1fr; }
-      .metrics-strip { grid-template-columns: 1fr 1fr; }
-      .industries-grid { grid-template-columns: 1fr 1fr; }
-    }
-    @media (max-width: 480px) {
-      .metrics-strip { grid-template-columns: 1fr 1fr; }
-      .industries-grid { grid-template-columns: 1fr; }
-    }
-  </style>
 </head>
 <body>
 
@@ -219,11 +64,11 @@
           <span class="metric-strip-label">Learners reached across federal agencies</span>
         </div>
         <div class="metric-strip-card">
-          <span class="metric-strip-number" style="color:var(--purple);">40%</span>
+          <span class="metric-strip-number color-purple">40%</span>
           <span class="metric-strip-label">Production timeline reduction via AI-enhanced workflows</span>
         </div>
         <div class="metric-strip-card">
-          <span class="metric-strip-number" style="color:#4ADE80;">&lt;30</span>
+          <span class="metric-strip-number color-green">&lt;30</span>
           <span class="metric-strip-label">Days to first engineering contribution at Twitch</span>
         </div>
       </div>
@@ -382,11 +227,11 @@
   </section>
 
   <!-- ── CTA ── -->
-  <section id="work-with-me" aria-label="Work with me" style="padding: 72px 0;">
+  <section id="work-with-me" aria-label="Work with me" class="wwm-section">
     <div class="container">
       <span class="label text-center-block">Let's Collaborate</span>
       <h2 class="heading section-h2-lg">Have a Project in Mind?</h2>
-      <p style="font-size:15px; max-width:520px; margin: 0 auto 32px; text-align:center;">
+      <p class="section-intro">
         I take on a small number of contracts at a time to keep quality high.
         If you need a senior LXD who can hit the ground running — let's talk.
       </p>

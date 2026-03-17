@@ -6,89 +6,6 @@
   <title>Resume — Adam Leibler</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
-  <style>
-    #page-hero { padding: 56px 0 40px; border-bottom: 0.5px solid var(--border-lt); }
-
-    .resume-actions {
-      display: flex; align-items: center; gap: 14px;
-      margin-top: 28px; flex-wrap: wrap;
-    }
-
-    #resume { padding: 64px 0 80px; }
-    .resume-wrap { max-width: 860px; margin: 0 auto; }
-    .r-section { margin-bottom: 48px; }
-
-    .r-section-title {
-      font-family: var(--font-head);
-      font-size: 11px; font-weight: 700;
-      letter-spacing: 0.14em; text-transform: uppercase;
-      color: var(--orange);
-      border-bottom: 0.5px solid var(--border);
-      padding-bottom: 10px; margin-bottom: 24px;
-    }
-
-    .r-summary { font-size: 15px; font-weight: 300; color: var(--text); line-height: 1.85; }
-
-    .r-competencies { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px 32px; list-style: none; }
-    .r-competencies li { font-size: 14px; font-weight: 300; color: var(--text); display: flex; align-items: flex-start; gap: 10px; line-height: 1.6; }
-    .r-competencies li::before { content: ''; display: block; width: 5px; height: 5px; border-radius: 50%; background: var(--blue); flex-shrink: 0; margin-top: 7px; }
-    .r-competencies li strong { color: var(--white); font-weight: 700; }
-
-    .r-entry { margin-bottom: 36px; }
-    .r-entry:last-child { margin-bottom: 0; }
-    .r-entry-header { display: grid; grid-template-columns: 1fr auto; gap: 8px 24px; align-items: baseline; margin-bottom: 4px; }
-    .r-title { font-family: var(--font-head); font-size: 13px; font-weight: 700; color: var(--white); letter-spacing: 0.03em; }
-    .r-dates { font-size: 12px; font-weight: 400; color: var(--blue); letter-spacing: 0.04em; white-space: nowrap; }
-    .r-org { font-size: 13px; font-weight: 700; color: var(--orange); margin-bottom: 12px; }
-    .r-location { font-size: 12px; font-weight: 300; color: var(--text); opacity: 0.7; }
-
-    .r-bullets { list-style: none; display: flex; flex-direction: column; gap: 8px; }
-    .r-bullets li { font-size: 14px; font-weight: 300; color: var(--text); display: flex; align-items: flex-start; gap: 12px; line-height: 1.7; }
-    .r-bullets li::before { content: ''; display: block; width: 5px; height: 5px; border-radius: 50%; background: var(--border); flex-shrink: 0; margin-top: 8px; }
-    .r-bullets li strong { color: var(--white); font-weight: 700; }
-
-    .r-edu-entry { display: grid; grid-template-columns: 1fr auto; gap: 4px 24px; align-items: baseline; padding: 14px 0; border-bottom: 0.5px solid var(--border-lt); }
-    .r-edu-entry:last-child { border-bottom: none; }
-    .r-edu-degree { font-size: 14px; font-weight: 700; color: var(--white); }
-    .r-edu-school { font-size: 13px; font-weight: 300; color: var(--text); margin-top: 2px; }
-    .r-edu-year { font-size: 12px; color: var(--blue); letter-spacing: 0.04em; white-space: nowrap; }
-
-    .r-tech-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
-    .r-tech-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: 8px; padding: 18px 20px; }
-    .r-tech-card h4 { font-family: var(--font-head); font-size: 11px; font-weight: 700; color: var(--white); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 10px; }
-    .r-tech-card p { font-size: 13px; font-weight: 300; color: var(--text); line-height: 1.7; }
-
-    .r-award {
-      display: flex;
-      align-items: flex-start;
-      gap: 16px;
-      background: rgba(255,107,53,0.06);
-      border: 0.5px solid rgba(255,107,53,0.25);
-      border-radius: 8px;
-      padding: 18px 20px;
-      margin-bottom: 12px;
-    }
-    .r-award-icon {
-      width: 32px; height: 32px;
-      background: rgba(255,107,53,0.12);
-      border-radius: 6px;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-    }
-    .r-award-text h4 { font-size: 14px; font-weight: 700; color: var(--white); margin-bottom: 4px; }
-    .r-award-text p { font-size: 13px; color: var(--text); line-height: 1.5; }
-
-    .resume-bottom-cta { text-align: center; padding: 48px 0 0; border-top: 0.5px solid var(--border-lt); margin-top: 16px; }
-    .resume-bottom-cta p { font-size: 14px; color: var(--text); margin-bottom: 20px; }
-
-    @media (max-width: 768px) {
-      .resume-actions { flex-direction: column; align-items: stretch; text-align: center; }
-      .r-competencies { grid-template-columns: 1fr; }
-      .r-entry-header { grid-template-columns: 1fr; }
-      .r-tech-grid { grid-template-columns: 1fr; }
-      .r-edu-entry { grid-template-columns: 1fr; }
-    }
-  </style>
 </head>
 <body>
 
@@ -207,7 +124,7 @@
               <span class="r-dates">Oct 2022 – Present</span>
             </div>
             <p class="r-org">Leibler Learning LLC &nbsp;<span class="r-location">Louisville, KY (Remote)</span></p>
-            <p class="r-org" style="font-size:12px; font-weight:300; color:var(--text); margin-top:-8px; margin-bottom:12px;">Clients: U.S. Dept. of Health &amp; Human Services (HHS), Frontdoor, U.S. Dept. of Veterans Affairs (VA), Diversified</p>
+            <p class="r-org" class="r-org-clients">Clients: U.S. Dept. of Health &amp; Human Services (HHS), Frontdoor, U.S. Dept. of Veterans Affairs (VA), Diversified</p>
             <ul class="r-bullets">
               <li><span><strong>AI-Enhanced Multimedia Production:</strong> Developed high-stakes healthcare training for HHS utilizing AI-generated voiceovers and synthetic avatars, reducing production timelines by 40% while ensuring IACET compliance.</span></li>
               <li><span><strong>Interactive E-Learning Solutions:</strong> Architected personalized compliance training for Frontdoor using complex branching scenarios and real-time performance-based adaptations.</span></li>
@@ -245,7 +162,7 @@
               <span class="r-dates">Apr 2016 – Sep 2017</span>
             </div>
             <p class="r-org">Leibler Learning LLC &nbsp;<span class="r-location">Remote</span></p>
-            <p class="r-org" style="font-size:12px; font-weight:300; color:var(--text); margin-top:-8px; margin-bottom:12px;">Clients: Vyond (GoAnimate), Ally Financial, USAA</p>
+            <p class="r-org" class="r-org-clients">Clients: Vyond (GoAnimate), Ally Financial, USAA</p>
             <ul class="r-bullets">
               <li><span><strong>Interactive Video Certification:</strong> Designed the comprehensive global certification program for Vyond, establishing proficiency benchmarks for their web-based video production platform.</span></li>
               <li><span><strong>Regulated Industry Architecture:</strong> Developed rigorous, ADDIE-based digital learning modules for high-regulation financial institutions (Ally Financial &amp; USAA), ensuring 100% compliance with banking standards.</span></li>
