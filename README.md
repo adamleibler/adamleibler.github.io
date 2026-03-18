@@ -86,3 +86,26 @@ Senior Learning Experience Designer & E-Learning Developer | Building Learning E
 ```
 Senior LXD & E-Learning Developer | Building learning that actually changes behavior | Brandon Hall Award | Army Vet | UofL Scholar | Ripley's human
 ```
+
+
+---
+
+## Content & Branding Notes
+
+### Twitch Stream — Late Night Space Flight
+
+**Stream name:** Late Night Space Flight
+
+**Brand concept:** A late night talk show about astronomy and space science, broadcast live on Twitch while exploring the galaxy in Elite Dangerous (space flight simulation). Real science, real conversation, virtual spaceship.
+
+**Channel:** [twitch.tv/malforthewin](https://twitch.tv/malforthewin)
+
+**Status:** Active — Twitch Partner
+
+**Note:** Previous working title was "Deep Sky Live." All site references use "Late Night Space Flight."
+
+### Brandon Hall Award
+
+Bronze, Excellence in Learning — Brandon Hall Group HCM Excellence Awards, Best Use of Games and Simulation in Learning. Earned at ELB Learning.
+
+Medal image (`assets/brandon-hall-bronze-2015.png`) displayed at 200px width in the about section of the homepage. Save/replace at 400px wide (2× for retina) to keep file size minimal.
