@@ -4,7 +4,7 @@ Personal website for Adam Leibler — Senior Learning Experience Designer, E-Lea
 
 Live site: [https://adamleibler.com](https://adamleibler.com)
 
-Current version: v1.3.0
+Current version: v1.3.2
 
 ---
 
