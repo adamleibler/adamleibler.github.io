@@ -4,6 +4,8 @@ Personal website for Adam Leibler — Senior Learning Experience Designer, E-Lea
 
 Live site: [https://adamleibler.com](https://adamleibler.com)
 
+Current version: v1.3.0
+
 ---
 
 ## About This Site
@@ -79,12 +81,12 @@ This site deploys automatically via GitHub Pages on every push to `main`. No bui
 
 **LinkedIn**
 ```
-Senior Learning Experience Designer & E-Learning Developer | Building Learning Experiences That Actually Change Behavior | Brandon Hall Award Recipient | U.S. Army Veteran | UofL Scholar. Ripley's human.
+Senior Learning Experience Designer | I design and build learning that actually changes behavior | Brandon Hall Award Recipient | U.S. Army Veteran | UofL Org Learning scholar. Ripley’s human.
 ```
 
 **Twitter / X**
 ```
-Senior LXD & E-Learning Developer | Building learning that actually changes behavior | Brandon Hall Award | Army Vet | UofL Scholar | Ripley's human
+Senior LXD & E-Learning Developer | I design and build learning that actually changes behavior | Brandon Hall Award | Army Vet | UofL Scholar | Ripley's human
 ```
 
 
