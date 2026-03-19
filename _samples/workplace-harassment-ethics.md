@@ -3,7 +3,7 @@ title: "Workplace Harassment & Ethics — Module 1"
 client: "Workplace Harassment & Ethics"
 tag: "HR & Legal · Compliance Training"
 tag_color: "purple"
-sample_url: "/_samples/portfolio-harassment-ethics.html"
+sample_url: "/portfolio/portfolio-harassment-ethics.html"
 order: 2
 outcomes:
   - "Quid pro quo, hostile environment, and retaliation defined"

@@ -72,7 +72,7 @@ collections:
         name: "sample_url"
         widget: "string"
         required: false
-        hint: "Only needed if Availability is 'Full Sample'. e.g. /_samples/portfolio-cybersecurity.html"
+        hint: "Only needed if Availability is 'Full Sample'. e.g. /portfolio/portfolio-cybersecurity.html"
 
       - label: "Featured"
         name: "featured"
@@ -148,7 +148,7 @@ collections:
       - label: "Sample URL"
         name: "sample_url"
         widget: "string"
-        hint: "Link to the live sample, e.g. /_samples/portfolio-cybersecurity.html"
+        hint: "Link to the live sample, e.g. /portfolio/portfolio-cybersecurity.html"
 
       - label: "Sort Order"
         name: "order"
