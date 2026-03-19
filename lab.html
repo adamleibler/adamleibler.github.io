@@ -1,3 +1,6 @@
+---
+permalink: /lab.html
+---
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -74,25 +77,14 @@
         What I'm into this month
       </h2>
       <div class="now-grid reveal">
-
+        {% assign sorted_now = site.right-now | sort: "order" %}
+        {% for item in sorted_now %}
         <div class="now-item">
-          <p class="now-category">Reading</p>
-          <h4>The Fearless Organization</h4>
-          <p>Amy Edmondson on psychological safety. Thinking about what this means for learning environment design, not just team management.</p>
+          <p class="now-category">{{ item.category }}</p>
+          <h4>{{ item.title }}</h4>
+          <p>{{ item.content | strip_html | strip }}</p>
         </div>
-
-        <div class="now-item">
-          <p class="now-category">Experimenting</p>
-          <h4>AI-Augmented Storyboarding</h4>
-          <p>Testing workflows where AI generates first-draft storyboards from a design brief. Faster than blank-page starts; surprisingly good at catching structural gaps.</p>
-        </div>
-
-        <div class="now-item">
-          <p class="now-category">Studying</p>
-          <h4>Organizational Leadership &amp; Learning</h4>
-          <p>Final push toward my B.S. at UofL — current coursework deepening the research muscle I want to bring to instructional design practice.</p>
-        </div>
-
+        {% endfor %}
       </div>
     </div>
   </section>
@@ -105,49 +97,46 @@
       <span class="label">Research &amp; Writing</span>
       <h2 id="research-heading" class="heading section-h2-sm">What I'm Thinking About</h2>
 
-      <div class="research-grid reveal">
-        <div class="research-main">
-          <span class="status-badge status-active status-inline">
-            <span class="status-dot"></span>Active Research
-          </span>
-          <h3>Does AI-Assisted Voiceover Affect Learner Trust?</h3>
-          <p>
-            As AI voiceovers become indistinguishable from human narration, the question stops being
-            "can learners tell the difference?" and starts being "does it matter if they can?"
-            I'm working through the cognitive load and parasocial relationship literature to find out.
-          </p>
-          <div class="research-question">
-            Does synthetic narration affect knowledge transfer, engagement, or perception of
-            instructional credibility in regulated-industry compliance training?
-          </div>
-          <p>
-            Early hypothesis: disclosure matters more than the voice itself. But the data is thin and
-            the variables are messy. This one's going to take a while.
-          </p>
-          <div class="research-tags">
-            <span class="tag tag-blue">AI in Learning</span>
-            <span class="tag tag-blue">Cognitive Load</span>
-            <span class="tag tag-blue">Learner Trust</span>
-            <span class="tag tag-blue">Compliance Training</span>
-          </div>
-        </div>
+      {% assign sorted_research = site.research | sort: "order" %}
+      {% assign featured_research = sorted_research | where: "featured", true | first %}
+      {% assign sidebar_research = sorted_research | where: "featured", false %}
 
-        <div class="lab-sidebar">
-          <div class="now-item">
-            <span class="status-badge status-writing status-inline">
-              <span class="status-dot"></span>Writing
-            </span>
-            <h4>The Case Against Completion Rate as a KPI</h4>
-            <p class="sidebar-p-mb">Completion measures access, not learning. Drafting a piece on what L&D should measure instead — and what it would take to get organizational buy-in.</p>
+      <div class="research-grid reveal">
+        {% if featured_research %}
+        <div class="research-main">
+          <span class="status-badge {{ featured_research.status_class }} status-inline">
+            <span class="status-dot"></span>{{ featured_research.status }}
+          </span>
+          <h3>{{ featured_research.title }}</h3>
+          {{ featured_research.content }}
+          {% if featured_research.research_question %}
+          <div class="research-question">
+            {{ featured_research.research_question }}
           </div>
-          <div class="now-item">
-            <span class="status-badge status-thinking status-inline">
-              <span class="status-dot"></span>Thinking
-            </span>
-            <h4>Modular LXD for AI-Era Workforce Change</h4>
-            <p class="sidebar-p">When job functions are shifting faster than curriculum can keep up, what does "designed for change" look like at the course level?</p>
+          {% endif %}
+          {% if featured_research.tags.size > 0 %}
+          <div class="research-tags">
+            {% for tag in featured_research.tags %}
+            <span class="tag tag-blue">{{ tag }}</span>
+            {% endfor %}
           </div>
+          {% endif %}
         </div>
+        {% endif %}
+
+        {% if sidebar_research.size > 0 %}
+        <div class="lab-sidebar">
+          {% for item in sidebar_research %}
+          <div class="now-item">
+            <span class="status-badge {{ item.status_class }} status-inline">
+              <span class="status-dot"></span>{{ item.status }}
+            </span>
+            <h4>{{ item.title }}</h4>
+            <p class="{% if forloop.last %}sidebar-p{% else %}sidebar-p-mb{% endif %}">{{ item.content | strip_html | strip }}</p>
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
       </div>
     </div>
   </section>
@@ -172,7 +161,7 @@
           The through-line across both programs is learning how organizations change — and how to design learning
           that actually drives that change.
         </p>
-        <a href="https://louisville.edu/online/programs/bachelors/bachelor-of-science-in-organizational-leadership-and-learning" target="_blank" rel="noopener noreferrer" class="btn-ghost" style="width:fit-content">
+        <a href="https://louisville.edu/online/programs/bachelors/bachelor-of-science-in-organizational-leadership-and-learning" target="_blank" rel="noopener noreferrer" class="btn-primary" style="width:fit-content">
           View Program →
         </a>
       </div>
@@ -188,62 +177,19 @@
       <h2 id="projects-heading" class="heading section-h2-sm">Side Projects</h2>
 
       <div class="projects-grid reveal">
-
+        {% assign sorted_projects = site.tinkering | sort: "order" %}
+        {% for project in sorted_projects %}
         <div class="project-card">
-          <span class="status-badge status-active status-inline">
-            <span class="status-dot"></span>Active
+          <span class="status-badge {{ project.status_class }} status-inline">
+            <span class="status-dot"></span>{{ project.status }}
           </span>
-          <h3>AI Voiceover &amp; Avatar Production Toolkit</h3>
-          <p>
-            Building a repeatable production workflow for AI-enhanced video — prompt libraries,
-            quality benchmarks, disclosure templates, and post-production checklists. Designed
-            to be handed off to L&D teams who want to adopt AI media without a steep learning curve.
-          </p>
-          <p class="lab-project-note">Tools: Veed.io, ElevenLabs, HeyGen, After Effects</p>
+          <h3>{{ project.title }}</h3>
+          {{ project.content }}
+          {% if project.note %}
+          <p class="{{ project.note_class }}">{{ project.note }}</p>
+          {% endif %}
         </div>
-
-        <div class="project-card">
-          <span class="status-badge status-writing status-inline">
-            <span class="status-dot"></span>In Progress
-          </span>
-          <h3>Storyline Interaction Pattern Library</h3>
-          <p>
-            A personal library of reusable Articulate Storyline interactions — drag-and-drop
-            templates, branching architectures, gamification mechanics — that speed up development
-            without sacrificing visual quality. Eventually I'll make this public.
-          </p>
-          <p class="lab-project-link">Articulate Storyline 360 &nbsp;&middot;&nbsp; Custom JS</p>
-        </div>
-
-        <div class="project-card">
-          <span class="status-badge status-active status-inline">
-            <span class="status-dot"></span>Active
-          </span>
-          <h3>Late Night Space Flight</h3>
-          <p>
-            A late night talk show about astronomy and space science — broadcast live on Twitch
-            while exploring the galaxy in Elite Dangerous. Real science, real conversation,
-            virtual spaceship. Turns out explaining astrophysics to strangers in a cockpit
-            view of the Milky Way is surprisingly good instructional design practice.
-          </p>
-          <p class="lab-project-link">
-            Twitch Partner &rarr; <a href="https://twitch.tv/malforthewin" target="_blank" rel="noopener noreferrer" class="text-blue">twitch.tv/malforthewin</a>
-          </p>
-        </div>
-
-        <div class="project-card">
-          <span class="status-badge status-someday status-inline">
-            <span class="status-dot"></span>Someday
-          </span>
-          <h3>LXD Portfolio Review Service</h3>
-          <p>
-            Something I get asked about informally all the time — a structured review of
-            aspiring LXDs' portfolios with concrete, actionable feedback. Not sure yet
-            what the right format is. Maybe async video, maybe cohort-based. Still thinking.
-          </p>
-          <p class="lab-project-muted">Format TBD &nbsp;&middot;&nbsp; Concept stage</p>
-        </div>
-
+        {% endfor %}
       </div>
     </div>
   </section>

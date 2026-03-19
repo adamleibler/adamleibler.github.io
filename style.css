@@ -1048,6 +1048,17 @@ footer span         { font-size: 13px; font-weight: 300; }
 .sidebar-p-mb { font-size: 14px; margin-bottom: 10px; }
 
 
+/* ── Education / Academic Work ── */
+
+/* Gap between the h2 heading and the card (research-main used standalone,
+   outside .research-grid which normally provides margin-top: 40px) */
+#education .research-main { margin-top: 32px; }
+
+/* Gap between the last paragraph and the button
+   (.research-main p:last-of-type zeros out margin-bottom globally) */
+#education .research-main .btn-primary { margin-top: 24px; }
+
+
 /* ============================================================
    15. RESUME PAGE  (resume.html)
    ============================================================ */

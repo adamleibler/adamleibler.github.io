@@ -222,3 +222,174 @@ collections:
         name: "body"
         widget: "markdown"
         hint: "Card description paragraph."
+
+  # ── Right Now (Lab) ──────────────────────────────────────────────────────────
+  - name: "right_now"
+    label: "Right Now"
+    folder: "_right-now"
+    create: true
+    slug: "{{slug}}"
+    summary: "{{category}} — {{title}}"
+    sortable_fields: ["order", "title"]
+    fields:
+
+      - label: "Title"
+        name: "title"
+        widget: "string"
+        hint: "What you're reading, experimenting with, or studying."
+
+      - label: "Category"
+        name: "category"
+        widget: "select"
+        options:
+          - "Reading"
+          - "Experimenting"
+          - "Studying"
+        hint: "Shown as the card label."
+
+      - label: "Sort Order"
+        name: "order"
+        widget: "number"
+        default: 1
+        value_type: "int"
+        hint: "Controls display order. Lower numbers appear first."
+
+      - label: "Body"
+        name: "body"
+        widget: "markdown"
+        hint: "Brief description of what you're into and why."
+
+  # ── Research & Writing (Lab) ─────────────────────────────────────────────────
+  - name: "research"
+    label: "Research & Writing"
+    folder: "_research"
+    create: true
+    slug: "{{slug}}"
+    summary: "{{title}} — {{status}}"
+    sortable_fields: ["order", "title"]
+    fields:
+
+      - label: "Title"
+        name: "title"
+        widget: "string"
+        hint: "Research topic or article title."
+
+      - label: "Status"
+        name: "status"
+        widget: "select"
+        options:
+          - "Active Research"
+          - "Writing"
+          - "Thinking"
+        hint: "Current stage of this research item."
+
+      - label: "Status CSS Class"
+        name: "status_class"
+        widget: "select"
+        options:
+          - label: "Active (green)"
+            value: "status-active"
+          - label: "Writing (amber)"
+            value: "status-writing"
+          - label: "Thinking (purple)"
+            value: "status-thinking"
+        hint: "Visual style for the status badge."
+
+      - label: "Featured"
+        name: "featured"
+        widget: "boolean"
+        default: false
+        hint: "Show as the main (large) research card. Only one should be featured."
+
+      - label: "Sort Order"
+        name: "order"
+        widget: "number"
+        default: 99
+        value_type: "int"
+        hint: "Controls display order. Lower numbers appear first."
+
+      - label: "Research Question"
+        name: "research_question"
+        widget: "text"
+        required: false
+        hint: "Optional — shown as a highlighted callout on featured items."
+
+      - label: "Tags"
+        name: "tags"
+        widget: "list"
+        required: false
+        allow_add: true
+        hint: "Topic tags shown at the bottom of featured items."
+
+      - label: "Body"
+        name: "body"
+        widget: "markdown"
+        hint: "Description of your research or writing."
+
+  # ── Tinkering / Side Projects (Lab) ──────────────────────────────────────────
+  - name: "tinkering"
+    label: "Side Projects"
+    folder: "_tinkering"
+    create: true
+    slug: "{{slug}}"
+    summary: "{{title}} — {{status}}"
+    sortable_fields: ["order", "title"]
+    fields:
+
+      - label: "Title"
+        name: "title"
+        widget: "string"
+        hint: "Project name."
+
+      - label: "Status"
+        name: "status"
+        widget: "select"
+        options:
+          - "Active"
+          - "In Progress"
+          - "Someday"
+        hint: "Current stage of this project."
+
+      - label: "Status CSS Class"
+        name: "status_class"
+        widget: "select"
+        options:
+          - label: "Active (green)"
+            value: "status-active"
+          - label: "In Progress (amber)"
+            value: "status-writing"
+          - label: "Someday (gray)"
+            value: "status-someday"
+        hint: "Visual style for the status badge."
+
+      - label: "Sort Order"
+        name: "order"
+        widget: "number"
+        default: 99
+        value_type: "int"
+        hint: "Controls display order. Lower numbers appear first."
+
+      - label: "Note"
+        name: "note"
+        widget: "string"
+        required: false
+        hint: "Footer text — tools used, links, etc. Supports HTML."
+
+      - label: "Note CSS Class"
+        name: "note_class"
+        widget: "select"
+        required: false
+        options:
+          - label: "Tools (dark)"
+            value: "lab-project-note"
+          - label: "Link (blue)"
+            value: "lab-project-link"
+          - label: "Muted (gray)"
+            value: "lab-project-muted"
+        default: "lab-project-note"
+        hint: "Visual style for the footer note."
+
+      - label: "Body"
+        name: "body"
+        widget: "markdown"
+        hint: "Project description."

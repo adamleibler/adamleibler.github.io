@@ -37,6 +37,12 @@ collections:
     permalink: /work/:name/
   samples:
     output: false
+  right-now:
+    output: false
+  research:
+    output: false
+  tinkering:
+    output: false
 
 # ─── Default front matter ─────────────────────
 defaults:
