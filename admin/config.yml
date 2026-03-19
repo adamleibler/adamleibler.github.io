@@ -1,0 +1,162 @@
+# ─────────────────────────────────────────────
+#  Decap CMS Configuration — adamleibler.com
+#  Docs: https://decapcms.org/docs/
+# ─────────────────────────────────────────────
+
+backend:
+  name: github
+  repo: adamleibler/adamleibler.github.io   # your GitHub repo
+  branch: main
+  base_url: https://vocal-madeleine-a6220c.netlify.app
+  auth_endpoint: /.netlify/functions/github-oauth-token
+
+# Where uploaded images get saved in your repo
+media_folder: "assets/uploads"
+public_folder: "/assets/uploads"
+
+# ─── Collections ──────────────────────────────────────────────────────────────
+
+collections:
+
+  # ── Blog Posts ──────────────────────────────────────────────────────────────
+  - name: "posts"
+    label: "Blog Posts"
+    folder: "_posts"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    preview_path: "/blog/{{year}}/{{month}}/{{day}}/{{slug}}/"
+    summary: "{{title}} — {{date | date('YYYY-MM-DD')}}"
+    sortable_fields: ["date", "title"]
+    fields:
+
+      - label: "Title"
+        name: "title"
+        widget: "string"
+        hint: "The post headline. Keep it under 70 characters for SEO."
+
+      - label: "Date"
+        name: "date"
+        widget: "datetime"
+        format: "YYYY-MM-DD"
+        date_format: "YYYY-MM-DD"
+        time_format: false
+        hint: "Publish date. Future dates won't appear on the live site until that date."
+
+      - label: "Excerpt"
+        name: "excerpt"
+        widget: "text"
+        hint: "1–2 sentence summary. Shown in listing cards and used as the meta description."
+
+      - label: "Tags"
+        name: "tags"
+        widget: "list"
+        allow_add: true
+        hint: "e.g. AI in Learning, Instructional Design, Compliance Training"
+
+      - label: "Featured Image"
+        name: "image"
+        widget: "image"
+        required: false
+        hint: "Optional hero image. Recommended size: 1200×630px."
+
+      - label: "Draft"
+        name: "draft"
+        widget: "boolean"
+        default: true
+        hint: "Toggle off to publish. While on, the post won't appear on the live site."
+
+      - label: "Body"
+        name: "body"
+        widget: "markdown"
+        hint: "Your full post content. Use the toolbar for formatting."
+
+  # ── Case Studies ────────────────────────────────────────────────────────────
+  - name: "case_studies"
+    label: "Case Studies"
+    folder: "_case-studies"
+    create: true
+    slug: "{{slug}}"
+    preview_path: "/work/{{slug}}/"
+    summary: "{{title}} — {{client}}"
+    sortable_fields: ["order", "title", "client"]
+    fields:
+
+      - label: "Title"
+        name: "title"
+        widget: "string"
+        hint: "Project name as it appears on the Work page card."
+
+      - label: "Client / Org"
+        name: "client"
+        widget: "string"
+        hint: "e.g. Twitch / Amazon, U.S. Dept. of Health & Human Services"
+
+      - label: "Sector"
+        name: "sector"
+        widget: "select"
+        options:
+          - "Federal Government"
+          - "Financial Services"
+          - "Technology"
+          - "SaaS / Platform"
+          - "Field Services"
+          - "Defense"
+          - "Fortune 500"
+          - "Media / Streaming"
+        hint: "Used for filtering on the Work page."
+
+      - label: "Modality"
+        name: "modality"
+        widget: "string"
+        hint: "e.g. Game-Based Simulation, AI-Enhanced Multimedia, Technical Onboarding"
+
+      - label: "Availability"
+        name: "availability"
+        widget: "select"
+        options:
+          - label: "Full Sample Available"
+            value: "Full Sample"
+          - label: "Samples on Request"
+            value: "On Request"
+          - label: "Proprietary"
+            value: "Proprietary"
+        default: "On Request"
+
+      - label: "Sample URL"
+        name: "sample_url"
+        widget: "string"
+        required: false
+        hint: "Only needed if Availability is 'Full Sample'. e.g. /portfolio-cybersecurity.html"
+
+      - label: "Featured"
+        name: "featured"
+        widget: "boolean"
+        default: false
+        hint: "Pin this case study to the top of the Work page."
+
+      - label: "Sort Order"
+        name: "order"
+        widget: "number"
+        default: 99
+        value_type: "int"
+        hint: "Controls display order. Lower numbers appear first. e.g. 1, 2, 3..."
+
+      - label: "Key Metrics"
+        name: "metrics"
+        widget: "list"
+        required: false
+        hint: "Up to 3 stat highlights shown as callout cards."
+        fields:
+          - label: "Value"
+            name: "value"
+            widget: "string"
+            hint: "e.g. <30 Days, 40%, 10k+"
+          - label: "Label"
+            name: "label"
+            widget: "string"
+            hint: "e.g. Time to first contribution, Production timeline reduction"
+
+      - label: "Body"
+        name: "body"
+        widget: "markdown"
+        hint: "Full case study — approach, challenges, outcomes. Proprietary details can be kept vague."
