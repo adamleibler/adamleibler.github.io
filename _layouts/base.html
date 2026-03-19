@@ -25,13 +25,11 @@
 </head>
 <body>
 
-  <!-- ── NAVIGATION ─────────────────────────────────────────────────────── -->
+  <!-- ── NAVIGATION ── -->
   <nav>
     <div class="nav-inner">
-
-      <a href="{{ '/' | relative_url }}" class="nav-logo">Adam Leibler</a>
-
-      <ul class="nav-links">
+      <a href="{{ '/' | relative_url }}" class="nav-logo" aria-label="Adam Leibler — home">Adam Leibler</a>
+      <ul class="nav-links" role="list">
         <li><a href="{{ '/' | relative_url }}#about">About</a></li>
         <li><a href="{{ '/work.html' | relative_url }}"
                {% if page.url contains '/work' %}aria-current="page"{% endif %}>Work</a></li>
@@ -42,30 +40,18 @@
         <li><a href="{{ '/resume.html' | relative_url }}"
                {% if page.url contains '/resume' %}aria-current="page"{% endif %}>Resume</a></li>
       </ul>
-
-      <a href="{{ '/' | relative_url }}#contact"
-         class="btn-slate" id="nav-contact-desktop">Contact Me</a>
-
-      <!-- Hamburger toggle (mobile) -->
-      <button class="nav-toggle" aria-label="Toggle navigation" onclick="
-        var m = document.querySelector('.nav-mobile-menu');
-        m.classList.toggle('open');
-      ">
-        <span></span>
-        <span></span>
-        <span></span>
+      <a href="{{ '/' | relative_url }}#contact" class="btn-slate" id="nav-contact-desktop">Contact Me</a>
+      <button class="nav-toggle" aria-label="Open navigation menu" aria-expanded="false" id="nav-toggle">
+        <span></span><span></span><span></span>
       </button>
-
     </div>
-
-    <!-- Mobile drawer -->
-    <div class="nav-mobile-menu">
-      <a href="{{ '/' | relative_url }}#about">About</a>
-      <a href="{{ '/work.html' | relative_url }}">Work</a>
-      <a href="{{ '/craft.html' | relative_url }}">Craft</a>
-      <a href="{{ '/lab.html' | relative_url }}">The Lab</a>
-      <a href="{{ '/resume.html' | relative_url }}">Resume</a>
-      <a href="{{ '/' | relative_url }}#contact" class="btn-slate">Contact Me</a>
+    <div class="nav-mobile-menu" id="nav-mobile-menu" role="navigation" aria-label="Mobile navigation">
+      <a href="{{ '/' | relative_url }}#about" class="mobile-link">About</a>
+      <a href="{{ '/work.html' | relative_url }}" class="mobile-link">Work</a>
+      <a href="{{ '/craft.html' | relative_url }}" class="mobile-link">Craft</a>
+      <a href="{{ '/lab.html' | relative_url }}" class="mobile-link">The Lab</a>
+      <a href="{{ '/resume.html' | relative_url }}" class="mobile-link">Resume</a>
+      <a href="{{ '/' | relative_url }}#contact" class="btn-slate mobile-link">Contact Me</a>
     </div>
   </nav>
 
@@ -74,23 +60,24 @@
     {{ content }}
   </main>
 
-  <!-- ── FOOTER ─────────────────────────────────────────────────────────── -->
-  <footer>
+  <!-- ── FOOTER ── -->
+  <footer role="contentinfo">
     <div class="footer-main">
-      <span>© {{ site.time | date: "%Y" }} Adam Leibler — Built with intention.</span>
-      <ul class="footer-links">
-        <li><a href="https://linkedin.com/in/{{ site.social.linkedin }}" target="_blank" rel="noopener">LinkedIn</a></li>
-        <li><a href="https://github.com/{{ site.social.github }}" target="_blank" rel="noopener">GitHub</a></li>
-        <li><a href="https://x.com/{{ site.social.twitter }}" target="_blank" rel="noopener">X</a></li>
-        <li><a href="https://twitch.tv/{{ site.social.twitch }}" target="_blank" rel="noopener">Twitch</a></li>
-      </ul>
+      <span class="text-muted">&copy; {{ site.time | date: "%Y" }} Adam Leibler &mdash; Built with intention.</span>
+      <nav class="footer-links" aria-label="Social links">
+        <a href="https://linkedin.com/in/{{ site.social.linkedin }}" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="https://github.com/{{ site.social.github }}" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="https://x.com/{{ site.social.twitter }}" target="_blank" rel="noopener noreferrer">X</a>
+        <a href="https://twitch.tv/{{ site.social.twitch }}" target="_blank" rel="noopener noreferrer">Twitch</a>
+      </nav>
     </div>
     <div class="footer-collab">
       <span>Made in collaboration with</span>
-      <a href="https://claude.ai" target="_blank" rel="noopener"><img src="{{ '/assets/claude-ai-icon.svg' | relative_url }}" alt="Claude AI logo" /></a>
-      <a href="https://claude.ai" target="_blank" rel="noopener">Claude AI</a>
+      <a href="https://claude.ai" target="_blank" rel="noopener noreferrer"><img src="{{ '/assets/claude-ai-icon.svg' | relative_url }}" alt="Claude AI logo" /></a>
+      <a href="https://claude.ai" target="_blank" rel="noopener noreferrer">Claude AI</a>
     </div>
   </footer>
 
+  <script src="{{ '/main.js' | relative_url }}"></script>
 </body>
 </html>

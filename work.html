@@ -13,24 +13,24 @@ permalink: /work.html
   <link rel="stylesheet" href="/style.css" />
   <!-- Open Graph / Social Preview -->
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://adamleibler.com/resume.html" />
-  <meta property="og:title" content="Resume — Adam Leibler" />
-  <meta property="og:description" content="The professional resume of Adam Leibler, Senior Learning Experience Designer with expertise in eLearning development and instructional design." />
-  <meta property="og:image" content="https://adamleibler.com/assets/portrait_adamLeibler.jpg" />
+  <meta property="og:url" content="https://adamleibler.com/work.html" />
+  <meta property="og:title" content="Work — Adam Leibler" />
+  <meta property="og:description" content="15 years of learning experience design — case studies, interactive samples, and portfolio work from Adam Leibler." />
+  <meta property="og:image" content="https://adamleibler.com/assets/portrait_adamLeibler.webp" />
   <!-- Twitter/X Card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:url" content="https://adamleibler.com/resume.html" />
-  <meta name="twitter:title" content="Resume — Adam Leibler" />
-  <meta name="twitter:description" content="The professional resume of Adam Leibler, Senior Learning Experience Designer with expertise in eLearning development and instructional design." />
-  <meta name="twitter:image" content="https://adamleibler.com/assets/portrait_adamLeibler.jpg" />
+  <meta name="twitter:url" content="https://adamleibler.com/work.html" />
+  <meta name="twitter:title" content="Work — Adam Leibler" />
+  <meta name="twitter:description" content="15 years of learning experience design — case studies, interactive samples, and portfolio work from Adam Leibler." />
+  <meta name="twitter:image" content="https://adamleibler.com/assets/portrait_adamLeibler.webp" />
 </head>
 <body>
 
-  <!-- NAVIGATION -->
+  <!-- ── NAVIGATION ── -->
   <nav>
     <div class="nav-inner">
-      <a href="/index.html" class="nav-logo">Adam Leibler</a>
-      <ul class="nav-links">
+      <a href="/index.html" class="nav-logo" aria-label="Adam Leibler — home">Adam Leibler</a>
+      <ul class="nav-links" role="list">
         <li><a href="/index.html#about">About</a></li>
         <li><a href="/work.html" aria-current="page">Work</a></li>
         <li><a href="/craft.html">Craft</a></li>
@@ -38,17 +38,17 @@ permalink: /work.html
         <li><a href="/resume.html">Resume</a></li>
       </ul>
       <a href="/index.html#contact" class="btn-slate" id="nav-contact-desktop">Contact Me</a>
-      <button class="nav-toggle" aria-label="Toggle navigation" onclick="var m=document.querySelector('.nav-mobile-menu');m.classList.toggle('open');">
+      <button class="nav-toggle" aria-label="Open navigation menu" aria-expanded="false" id="nav-toggle">
         <span></span><span></span><span></span>
       </button>
     </div>
-    <div class="nav-mobile-menu">
-      <a href="/index.html#about">About</a>
-      <a href="/work.html">Work</a>
-      <a href="/craft.html">Craft</a>
-      <a href="/lab.html">The Lab</a>
-      <a href="/resume.html">Resume</a>
-      <a href="/index.html#contact" class="btn-slate">Contact Me</a>
+    <div class="nav-mobile-menu" id="nav-mobile-menu" role="navigation" aria-label="Mobile navigation">
+      <a href="/index.html#about" class="mobile-link">About</a>
+      <a href="/work.html" class="mobile-link">Work</a>
+      <a href="/craft.html" class="mobile-link">Craft</a>
+      <a href="/lab.html" class="mobile-link">The Lab</a>
+      <a href="/resume.html" class="mobile-link">Resume</a>
+      <a href="/index.html#contact" class="btn-slate mobile-link">Contact Me</a>
     </div>
   </nav>
 
@@ -207,21 +207,21 @@ permalink: /work.html
     </div>
   </section>
 
-  <!-- FOOTER -->
-  <footer>
+  <!-- ── FOOTER ── -->
+  <footer role="contentinfo">
     <div class="footer-main">
-      <span>© 2026 Adam Leibler — Built with intention.</span>
-      <ul class="footer-links">
-        <li><a href="https://linkedin.com/in/adamleibler" target="_blank" rel="noopener">LinkedIn</a></li>
-        <li><a href="https://github.com/adamleibler" target="_blank" rel="noopener">GitHub</a></li>
-        <li><a href="https://x.com/adamleibler" target="_blank" rel="noopener">X</a></li>
-        <li><a href="https://twitch.tv/malforthewin" target="_blank" rel="noopener">Twitch</a></li>
-      </ul>
+      <span class="text-muted">&copy; 2026 Adam Leibler &mdash; Built with intention.</span>
+      <nav class="footer-links" aria-label="Social links">
+        <a href="https://linkedin.com/in/adamleibler" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="https://github.com/adamleibler" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="https://x.com/adamleibler" target="_blank" rel="noopener noreferrer">X</a>
+        <a href="https://twitch.tv/malforthewin" target="_blank" rel="noopener noreferrer">Twitch</a>
+      </nav>
     </div>
     <div class="footer-collab">
       <span>Made in collaboration with</span>
-      <a href="https://claude.ai" target="_blank" rel="noopener"><img src="/assets/claude-ai-icon.svg" alt="Claude AI logo" /></a>
-      <a href="https://claude.ai" target="_blank" rel="noopener">Claude AI</a>
+      <a href="https://claude.ai" target="_blank" rel="noopener noreferrer"><img src="/assets/claude-ai-icon.svg" alt="Claude AI logo" /></a>
+      <a href="https://claude.ai" target="_blank" rel="noopener noreferrer">Claude AI</a>
     </div>
   </footer>
 

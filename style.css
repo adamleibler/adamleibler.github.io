@@ -331,11 +331,6 @@ button:focus-visible {
 .reveal         { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
 .reveal.visible { opacity: 1; transform: translateY(0); }
 
-/* Proof bar marquee scroll */
-@keyframes marquee-scroll {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
-}
 
 
 /* ============================================================
@@ -399,11 +394,7 @@ button:focus-visible {
 .section-h2-sm { font-size: 22px; font-weight: 700; }
 .section-h3    { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
 
-.section-intro       { font-size: 15px; margin-top: 12px; max-width: 640px; }
-.section-intro-wide  { font-size: 15px; margin-top: 12px; max-width: 680px; }
-.section-intro-sm    { font-size: 14px; max-width: 560px; margin-bottom: 0; }
-.section-intro-lab   { font-size: 15px; margin-top: 12px; max-width: 560px; }
-.section-intro-600   { font-size: 15px; margin-top: 12px; max-width: 600px; }
+.section-intro { font-size: 15px; margin-top: 12px; max-width: 640px; }
 
 
 /* ── Work With Me / CTA Row ── */
@@ -499,11 +490,7 @@ footer span         { font-size: 13px; font-weight: 300; }
 .icon-bg-orange    { background: rgba(255,107,53,0.12); }
 .icon-bg-blue      { background: rgba(0,210,255,0.1); }
 .icon-bg-purple    { background: rgba(139,92,246,0.12); }
-.icon-bg-purple-sm { background: rgba(167,139,250,0.12); }
 .icon-bg-green     { background: rgba(74,222,128,0.1); }
-.icon-bg-slate     { background: rgba(74,85,104,0.3); }
-.icon-bg-success   { background: rgba(74,222,128,0.1); }
-.icon-bg-badge     { background: rgba(74,85,104,0.2); color: #94A3B8; }
 
 
 /* ── Tag Colours (used on framework/case study cards) ── */
@@ -538,75 +525,85 @@ footer span         { font-size: 13px; font-weight: 300; }
 #hero p    { font-size: 17px; max-width: 640px; margin-bottom: 40px; }
 .hero-ctas { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
 
+/* Two-column hero grid with portrait */
+.hero-grid {
+  display:               grid;
+  grid-template-columns: 1fr 360px;
+  gap:                   64px;
+  align-items:           center;
+  margin-top:            8px;
+}
+.hero-content { display: flex; flex-direction: column; }
+.hero-photo-wrap {
+  min-height:    460px;
+  border-radius: 10px;
+  overflow:      hidden;
+}
+.hero-photo {
+  width:           100%;
+  height:          100%;
+  min-height:      460px;
+  object-fit:      cover;
+  object-position: center 18%;
+  display:         block;
+  border-radius:   10px;
+}
+
 
 /* ── Proof Bar Marquee ── */
 
 #proof {
-  padding:       20px 0;
   border-top:    0.5px solid var(--border-lt);
   border-bottom: 0.5px solid var(--border-lt);
+  padding:       16px 0;
   overflow:      hidden;
 }
-.proof-label-row {
-  text-align:    center;
-  margin-bottom: 14px;
-}
 .proof-label {
-  font-size:      13px;
-  color:          var(--text);
+  font-size:      12px;
+  font-weight:    700;
   letter-spacing: 0.09em;
   text-transform: uppercase;
-  font-weight:    700;
+  color:          var(--text);
+  text-align:     center;
+  display:        block;
+  margin-bottom:  10px;
 }
 
-/* Scrolling track */
+/* Scrolling track — CSS mask fades edges */
 .proof-marquee-track {
-  overflow:  hidden;
-  position:  relative;
-  width:     100%;
-}
-
-/* Fade masks on left and right edges */
-.proof-marquee-track::before,
-.proof-marquee-track::after {
-  content:        '';
-  position:       absolute;
-  top:            0;
-  bottom:         0;
-  width:          80px;
-  z-index:        2;
-  pointer-events: none;
-}
-.proof-marquee-track::before {
-  left:       0;
-  background: linear-gradient(to right, #060D1A, transparent);
-}
-.proof-marquee-track::after {
-  right:      0;
-  background: linear-gradient(to left, #060D1A, transparent);
+  overflow: hidden;
+  width:    100%;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
+  mask-image:         linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
 }
 
 /* Pill strip — duplicated in HTML for seamless infinite loop */
 .proof-marquee {
-  display:   flex;
-  gap:       12px;
-  width:     max-content;
-  animation: marquee-scroll 60s linear infinite;
+  display:     flex;
+  align-items: center;
+  gap:         10px;
+  width:       max-content;
+  animation:   marquee 60s linear infinite;
 }
 .proof-marquee:hover { animation-play-state: paused; }
+
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
 
 /* Individual company pills */
 .proof-pill {
   display:        inline-block;
   font-size:      12px;
   font-weight:    700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
-  color:          #00D2FF;
+  color:          var(--blue);
   background:     rgba(0,210,255,0.08);
-  border:         0.5px solid rgba(0,210,255,0.3);
-  border-radius:  999px;
-  padding:        6px 16px;
+  border:         0.5px solid rgba(0,210,255,0.35);
+  border-radius:  20px;
+  padding:        5px 14px;
   white-space:    nowrap;
   flex-shrink:    0;
 }
@@ -654,9 +651,9 @@ footer span         { font-size: 13px; font-weight: 300; }
 
 .about-grid {
   display:               grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 220px;
   gap:                   64px;
-  align-items:           center;
+  align-items:           start;
 }
 .ripley-grid {
   display:               grid;
@@ -679,6 +676,32 @@ footer span         { font-size: 13px; font-weight: 300; }
 }
 .about-photo  { height: 380px; object-position: center 18%; }
 .ripley-photo { height: 480px; object-position: center 15%; }
+
+/* About — award image column */
+.about-award-wrap {
+  display:        flex;
+  flex-direction: column;
+  align-items:    center;
+  gap:            14px;
+  padding-top:    112px;
+}
+.about-award-img {
+  width:         200px;
+  max-width:     200px;
+  height:        auto;
+  border-radius: 0 !important;
+  display:       block;
+  opacity:       0.92;
+}
+.about-award-caption {
+  font-size:      12px;
+  font-weight:    700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color:          var(--text);
+  text-align:     center;
+  line-height:    1.7;
+}
 
 
 /* ============================================================
@@ -1211,25 +1234,12 @@ footer span         { font-size: 13px; font-weight: 300; }
 .text-blue        { color: var(--blue); }
 .text-white       { color: var(--white); }
 .text-muted       { color: var(--text); }
-.text-slate       { color: var(--slate); }
 
 /* Combos */
 .text-orange-bold { color: var(--orange); font-weight: 700; }
-.text-blue-accent { color: var(--blue);   font-weight: 400; }
-
-/* Metric colour modifiers (used on work.html metric strip) */
-.metric-green  { color: var(--green); }
-.metric-purple { color: var(--purple); }
-
-/* Spacing */
-.mb-16 { margin-bottom: 16px; }
 
 /* Text alignment helpers */
 .text-center-block { display: block; text-align: center; }
-.section-center    { text-align: center; max-width: 560px; }
-
-/* Misc */
-.ops-note { font-size: 14px; color: var(--text); }
 
 
 /* ============================================================
@@ -1253,7 +1263,9 @@ footer span         { font-size: 13px; font-weight: 300; }
   #hero               { padding: 48px 0 40px; }
   #pillars, #about, #ripley { padding: 48px 0; }
 
-  /* Hero text */
+  /* Hero grid + text */
+  .hero-grid { grid-template-columns: 1fr; gap: 32px; }
+  .hero-photo-wrap { min-height: 300px; }
   #hero h1  { font-size: 24px; }
   #hero p   { font-size: 15px; }
   .hero-ctas { flex-direction: column; align-items: stretch; }
@@ -1262,9 +1274,16 @@ footer span         { font-size: 13px; font-weight: 300; }
 
   /* Homepage grids */
   .pillars-grid { grid-template-columns: 1fr; }
-  .about-grid,
+  .about-grid   { grid-template-columns: 1fr; gap: 28px; }
   .ripley-grid  { grid-template-columns: 1fr; gap: 28px; }
   .ripley-photo { order: -1; }
+  .about-award-wrap {
+    flex-direction:  row;
+    padding-top:     0;
+    gap:             20px;
+    justify-content: center;
+  }
+  .about-award-img { width: 110px; max-width: 110px; }
 
   /* Work page */
   .case-studies-grid { grid-template-columns: 1fr; }
@@ -1299,141 +1318,3 @@ footer span         { font-size: 13px; font-weight: 300; }
   .metrics-strip     { grid-template-columns: 1fr 1fr; }
 }
 
-/* ============================================================
-   ADDITIONS: Hero grid, Proof bar marquee, About award
-   ============================================================ */
-
-
-/* ── HERO — two-column grid with portrait ── */
-
-.hero-grid {
-  display:               grid;
-  grid-template-columns: 1fr 360px;
-  gap:                   64px;
-  align-items:           center;
-  margin-top:            8px;
-}
-.hero-content { display: flex; flex-direction: column; }
-.hero-photo-wrap {
-  min-height: 460px;
-  border-radius: 10px;
-  overflow: hidden;
-}
-.hero-photo {
-  width:        100%;
-  height:       100%;
-  min-height:   460px;
-  object-fit:   cover;
-  object-position: center 18%;
-  display:      block;
-  border-radius: 10px;
-}
-
-
-/* ── PROOF BAR — marquee ── */
-
-#proof {
-  border-top:    0.5px solid var(--border-lt);
-  border-bottom: 0.5px solid var(--border-lt);
-  padding:       16px 0;
-  overflow:      hidden;
-}
-.proof-label {
-  font-size:      12px;
-  font-weight:    700;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  color:          var(--text);
-  text-align:     center;
-  display:        block;
-  margin-bottom:  10px;
-}
-.proof-marquee-track {
-  overflow: hidden;
-  width:    100%;
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
-  mask-image:         linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
-}
-.proof-marquee {
-  display:    flex;
-  align-items: center;
-  gap:         10px;
-  width:       max-content;
-  animation:   marquee 60s linear infinite;
-}
-.proof-marquee:hover { animation-play-state: paused; }
-
-@keyframes marquee {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
-.proof-pill {
-  display:        inline-block;
-  font-size:      12px;
-  font-weight:    700;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  color:          var(--blue);
-  background:     rgba(0,210,255,0.08);
-  border:         0.5px solid rgba(0,210,255,0.35);
-  border-radius:  20px;
-  padding:        5px 14px;
-  white-space:    nowrap;
-  flex-shrink:    0;
-}
-
-
-/* ── ABOUT — award image column ── */
-
-.about-grid {
-  grid-template-columns: 1fr 220px !important;
-  align-items:           start !important;
-}
-.about-award-wrap {
-  display:         flex;
-  flex-direction:  column;
-  align-items:     center;
-  gap:             14px;
-  padding-top:     112px;
-}
-.about-award-img {
-  width:         200px;
-  max-width:     200px;
-  height:        auto;
-  border-radius: 0 !important;
-  display:       block;
-  opacity:       0.92;
-}
-.about-award-caption {
-  font-size:      12px;
-  font-weight:    700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color:          var(--text);
-  text-align:     center;
-  line-height:    1.7;
-}
-
-
-/* ── RESPONSIVE — new additions ── */
-
-@media (max-width: 768px) {
-  .hero-grid {
-    grid-template-columns: 1fr;
-    gap: 32px;
-  }
-  .hero-photo-wrap { min-height: 300px; }
-
-  .about-grid {
-    grid-template-columns: 1fr !important;
-    gap: 28px !important;
-  }
-  .about-award-wrap {
-    flex-direction: row;
-    padding-top:    0;
-    gap:            20px;
-    justify-content: center;
-  }
-  .about-award-img { width: 110px; max-width: 110px; }
-}
