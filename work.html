@@ -86,52 +86,25 @@ permalink: /work.html
       interaction patterns, and visual production quality across different regulatory domains.</p>
 
       <div class="case-studies-grid">
-
+        {% assign sorted_samples = site.samples | sort: "order" %}
+        {% for sample in sorted_samples %}
         <div class="cs-card reveal">
-          <div><span class="cs-tag tag-blue">Financial Services · Compliance Training</span></div>
+          <div><span class="cs-tag tag-{{ sample.tag_color }}">{{ sample.tag }}</span></div>
           <div>
-            <p class="cs-client">Cybersecurity & Data Privacy</p>
-            <h3 class="cs-title">Cybersecurity & Data Privacy — Module 1</h3>
-            <p class="cs-desc">A threat-first compliance module for financial services professionals. Covers phishing recognition, ransomware, insider risk, and a five-point verification framework — closing with a knowledge check scenario drawn from real breach patterns.</p>
+            <p class="cs-client">{{ sample.client }}</p>
+            <h3 class="cs-title">{{ sample.title }}</h3>
+            <p class="cs-desc">{{ sample.content | strip_html | strip }}</p>
           </div>
+          {% if sample.outcomes %}
           <ul class="cs-outcomes">
-            <li class="cs-outcome-item">Phishing, ransomware, and insider threat identification</li>
-            <li class="cs-outcome-item">Five-point email verification framework</li>
-            <li class="cs-outcome-item">Incident response protocol for first 15 minutes post-breach</li>
+            {% for outcome in sample.outcomes %}
+            <li class="cs-outcome-item">{{ outcome }}</li>
+            {% endfor %}
           </ul>
-          <a href="/portfolio-cybersecurity.html" class="btn-primary" style="width:fit-content">View Sample →</a>
+          {% endif %}
+          <a href="{{ sample.sample_url }}" class="btn-primary" style="width:fit-content">View Sample →</a>
         </div>
-
-        <div class="cs-card reveal">
-          <div><span class="cs-tag tag-purple">HR & Legal · Compliance Training</span></div>
-          <div>
-            <p class="cs-client">Workplace Harassment & Ethics</p>
-            <h3 class="cs-title">Workplace Harassment & Ethics — Module 1</h3>
-            <p class="cs-desc">A scenario-driven module covering Title VII protections, quid pro quo vs. hostile work environment distinctions, and the full reporting lifecycle. Designed for broad workforce deployment with emphasis on recognition and accountability.</p>
-          </div>
-          <ul class="cs-outcomes">
-            <li class="cs-outcome-item">Quid pro quo, hostile environment, and retaliation defined</li>
-            <li class="cs-outcome-item">Real-world scenario evaluation with decision branching</li>
-            <li class="cs-outcome-item">Reporting channel navigation and confidentiality protections</li>
-          </ul>
-          <a href="/portfolio-harassment-ethics.html" class="btn-primary" style="width:fit-content">View Sample →</a>
-        </div>
-
-        <div class="cs-card reveal">
-          <div><span class="cs-tag tag-orange">Financial Services · Compliance Training</span></div>
-          <div>
-            <p class="cs-client">AML Compliance</p>
-            <h3 class="cs-title">AML Compliance — Detecting Financial Red Flags</h3>
-            <p class="cs-desc">A Bank Secrecy Act-aligned module on the three-stage money laundering lifecycle. Learners apply a structured red-flag framework and walk through SAR filing obligations — built for financial professionals who carry direct regulatory exposure.</p>
-          </div>
-          <ul class="cs-outcomes">
-            <li class="cs-outcome-item">Placement, layering, and integration stage recognition</li>
-            <li class="cs-outcome-item">Behavioral and transactional red-flag detection framework</li>
-            <li class="cs-outcome-item">SAR documentation and filing within required timeframes</li>
-          </ul>
-          <a href="/portfolio-aml.html" class="btn-primary" style="width:fit-content">View Sample →</a>
-        </div>
-
+        {% endfor %}
       </div>
     </div>
   </section>

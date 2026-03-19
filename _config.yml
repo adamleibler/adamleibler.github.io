@@ -35,6 +35,8 @@ collections:
   case-studies:
     output: true
     permalink: /work/:name/
+  samples:
+    output: false
 
 # ─── Default front matter ─────────────────────
 defaults:
