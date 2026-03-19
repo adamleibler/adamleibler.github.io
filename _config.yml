@@ -32,21 +32,31 @@ kramdown:
 
 # ─── Collections ──────────────────────────────
 collections:
-  case_studies:
+  case-studies:
     output: true
     permalink: /work/:name/
 
-# Default front matter for each content type
+# ─── Default front matter ─────────────────────
 defaults:
+
+  # Keep all .html pages at their original URL paths
+  - scope:
+      path: "*.html"
+    values:
+      permalink: /:path
+
+  # Blog posts default to draft layout
   - scope:
       path: ""
       type: posts
     values:
       layout: post
-      draft: true          # posts default to draft until you explicitly publish
+      draft: true
+
+  # Case studies use the case-study layout
   - scope:
       path: ""
-      type: case_studies
+      type: case-studies
     values:
       layout: case-study
 
@@ -60,6 +70,6 @@ exclude:
 
 # ─── Plugins (all included in github-pages gem) ───
 plugins:
-  - jekyll-feed       # auto-generates /feed.xml RSS
-  - jekyll-seo-tag    # injects <meta> SEO tags via {% seo %}
-  - jekyll-sitemap    # auto-generates /sitemap.xml
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
