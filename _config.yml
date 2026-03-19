@@ -24,7 +24,7 @@ social:
 # ─── Build settings ───────────────────────────
 markdown: kramdown
 highlighter: rouge
-permalink: /blog/:year/:month/:day/:title/
+permalink: /:title/
 
 kramdown:
   input: GFM
@@ -53,14 +53,6 @@ defaults:
     values:
       permalink: /:path
 
-  # Blog posts default to draft layout
-  - scope:
-      path: ""
-      type: posts
-    values:
-      layout: post
-      draft: true
-
   # Case studies use the case-study layout
   - scope:
       path: ""
@@ -78,6 +70,5 @@ exclude:
 
 # ─── Plugins (all included in github-pages gem) ───
 plugins:
-  - jekyll-feed
   - jekyll-seo-tag
   - jekyll-sitemap

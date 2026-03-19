@@ -21,8 +21,7 @@
 
   <link rel="stylesheet" href="{{ '/style.css' | relative_url }}" />
 
-  <link rel="alternate" type="application/rss+xml"
-        title="{{ site.title }}" href="{{ '/feed.xml' | relative_url }}" />
+
 </head>
 <body>
 
@@ -42,10 +41,6 @@
                {% if page.url contains '/lab' %}aria-current="page"{% endif %}>The Lab</a></li>
         <li><a href="{{ '/resume.html' | relative_url }}"
                {% if page.url contains '/resume' %}aria-current="page"{% endif %}>Resume</a></li>
-        <!-- Uncomment once you have posts live:
-        <li><a href="{{ '/blog/' | relative_url }}"
-               {% if page.url contains '/blog' %}aria-current="page"{% endif %}>Blog</a></li>
-        -->
       </ul>
 
       <a href="{{ '/' | relative_url }}#contact"
@@ -70,7 +65,6 @@
       <a href="{{ '/craft.html' | relative_url }}">Craft</a>
       <a href="{{ '/lab.html' | relative_url }}">The Lab</a>
       <a href="{{ '/resume.html' | relative_url }}">Resume</a>
-      <!-- <a href="{{ '/blog/' | relative_url }}">Blog</a> -->
       <a href="{{ '/' | relative_url }}#contact" class="btn-slate">Contact Me</a>
     </div>
   </nav>
