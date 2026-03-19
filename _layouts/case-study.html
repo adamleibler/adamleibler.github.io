@@ -1,0 +1,98 @@
+---
+layout: base
+---
+
+<!--
+  _layouts/case-study.html
+  Single case study page.
+  Rendered at: /work/case-study-slug/
+
+  Front matter fields used here (set in Decap CMS or manually):
+    title         — Project name
+    client        — Client / org name
+    sector        — Industry tag
+    modality      — e.g. "Game-Based Simulation"
+    availability  — "Full Sample" | "On Request" | "Proprietary"
+    featured      — true/false
+    order         — integer sort order on work.html
+    metrics       — array of { value, label } objects (optional)
+    sample_url    — URL to live sample, if availability is "Full Sample" (optional)
+-->
+
+<article class="case-study-single">
+
+  <!-- ── CASE STUDY HEADER ──────────────────────────────────────────── -->
+  <header class="case-study-header">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+      <a href="{{ '/work.html' | relative_url }}">Work</a>
+      <span>›</span>
+      <span>{{ page.title }}</span>
+    </nav>
+
+    <!-- Sector + Modality tags -->
+    <div class="case-study-tags">
+      {%- if page.sector -%}
+        <span class="tag tag-sector">{{ page.sector }}</span>
+      {%- endif -%}
+      {%- if page.modality -%}
+        <span class="tag tag-modality">{{ page.modality }}</span>
+      {%- endif -%}
+    </div>
+
+    <h1 class="case-study-title">{{ page.title }}</h1>
+
+    {%- if page.client -%}
+    <p class="case-study-client">{{ page.client }}</p>
+    {%- endif -%}
+
+    <!-- Availability badge -->
+    {%- if page.availability -%}
+    <div class="case-study-availability availability-{{ page.availability | downcase | replace: ' ', '-' }}">
+      {%- if page.availability == "Full Sample" -%}
+        ✓ Full Sample Available
+      {%- elsif page.availability == "On Request" -%}
+        ⊹ Samples Available on Request
+      {%- else -%}
+        ⊘ Proprietary — Details on Request
+      {%- endif -%}
+    </div>
+    {%- endif -%}
+
+  </header>
+
+  <!-- ── KEY METRICS (optional stat highlights) ─────────────────────── -->
+  {%- if page.metrics -%}
+  <section class="case-study-metrics">
+    {%- for metric in page.metrics -%}
+    <div class="metric-card">
+      <span class="metric-value">{{ metric.value }}</span>
+      <span class="metric-label">{{ metric.label }}</span>
+    </div>
+    {%- endfor -%}
+  </section>
+  {%- endif -%}
+
+  <!-- ── CASE STUDY BODY ────────────────────────────────────────────── -->
+  <div class="case-study-body">
+    {{ content }}
+  </div>
+
+  <!-- ── SAMPLE CTA ─────────────────────────────────────────────────── -->
+  <div class="case-study-cta">
+    {%- if page.availability == "Full Sample" and page.sample_url -%}
+      <a href="{{ page.sample_url }}" class="btn btn-primary" target="_blank" rel="noopener">
+        View Sample →
+      </a>
+    {%- elsif page.availability == "On Request" or page.availability == "Proprietary" -%}
+      <a href="{{ '/' | relative_url }}#contact" class="btn btn-secondary">
+        Request Details →
+      </a>
+    {%- endif -%}
+    <a href="{{ '/work.html' | relative_url }}" class="post-back-link">
+      ← Back to all work
+    </a>
+  </div>
+
+</article>

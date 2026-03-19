@@ -1,0 +1,95 @@
+---
+layout: base
+---
+
+<!--
+  _layouts/post.html
+  Single blog post page.
+  Rendered at: /blog/YYYY/MM/DD/post-title/
+
+  Front matter fields used here (set in Decap CMS or manually):
+    title       — Post headline
+    date        — Publish date
+    excerpt     — Short summary (used in <meta> description)
+    tags        — Array of tag strings
+    image       — Optional hero image path
+    draft       — true/false (drafts excluded from build)
+-->
+
+<article class="post-single">
+
+  <!-- ── HERO IMAGE (optional) ──────────────────────────────────────── -->
+  {%- if page.image -%}
+  <div class="post-hero">
+    <img src="{{ page.image | relative_url }}"
+         alt="{{ page.title }}"
+         class="post-hero-image" />
+  </div>
+  {%- endif -%}
+
+  <!-- ── POST HEADER ────────────────────────────────────────────────── -->
+  <header class="post-header">
+
+    <!-- Tags -->
+    {%- if page.tags and page.tags.size > 0 -%}
+    <div class="post-tags">
+      {%- for tag in page.tags -%}
+        <span class="tag">{{ tag }}</span>
+      {%- endfor -%}
+    </div>
+    {%- endif -%}
+
+    <h1 class="post-title">{{ page.title }}</h1>
+
+    {%- if page.excerpt -%}
+    <p class="post-excerpt">{{ page.excerpt }}</p>
+    {%- endif -%}
+
+    <div class="post-meta">
+      <time datetime="{{ page.date | date_to_xmlschema }}">
+        {{ page.date | date: "%B %-d, %Y" }}
+      </time>
+      <span class="post-meta-sep">·</span>
+      <span class="reading-time">
+        {%- assign words = content | number_of_words -%}
+        {%- assign minutes = words | divided_by: 200 -%}
+        {%- if minutes < 1 -%}Under 1 min read
+        {%- else -%}{{ minutes }} min read
+        {%- endif -%}
+      </span>
+    </div>
+
+  </header>
+
+  <!-- ── POST BODY ──────────────────────────────────────────────────── -->
+  <div class="post-body">
+    {{ content }}
+  </div>
+
+  <!-- ── POST FOOTER / NAVIGATION ──────────────────────────────────── -->
+  <footer class="post-footer">
+
+    <!-- Back to blog listing -->
+    <a href="{{ '/blog/' | relative_url }}" class="post-back-link">
+      ← Back to all posts
+    </a>
+
+    <!-- Prev / Next post navigation -->
+    <nav class="post-nav">
+      {%- if page.previous.url -%}
+      <div class="post-nav-prev">
+        <span class="post-nav-label">Previous</span>
+        <a href="{{ page.previous.url | relative_url }}">{{ page.previous.title }}</a>
+      </div>
+      {%- endif -%}
+      {%- if page.next.url -%}
+      <div class="post-nav-next">
+        <span class="post-nav-label">Next</span>
+        <a href="{{ page.next.url | relative_url }}">{{ page.next.title }}</a>
+      </div>
+      {%- endif -%}
+    </nav>
+
+  </footer>
+
+</article>

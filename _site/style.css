@@ -1,0 +1,1387 @@
+/* ============================================================
+   Adam Leibler — adamleibler.github.io
+   style.css — shared stylesheet, all pages
+   ============================================================
+
+   TABLE OF CONTENTS
+   -----------------
+   1.  Design Tokens (CSS Custom Properties)
+   2.  Reset & Base
+   3.  Nebula Background
+   4.  Typography
+   5.  Layout Primitives
+   6.  Buttons
+   7.  Navigation
+   8.  Animations & Scroll Reveal
+   9.  Status Badges
+   10. Shared Section Components (shared across 2+ pages)
+       — Page Hero (inner pages)
+       — Section Headings & Intros
+       — Work With Me / Contact / CTA Row
+       — Footer
+       — Shared Card Patterns
+       — Icon Backgrounds
+       — Tag & Pill Colours
+   11. Homepage (index.html)
+       — Hero
+       — Proof Bar Marquee
+       — Pillars
+       — About & Ripley
+       — Contact Section
+   12. Work Page (work.html)
+       — Case Study Cards
+       — Metrics Strip
+       — Industries Grid
+   13. Craft Page (craft.html)
+       — Toolbox Grid & Tool Pills
+       — Pullquote
+       — Approach List
+       — Process Grid
+   14. Lab Page (lab.html)
+       — Research Grid
+       — Project Cards
+       — Now Grid
+       — Lab Sidebar
+   15. Resume Page (resume.html)
+       — Page Hero Override
+       — Resume Wrap & Sections
+       — Competencies
+       — Experience Entries
+       — Awards
+       — Education
+       — Tech Grid
+   16. Utility Classes
+   17. Responsive Breakpoints
+   ============================================================ */
+
+
+/* ============================================================
+   1. DESIGN TOKENS
+   ============================================================ */
+
+:root {
+  /* Colour palette */
+  --bg:        #060D1A;   /* Page background */
+  --surface:   #0B162C;   /* Cards, elevated surfaces */
+  --border:    #1E3050;   /* Standard borders */
+  --border-lt: #152035;   /* Subtle dividers */
+  --text:      #CBD5E0;   /* Body copy  (8.6:1 contrast on --bg) */
+  --white:     #F8FAFC;   /* Headings   (18.9:1 contrast on --bg) */
+  --orange:    #FF6B35;   /* Primary CTA, highlights */
+  --blue:      #00D2FF;   /* Accents, ghost buttons, links */
+  --slate:     #4A5568;   /* Contact Me button */
+  --purple:    #A78BFA;   /* Accent colour */
+  --green:     #4ADE80;   /* Success, active states */
+  --amber:     #FBBF24;   /* Warning, thinking state */
+
+  /* Typography */
+  --font-head: 'Orbitron', sans-serif;
+  --font-body: 'Lato', sans-serif;
+}
+
+/* All text/background combinations meet WCAG 2.1 AA contrast standards. */
+
+
+/* ============================================================
+   2. RESET & BASE
+   ============================================================ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background:               var(--bg);
+  color:                    var(--text);
+  font-family:              var(--font-body);
+  font-weight:              300;
+  line-height:              1.7;
+  -webkit-font-smoothing:   antialiased;
+}
+
+a   { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; border-radius: 10px; }
+
+
+/* ============================================================
+   3. NEBULA BACKGROUND
+   ============================================================ */
+
+/* Fixed atmospheric gradient — sits behind all page content */
+body::before {
+  content:        '';
+  position:       fixed;
+  inset:          0;
+  pointer-events: none;
+  z-index:        0;
+  background:
+    radial-gradient(ellipse 55% 45% at 22% 14%, rgba(64,224,255,0.28)  0%, rgba(0,153,204,0.12)  40%, transparent 70%),
+    radial-gradient(ellipse 45% 40% at  8% 34%, rgba(221,68,204,0.22)  0%, rgba(136,17,102,0.10) 40%, transparent 70%),
+    radial-gradient(ellipse 25% 20% at 15% 22%, rgba(255,255,255,0.06) 0%, transparent 100%);
+}
+
+/* All direct children of body sit above the nebula */
+body > * { position: relative; z-index: 1; }
+
+
+/* ============================================================
+   4. TYPOGRAPHY
+   ============================================================ */
+
+.heading {
+  font-family: var(--font-head);
+  color:       var(--white);
+}
+
+/* Eyebrow label — small all-caps text above section headings */
+.label {
+  font-size:      14px;
+  font-weight:    700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color:          var(--text);
+  margin-bottom:  16px;
+  display:        block;
+}
+
+/* Hero/page pill tag — appears above h1 on most pages */
+.pill {
+  display:        inline-block;
+  font-size:      14px;
+  font-weight:    700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color:          var(--blue);
+  border:         0.5px solid rgba(0,210,255,0.35);
+  border-radius:  20px;
+  padding:        4px 14px;
+  margin-bottom:  20px;
+  font-family:    var(--font-body);
+}
+
+/* Photo positioning helper */
+.photo-cover-top { object-fit: cover; object-position: center top; }
+
+
+/* ============================================================
+   5. LAYOUT PRIMITIVES
+   ============================================================ */
+
+.container { max-width: 1100px; margin: 0 auto; padding: 0 48px; }
+.divider   { border: none; border-top: 0.5px solid var(--border-lt); }
+section    { padding: 72px 0; }
+
+
+/* ============================================================
+   6. BUTTONS
+   ============================================================ */
+
+/* Primary — orange fill, used for main CTAs */
+.btn-primary {
+  display:        inline-block;
+  background:     var(--orange);
+  color:          var(--bg);
+  border:         none;
+  border-radius:  8px;
+  padding:        14px 28px;
+  font-size:      14px;
+  font-weight:    700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor:         pointer;
+  font-family:    var(--font-head);
+  transition:     opacity 0.2s;
+}
+.btn-primary:hover { opacity: 0.88; }
+
+/* Ghost — blue outline, used for secondary CTAs */
+.btn-ghost {
+  display:       inline-block;
+  background:    transparent;
+  color:         var(--blue);
+  border:        1px solid rgba(0,210,255,0.4);
+  border-radius: 8px;
+  padding:       13px 28px;
+  font-size:     14px;
+  font-weight:   400;
+  cursor:        pointer;
+  font-family:   var(--font-body);
+  transition:    background 0.2s;
+}
+.btn-ghost:hover { background: rgba(0,210,255,0.07); }
+
+/* Slate — muted grey, used for nav Contact Me */
+.btn-slate {
+  display:       inline-block;
+  background:    var(--slate);
+  color:         var(--white);
+  border:        none;
+  border-radius: 8px;
+  padding:       8px 18px;
+  font-size:     14px;
+  font-weight:   400;
+  cursor:        pointer;
+  font-family:   var(--font-body);
+  transition:    opacity 0.2s;
+}
+.btn-slate:hover { opacity: 0.85; }
+
+/* Nav contact button — overrides btn-slate with orange primary style */
+#nav-contact-desktop {
+  background:     var(--orange);
+  color:          var(--bg);
+  font-family:    var(--font-head);
+  font-weight:    700;
+  font-size:      12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+#nav-contact-desktop:hover { opacity: 0.88; }
+
+
+/* ============================================================
+   7. NAVIGATION
+   ============================================================ */
+
+nav {
+  position:        sticky;
+  top:             0;
+  z-index:         100;
+  background:      rgba(6,13,26,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom:   0.5px solid var(--border-lt);
+}
+
+.nav-inner {
+  display:         flex;
+  justify-content: space-between;
+  align-items:     center;
+  padding:         18px 48px;
+}
+
+.nav-logo {
+  font-family:    var(--font-head);
+  font-size:      14px;
+  font-weight:    800;
+  color:          var(--white);
+  letter-spacing: 0.08em;
+}
+
+.nav-links                      { display: flex; align-items: center; gap: 32px; list-style: none; }
+.nav-links a                    { font-size: 14px; color: var(--text); transition: color 0.2s; }
+.nav-links a:hover              { color: var(--white); }
+.nav-links a[aria-current="page"] { color: var(--orange); }
+
+/* Hamburger toggle — hidden on desktop */
+.nav-toggle {
+  display:    none;
+  flex-direction: column;
+  gap:        5px;
+  background: none;
+  border:     none;
+  cursor:     pointer;
+  padding:    4px;
+}
+.nav-toggle span {
+  display:       block;
+  width:         22px;
+  height:        2px;
+  background:    var(--text);
+  border-radius: 2px;
+  transition:    all 0.3s;
+}
+
+/* Mobile drawer */
+.nav-mobile-menu {
+  display:       none;
+  flex-direction: column;
+  background:    var(--surface);
+  border-top:    0.5px solid var(--border);
+  padding:       16px 24px 20px;
+}
+.nav-mobile-menu.open     { display: flex; }
+.nav-mobile-menu a        { font-size: 15px; color: var(--text); padding: 12px 0; border-bottom: 0.5px solid var(--border-lt); transition: color 0.2s; }
+.nav-mobile-menu a:hover  { color: var(--white); }
+.nav-mobile-menu .btn-slate { margin-top: 16px; text-align: center; }
+
+/* Focus states — WCAG 2.4.7 */
+a:focus-visible,
+button:focus-visible {
+  outline:        2px solid var(--blue);
+  outline-offset: 3px;
+  border-radius:  4px;
+}
+
+
+/* ============================================================
+   8. ANIMATIONS & SCROLL REVEAL
+   ============================================================ */
+
+/* Hero fade-up — used on homepage h1, p, cta block */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-up                  { animation: fadeUp 0.6s ease both; }
+.fade-up:nth-child(2)     { animation-delay: 0.1s; }
+.fade-up:nth-child(3)     { animation-delay: 0.2s; }
+.fade-up:nth-child(4)     { animation-delay: 0.3s; }
+
+/* Scroll reveal — applied to .reveal elements on inner pages via IntersectionObserver in main.js */
+.reveal         { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* Proof bar marquee scroll */
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+
+/* ============================================================
+   9. STATUS BADGES
+   ============================================================ */
+
+/* Used on lab.html — Active / Writing / Thinking / Someday */
+.status-badge {
+  display:        inline-flex;
+  align-items:    center;
+  gap:            6px;
+  font-size:      14px;
+  font-weight:    700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  border-radius:  4px;
+  padding:        3px 10px;
+}
+.status-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.status-inline { margin-bottom: 12px; display: inline-flex; }
+
+.status-active            { background: rgba(74,222,128,0.12); color: var(--green); }
+.status-active .status-dot { background: var(--green); }
+
+.status-writing             { background: rgba(0,210,255,0.1); color: var(--blue); }
+.status-writing .status-dot { background: var(--blue); }
+
+.status-thinking              { background: rgba(251,191,36,0.1); color: var(--amber); }
+.status-thinking .status-dot  { background: var(--amber); }
+
+.status-someday             { background: rgba(74,85,104,0.2); color: #94A3B8; }
+.status-someday .status-dot { background: #94A3B8; }
+
+
+/* ============================================================
+   10. SHARED SECTION COMPONENTS
+   ============================================================ */
+
+/* ── Page Hero (inner pages) ── */
+
+#page-hero {
+  padding:       56px 0 40px;
+  border-bottom: 0.5px solid var(--border-lt);
+}
+#page-hero h1 {
+  font-size:      clamp(22px, 3.5vw, 38px);
+  font-weight:    800;
+  line-height:    1.12;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  margin-bottom:  20px;
+  max-width:      700px;
+}
+#page-hero p { font-size: 16px; max-width: 620px; }
+
+
+/* ── Section Headings & Intros ── */
+
+.section-h2    { font-size: 24px; font-weight: 700; }
+.section-h2-lg { font-size: 26px; font-weight: 700; margin-bottom: 16px; }
+.section-h2-sm { font-size: 22px; font-weight: 700; }
+.section-h3    { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+
+.section-intro       { font-size: 15px; margin-top: 12px; max-width: 640px; }
+.section-intro-wide  { font-size: 15px; margin-top: 12px; max-width: 680px; }
+.section-intro-sm    { font-size: 14px; max-width: 560px; margin-bottom: 0; }
+.section-intro-lab   { font-size: 15px; margin-top: 12px; max-width: 560px; }
+.section-intro-600   { font-size: 15px; margin-top: 12px; max-width: 600px; }
+
+
+/* ── Work With Me / CTA Row ── */
+
+/* Standalone CTA section with standard padding */
+.wwm-section { padding: 72px 0; }
+
+#work-with-me,
+#contact {
+  text-align: center;
+  border-top: 0.5px solid var(--border-lt);
+}
+#work-with-me h2,
+#contact h2 { font-size: 26px; font-weight: 700; margin-bottom: 16px; }
+#work-with-me p,
+#contact p  { font-size: 15px; max-width: 520px; margin: 0 auto 32px; }
+
+.cta-row {
+  display:         flex;
+  justify-content: center;
+  align-items:     center;
+  gap:             14px;
+  flex-wrap:       wrap;
+}
+
+
+/* ── Contact Section ── */
+
+.contact-section        { padding: 72px 0; }
+.contact-note           { margin-bottom: 32px; font-size: 15px; }
+.contact-email-display  { margin-top: 16px; font-size: 14px; color: var(--text); letter-spacing: 0.5px; }
+
+
+/* ── Footer ── */
+
+footer {
+  border-top:      0.5px solid var(--border-lt);
+  padding:         24px 48px;
+  display:         flex;
+  justify-content: space-between;
+  align-items:     center;
+  flex-wrap:       wrap;
+  gap:             12px;
+}
+footer span         { font-size: 13px; font-weight: 300; }
+.footer-links       { display: flex; gap: 24px; }
+.footer-links a     { font-size: 13px; color: var(--text); transition: color 0.2s; }
+.footer-links a:hover { color: var(--white); }
+
+
+/* ── Shared Icon Backgrounds ── */
+
+.icon-bg-orange    { background: rgba(255,107,53,0.12); }
+.icon-bg-blue      { background: rgba(0,210,255,0.1); }
+.icon-bg-purple    { background: rgba(139,92,246,0.12); }
+.icon-bg-purple-sm { background: rgba(167,139,250,0.12); }
+.icon-bg-green     { background: rgba(74,222,128,0.1); }
+.icon-bg-slate     { background: rgba(74,85,104,0.3); }
+.icon-bg-success   { background: rgba(74,222,128,0.1); }
+.icon-bg-badge     { background: rgba(74,85,104,0.2); color: #94A3B8; }
+
+
+/* ── Tag Colours (used on framework/case study cards) ── */
+
+.tag-blue   { color: var(--blue);   background: rgba(0,210,255,0.1); }
+.tag-orange { color: var(--orange); background: rgba(255,107,53,0.1); }
+.tag-purple { color: var(--purple); background: rgba(167,139,250,0.1); }
+.tag-green  { color: var(--green);  background: rgba(74,222,128,0.1); }
+
+
+/* ── UofL Logo (lab page sidebar) ── */
+
+.uofl-logo { width: 100%; border-radius: 6px; display: block; margin-bottom: 12px; }
+
+
+/* ============================================================
+   11. HOMEPAGE  (index.html)
+   ============================================================ */
+
+/* ── Hero ── */
+
+#hero     { padding: 88px 0 72px; }
+#hero h1  {
+  font-size:      clamp(26px, 4vw, 42px);
+  font-weight:    800;
+  line-height:    1.12;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  margin-bottom:  24px;
+  max-width:      800px;
+}
+#hero p    { font-size: 17px; max-width: 640px; margin-bottom: 40px; }
+.hero-ctas { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+
+
+/* ── Proof Bar Marquee ── */
+
+#proof {
+  padding:       20px 0;
+  border-top:    0.5px solid var(--border-lt);
+  border-bottom: 0.5px solid var(--border-lt);
+  overflow:      hidden;
+}
+.proof-label-row {
+  text-align:    center;
+  margin-bottom: 14px;
+}
+.proof-label {
+  font-size:      13px;
+  color:          var(--text);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  font-weight:    700;
+}
+
+/* Scrolling track */
+.proof-marquee-track {
+  overflow:  hidden;
+  position:  relative;
+  width:     100%;
+}
+
+/* Fade masks on left and right edges */
+.proof-marquee-track::before,
+.proof-marquee-track::after {
+  content:        '';
+  position:       absolute;
+  top:            0;
+  bottom:         0;
+  width:          80px;
+  z-index:        2;
+  pointer-events: none;
+}
+.proof-marquee-track::before {
+  left:       0;
+  background: linear-gradient(to right, #060D1A, transparent);
+}
+.proof-marquee-track::after {
+  right:      0;
+  background: linear-gradient(to left, #060D1A, transparent);
+}
+
+/* Pill strip — duplicated in HTML for seamless infinite loop */
+.proof-marquee {
+  display:   flex;
+  gap:       12px;
+  width:     max-content;
+  animation: marquee-scroll 60s linear infinite;
+}
+.proof-marquee:hover { animation-play-state: paused; }
+
+/* Individual company pills */
+.proof-pill {
+  display:        inline-block;
+  font-size:      12px;
+  font-weight:    700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color:          #00D2FF;
+  background:     rgba(0,210,255,0.08);
+  border:         0.5px solid rgba(0,210,255,0.3);
+  border-radius:  999px;
+  padding:        6px 16px;
+  white-space:    nowrap;
+  flex-shrink:    0;
+}
+
+
+/* ── Pillars (homepage) ── */
+
+#pillars { padding: 72px 0; }
+.pillars-grid {
+  display:               grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:                   16px;
+  margin-top:            40px;
+}
+.pillar-card {
+  background:    var(--surface);
+  border:        0.5px solid var(--border);
+  border-radius: 10px;
+  padding:       28px 24px;
+}
+.pillar-icon {
+  width:          36px;
+  height:         36px;
+  border-radius:  8px;
+  display:        flex;
+  align-items:    center;
+  justify-content: center;
+  margin-bottom:  16px;
+}
+.pillar-card h3 {
+  font-family:    var(--font-head);
+  font-size:      14px;
+  font-weight:    700;
+  color:          var(--white);
+  letter-spacing: 0.04em;
+  margin-bottom:  10px;
+}
+.pillar-card p { font-size: 14px; line-height: 1.7; }
+
+
+/* ── About & Ripley (homepage) ── */
+
+#about  { padding: 72px 0; }
+#ripley { padding: 72px 0; }
+
+.about-grid {
+  display:               grid;
+  grid-template-columns: 1fr 1fr;
+  gap:                   64px;
+  align-items:           center;
+}
+.ripley-grid {
+  display:               grid;
+  grid-template-columns: 1fr 1fr;
+  gap:                   64px;
+  align-items:           center;
+}
+
+#about h2  { font-size: 22px; font-weight: 700; line-height: 1.3; margin-bottom: 20px; }
+#about p   { margin-bottom: 20px; font-size: 15px; }
+#ripley h2 { font-size: 22px; font-weight: 700; margin-bottom: 16px; }
+#ripley p  { font-size: 15px; margin-bottom: 16px; }
+
+.about-photo,
+.ripley-photo {
+  border-radius: 10px;
+  display:       block;
+  width:         100%;
+  object-fit:    cover;
+}
+.about-photo  { height: 380px; object-position: center 18%; }
+.ripley-photo { height: 380px; object-position: center 20%; }
+
+
+/* ============================================================
+   12. WORK PAGE  (work.html)
+   ============================================================ */
+
+/* ── Case Study Cards ── */
+
+.case-studies-grid {
+  display:               grid;
+  grid-template-columns: 1fr 1fr;
+  gap:                   24px;
+  margin-top:            40px;
+}
+.cs-card {
+  background:     var(--surface);
+  border:         0.5px solid var(--border);
+  border-radius:  10px;
+  padding:        32px 28px;
+  display:        flex;
+  flex-direction: column;
+  gap:            16px;
+  transition:     border-color 0.2s;
+}
+.cs-card:hover { border-color: rgba(0,210,255,0.3); }
+
+.cs-tag {
+  display:        inline-block;
+  font-size:      11px;
+  font-weight:    700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius:  4px;
+  padding:        3px 10px;
+  width:          fit-content;
+}
+.cs-client {
+  font-size:      12px;
+  font-weight:    700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color:          var(--text);
+  margin-bottom:  4px;
+}
+.cs-title {
+  font-family:    var(--font-head);
+  font-size:      15px;
+  font-weight:    700;
+  color:          var(--white);
+  letter-spacing: 0.03em;
+  line-height:    1.3;
+  margin-bottom:  4px;
+}
+.cs-desc { font-size: 14px; line-height: 1.75; flex-grow: 1; }
+
+.cs-outcomes {
+  display:        flex;
+  flex-direction: column;
+  gap:            8px;
+  border-top:     0.5px solid var(--border-lt);
+  padding-top:    16px;
+}
+.cs-outcome-item {
+  display:     flex;
+  align-items: flex-start;
+  gap:         10px;
+  font-size:   13px;
+  line-height: 1.5;
+}
+.cs-outcome-item::before {
+  content:       '';
+  display:       block;
+  width:         5px;
+  height:        5px;
+  border-radius: 50%;
+  background:    var(--blue);
+  flex-shrink:   0;
+  margin-top:    6px;
+}
+.cs-outcome-item strong { color: var(--white); }
+
+/* "Samples available on request" badge */
+.cs-placeholder {
+  display:        inline-flex;
+  align-items:    center;
+  gap:            6px;
+  font-size:      12px;
+  font-weight:    700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  background:     rgba(74,85,104,0.2);
+  color:          #94A3B8;
+  border-radius:  4px;
+  padding:        3px 10px;
+  margin-top:     4px;
+  width:          fit-content;
+}
+.cs-placeholder-dot { width: 6px; height: 6px; border-radius: 50%; background: #94A3B8; }
+
+
+/* ── Metrics Strip ── */
+
+.metrics-strip {
+  display:               grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap:                   12px;
+  margin-top:            40px;
+}
+.metric-strip-card {
+  background:    var(--surface);
+  border:        0.5px solid var(--border);
+  border-radius: 10px;
+  padding:       24px 20px;
+  text-align:    center;
+}
+.metric-strip-number {
+  font-family:   var(--font-head);
+  font-size:     28px;
+  font-weight:   800;
+  display:       block;
+  margin-bottom: 6px;
+  color:         var(--orange);  /* default; overridden by colour modifiers below */
+}
+.metric-strip-number.color-purple { color: var(--purple); }
+.metric-strip-number.color-green  { color: var(--green); }
+.metric-strip-label { font-size: 13px; line-height: 1.5; }
+
+
+/* ── Industries Grid ── */
+
+.industries-grid {
+  display:               grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap:                   12px;
+  margin-top:            32px;
+}
+.industry-card {
+  background:    var(--surface);
+  border:        0.5px solid var(--border);
+  border-radius: 8px;
+  padding:       20px;
+  text-align:    center;
+}
+.industry-card h4 {
+  font-family:    var(--font-head);
+  font-size:      11px;
+  font-weight:    700;
+  color:          var(--white);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom:  8px;
+}
+.industry-card p { font-size: 13px; line-height: 1.6; }
+
+
+/* ============================================================
+   13. CRAFT PAGE  (craft.html)
+   ============================================================ */
+
+/* ── Toolbox Grid & Tool Pills ── */
+
+.toolbox-grid {
+  display:               grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap:                   20px;
+  margin-top:            40px;
+}
+.tool-card {
+  background:    var(--surface);
+  border:        0.5px solid var(--border);
+  border-radius: 10px;
+  padding:       28px 24px;
+  transition:    border-color 0.2s;
+}
+.tool-card:hover { border-color: rgba(0,210,255,0.3); }
+
+.tool-card-label {
+  font-size:      11px;
+  font-weight:    700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color:          var(--text);
+  margin-bottom:  12px;
+}
+.tool-card h3 {
+  font-family:    var(--font-head);
+  font-size:      14px;
+  font-weight:    700;
+  color:          var(--white);
+  letter-spacing: 0.04em;
+  margin-bottom:  12px;
+}
+.tool-list { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* Tool pill — blue by default, coloured variants below */
+.tool-pill {
+  font-size:      12px;
+  font-weight:    700;
+  letter-spacing: 0.05em;
+  background:     rgba(0,210,255,0.08);
+  color:          var(--blue);
+  border:         0.5px solid rgba(0,210,255,0.25);
+  border-radius:  4px;
+  padding:        4px 10px;
+}
+.tool-pill.orange { background: rgba(255,107,53,0.08);   color: var(--orange); border-color: rgba(255,107,53,0.25); }
+.tool-pill.purple { background: rgba(167,139,250,0.08);  color: var(--purple); border-color: rgba(167,139,250,0.25); }
+.tool-pill.green  { background: rgba(74,222,128,0.08);   color: var(--green);  border-color: rgba(74,222,128,0.25); }
+
+
+/* ── Pullquote ── */
+
+.pullquote {
+  border-left:   2px solid var(--orange);
+  border-radius: 0 10px 10px 0;
+  padding:       20px 28px;
+  margin:        40px 0;
+  background:    var(--surface);
+}
+.pullquote p {
+  font-size:   18px;
+  font-weight: 300;
+  color:       var(--white);
+  line-height: 1.65;
+  font-style:  italic;
+}
+.pullquote cite {
+  display:        block;
+  margin-top:     12px;
+  font-size:      13px;
+  font-weight:    700;
+  color:          var(--text);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-style:     normal;
+}
+
+
+/* ── Approach List ── */
+
+.approach-list {
+  display:        flex;
+  flex-direction: column;
+  gap:            24px;
+  margin-top:     32px;
+}
+.approach-item {
+  display:               grid;
+  grid-template-columns: 48px 1fr;
+  gap:                   20px;
+  align-items:           flex-start;
+}
+.approach-icon {
+  width:           48px;
+  height:          48px;
+  border-radius:   10px;
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  flex-shrink:     0;
+}
+.approach-item h4 {
+  font-family:    var(--font-head);
+  font-size:      13px;
+  font-weight:    700;
+  color:          var(--white);
+  letter-spacing: 0.04em;
+  margin-bottom:  8px;
+}
+.approach-item p { font-size: 14px; line-height: 1.75; }
+
+
+/* ── Process Grid ── */
+
+.process-grid {
+  display:               grid;
+  grid-template-columns: 1fr 1fr;
+  gap:                   24px;
+  margin-top:            40px;
+}
+.process-card {
+  background:    var(--surface);
+  border:        0.5px solid var(--border);
+  border-radius: 10px;
+  padding:       32px 28px;
+}
+.process-card-num {
+  font-family:   var(--font-head);
+  font-size:     32px;
+  font-weight:   900;
+  color:         var(--border);
+  margin-bottom: 16px;
+  display:       block;
+}
+.process-card h3 {
+  font-family:    var(--font-head);
+  font-size:      14px;
+  font-weight:    700;
+  color:          var(--white);
+  letter-spacing: 0.04em;
+  margin-bottom:  12px;
+}
+.process-card p { font-size: 14px; line-height: 1.75; }
+
+
+/* ============================================================
+   14. LAB PAGE  (lab.html)
+   ============================================================ */
+
+/* ── Research Grid ── */
+
+.research-grid {
+  display:               grid;
+  grid-template-columns: 2fr 1fr;
+  gap:                   32px;
+  margin-top:            40px;
+  align-items:           start;
+}
+.research-main {
+  background:    var(--surface);
+  border:        0.5px solid var(--border);
+  border-radius: 10px;
+  padding:       36px;
+}
+.research-main h3 {
+  font-family:    var(--font-head);
+  font-size:      16px;
+  font-weight:    700;
+  color:          var(--white);
+  letter-spacing: 0.03em;
+  margin:         16px 0 14px;
+}
+.research-main p          { font-size: 15px; margin-bottom: 16px; }
+.research-main p:last-of-type { margin-bottom: 0; }
+
+.research-question {
+  border-left: 2px solid var(--blue);
+  padding-left: 20px;
+  margin:      24px 0;
+  font-size:   15px;
+  font-style:  italic;
+  color:       var(--white);
+  line-height: 1.7;
+}
+.research-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+
+/* Sidebar column */
+.lab-sidebar { display: flex; flex-direction: column; gap: 16px; }
+
+
+/* ── Project Cards ── */
+
+.projects-grid {
+  display:               grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:                   20px;
+  margin-top:            32px;
+}
+.project-card {
+  background:    var(--surface);
+  border:        0.5px solid var(--border);
+  border-radius: 10px;
+  padding:       28px 24px;
+}
+.project-card h3 {
+  font-family:    var(--font-head);
+  font-size:      14px;
+  font-weight:    700;
+  color:          var(--white);
+  letter-spacing: 0.03em;
+  margin-bottom:  8px;
+}
+.project-card p     { font-size: 14px; line-height: 1.75; }
+.lab-project-note   { margin-top: 12px; font-size: 14px; }
+.lab-project-link   { margin-top: 12px; font-size: 14px; color: var(--blue); }
+.lab-project-muted  { margin-top: 12px; font-size: 14px; color: var(--text); }
+.lab-section-intro  { margin-top: 14px; font-size: 14px; color: var(--text); }
+
+
+/* ── Now Grid ── */
+
+.now-grid {
+  display:               grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:                   16px;
+  margin-top:            32px;
+}
+.now-item {
+  background:    var(--bg);
+  border:        0.5px solid var(--border);
+  border-radius: 10px;
+  padding:       22px;
+}
+.now-category {
+  font-size:      14px;
+  font-weight:    700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color:          var(--text);
+  margin-bottom:  10px;
+}
+.now-item h4 { font-size: 14px; font-weight: 700; color: var(--white); margin-bottom: 6px; line-height: 1.4; }
+.now-item p  { font-size: 14px; line-height: 1.65; }
+
+/* Sidebar text helpers */
+.sidebar-p    { font-size: 14px; }
+.sidebar-p-mb { font-size: 14px; margin-bottom: 10px; }
+
+
+/* ============================================================
+   15. RESUME PAGE  (resume.html)
+   ============================================================ */
+
+/* ── Resume Layout ── */
+
+#resume      { padding: 64px 0 80px; }
+.resume-wrap { max-width: 860px; margin: 0 auto; }
+.resume-actions        { display: flex; align-items: center; gap: 14px; margin-top: 28px; flex-wrap: wrap; }
+.resume-location-text  { font-size: 15px; color: var(--text); max-width: 560px; margin-top: 12px; }
+
+
+/* ── Resume Sections ── */
+
+.r-section { margin-bottom: 48px; }
+
+.r-section-title {
+  font-family:    var(--font-head);
+  font-size:      11px;
+  font-weight:    700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color:          var(--orange);
+  border-bottom:  0.5px solid var(--border);
+  padding-bottom: 10px;
+  margin-bottom:  24px;
+}
+
+.r-summary { font-size: 15px; font-weight: 300; color: var(--text); line-height: 1.85; }
+
+
+/* ── Awards ── */
+
+.r-award {
+  display:       flex;
+  align-items:   flex-start;
+  gap:           16px;
+  background:    rgba(255,107,53,0.06);
+  border:        0.5px solid rgba(255,107,53,0.25);
+  border-radius: 8px;
+  padding:       18px 20px;
+  margin-bottom: 12px;
+}
+.r-award-icon {
+  width:           32px;
+  height:          32px;
+  background:      rgba(255,107,53,0.12);
+  border-radius:   6px;
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  flex-shrink:     0;
+}
+.r-award-text h4 { font-size: 14px; font-weight: 700; color: var(--white); margin-bottom: 4px; }
+.r-award-text p  { font-size: 13px; color: var(--text); line-height: 1.5; }
+
+
+/* ── Core Competencies ── */
+
+.r-competencies { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px 32px; list-style: none; }
+.r-competencies li { font-size: 14px; font-weight: 300; color: var(--text); display: flex; align-items: flex-start; gap: 10px; line-height: 1.6; }
+.r-competencies li::before { content: ''; display: block; width: 5px; height: 5px; border-radius: 50%; background: var(--blue); flex-shrink: 0; margin-top: 7px; }
+.r-competencies li strong  { color: var(--white); font-weight: 700; }
+
+
+/* ── Experience Entries ── */
+
+.r-entry              { margin-bottom: 36px; }
+.r-entry:last-child   { margin-bottom: 0; }
+.r-entry-header       { display: grid; grid-template-columns: 1fr auto; gap: 8px 24px; align-items: baseline; margin-bottom: 4px; }
+.r-title              { font-family: var(--font-head); font-size: 13px; font-weight: 700; color: var(--white); letter-spacing: 0.03em; }
+.r-dates              { font-size: 12px; font-weight: 400; color: var(--blue); letter-spacing: 0.04em; white-space: nowrap; }
+.r-org                { font-size: 13px; font-weight: 700; color: var(--orange); margin-bottom: 12px; }
+.r-org-clients        { font-size: 12px; font-weight: 300; color: var(--text); margin-top: -8px; margin-bottom: 12px; }
+.r-location           { font-size: 12px; font-weight: 300; color: var(--text); opacity: 0.7; }
+
+.r-bullets             { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.r-bullets li          { font-size: 14px; font-weight: 300; color: var(--text); display: flex; align-items: flex-start; gap: 12px; line-height: 1.7; }
+.r-bullets li::before  { content: ''; display: block; width: 5px; height: 5px; border-radius: 50%; background: var(--border); flex-shrink: 0; margin-top: 8px; }
+.r-bullets li strong   { color: var(--white); font-weight: 700; }
+
+
+/* ── Education ── */
+
+.r-edu-entry              { display: grid; grid-template-columns: 1fr auto; gap: 4px 24px; align-items: baseline; padding: 14px 0; border-bottom: 0.5px solid var(--border-lt); }
+.r-edu-entry:last-child   { border-bottom: none; }
+.r-edu-degree             { font-size: 14px; font-weight: 700; color: var(--white); }
+.r-edu-school             { font-size: 13px; font-weight: 300; color: var(--text); margin-top: 2px; }
+.r-edu-year               { font-size: 12px; color: var(--blue); letter-spacing: 0.04em; white-space: nowrap; }
+
+
+/* ── Technical Grid ── */
+
+.r-tech-grid    { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.r-tech-card    { background: var(--surface); border: 0.5px solid var(--border); border-radius: 8px; padding: 18px 20px; }
+.r-tech-card h4 { font-family: var(--font-head); font-size: 11px; font-weight: 700; color: var(--white); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 10px; }
+.r-tech-card p  { font-size: 13px; font-weight: 300; color: var(--text); line-height: 1.7; }
+
+/* Bottom download CTA */
+.resume-bottom-cta   { text-align: center; padding: 48px 0 0; border-top: 0.5px solid var(--border-lt); margin-top: 16px; }
+.resume-bottom-cta p { font-size: 14px; color: var(--text); margin-bottom: 20px; }
+
+
+/* ============================================================
+   16. UTILITY CLASSES
+   ============================================================ */
+
+/* Text colours */
+.text-orange      { color: var(--orange); }
+.text-blue        { color: var(--blue); }
+.text-white       { color: var(--white); }
+.text-muted       { color: var(--text); }
+.text-slate       { color: var(--slate); }
+
+/* Combos */
+.text-orange-bold { color: var(--orange); font-weight: 700; }
+.text-blue-accent { color: var(--blue);   font-weight: 400; }
+
+/* Metric colour modifiers (used on work.html metric strip) */
+.metric-green  { color: var(--green); }
+.metric-purple { color: var(--purple); }
+
+/* Spacing */
+.mb-16 { margin-bottom: 16px; }
+
+/* Text alignment helpers */
+.text-center-block { display: block; text-align: center; }
+.section-center    { text-align: center; max-width: 560px; }
+
+/* Misc */
+.ops-note { font-size: 14px; color: var(--text); }
+
+
+/* ============================================================
+   17. RESPONSIVE BREAKPOINTS
+   ============================================================ */
+
+@media (max-width: 768px) {
+
+  /* Layout */
+  .container { padding: 0 20px; }
+  .nav-inner { padding: 16px 20px; }
+  section    { padding: 48px 0; }
+
+  /* Navigation */
+  .nav-links,
+  .nav-inner .btn-slate { display: none; }
+  .nav-toggle           { display: flex; }
+
+  /* Page heroes */
+  #page-hero          { padding: 48px 0 40px; }
+  #hero               { padding: 48px 0 40px; }
+  #pillars, #about, #ripley { padding: 48px 0; }
+
+  /* Hero text */
+  #hero h1  { font-size: 24px; }
+  #hero p   { font-size: 15px; }
+  .hero-ctas { flex-direction: column; align-items: stretch; }
+  .hero-ctas .btn-primary,
+  .hero-ctas .btn-ghost { text-align: center; padding: 14px; }
+
+  /* Homepage grids */
+  .pillars-grid { grid-template-columns: 1fr; }
+  .about-grid,
+  .ripley-grid  { grid-template-columns: 1fr; gap: 28px; }
+  .ripley-photo { order: -1; }
+
+  /* Work page */
+  .case-studies-grid { grid-template-columns: 1fr; }
+  .metrics-strip     { grid-template-columns: 1fr 1fr; }
+  .industries-grid   { grid-template-columns: 1fr 1fr; }
+
+  /* Craft page */
+  .toolbox-grid { grid-template-columns: 1fr; }
+  .process-grid { grid-template-columns: 1fr; }
+
+  /* Lab page */
+  .research-grid  { grid-template-columns: 1fr; }
+  .projects-grid  { grid-template-columns: 1fr; }
+  .now-grid       { grid-template-columns: 1fr; }
+
+  /* Resume page */
+  .resume-actions  { flex-direction: column; align-items: stretch; text-align: center; }
+  .r-competencies  { grid-template-columns: 1fr; }
+  .r-entry-header  { grid-template-columns: 1fr; }
+  .r-tech-grid     { grid-template-columns: 1fr; }
+  .r-edu-entry     { grid-template-columns: 1fr; }
+
+  /* Shared */
+  .cta-row { flex-direction: column; align-items: stretch; text-align: center; }
+  footer   { padding: 20px; flex-direction: column; align-items: center; text-align: center; }
+}
+
+@media (max-width: 480px) {
+  #hero h1           { font-size: 20px; }
+  .industries-grid   { grid-template-columns: 1fr; }
+  .metrics-strip     { grid-template-columns: 1fr 1fr; }
+}
+
+/* ============================================================
+   ADDITIONS: Hero grid, Proof bar marquee, About award
+   ============================================================ */
+
+
+/* ── HERO — two-column grid with portrait ── */
+
+.hero-grid {
+  display:               grid;
+  grid-template-columns: 1fr 360px;
+  gap:                   64px;
+  align-items:           center;
+  margin-top:            8px;
+}
+.hero-content { display: flex; flex-direction: column; }
+.hero-photo-wrap {
+  min-height: 460px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.hero-photo {
+  width:        100%;
+  height:       100%;
+  min-height:   460px;
+  object-fit:   cover;
+  object-position: center 18%;
+  display:      block;
+  border-radius: 10px;
+}
+
+
+/* ── PROOF BAR — marquee ── */
+
+#proof {
+  border-top:    0.5px solid var(--border-lt);
+  border-bottom: 0.5px solid var(--border-lt);
+  padding:       16px 0;
+  overflow:      hidden;
+}
+.proof-label {
+  font-size:      12px;
+  font-weight:    700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color:          var(--text);
+  text-align:     center;
+  display:        block;
+  margin-bottom:  10px;
+}
+.proof-marquee-track {
+  overflow: hidden;
+  width:    100%;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
+  mask-image:         linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
+}
+.proof-marquee {
+  display:    flex;
+  align-items: center;
+  gap:         10px;
+  width:       max-content;
+  animation:   marquee 60s linear infinite;
+}
+.proof-marquee:hover { animation-play-state: paused; }
+
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.proof-pill {
+  display:        inline-block;
+  font-size:      12px;
+  font-weight:    700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color:          var(--blue);
+  background:     rgba(0,210,255,0.08);
+  border:         0.5px solid rgba(0,210,255,0.35);
+  border-radius:  20px;
+  padding:        5px 14px;
+  white-space:    nowrap;
+  flex-shrink:    0;
+}
+
+
+/* ── ABOUT — award image column ── */
+
+.about-grid {
+  grid-template-columns: 1fr 220px !important;
+  align-items:           start !important;
+}
+.about-award-wrap {
+  display:         flex;
+  flex-direction:  column;
+  align-items:     center;
+  gap:             14px;
+  padding-top:     112px;
+}
+.about-award-img {
+  width:         200px;
+  max-width:     200px;
+  height:        auto;
+  border-radius: 0 !important;
+  display:       block;
+  opacity:       0.92;
+}
+.about-award-caption {
+  font-size:      12px;
+  font-weight:    700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color:          var(--text);
+  text-align:     center;
+  line-height:    1.7;
+}
+
+
+/* ── RESPONSIVE — new additions ── */
+
+@media (max-width: 768px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .hero-photo-wrap { min-height: 300px; }
+
+  .about-grid {
+    grid-template-columns: 1fr !important;
+    gap: 28px !important;
+  }
+  .about-award-wrap {
+    flex-direction: row;
+    padding-top:    0;
+    gap:            20px;
+    justify-content: center;
+  }
+  .about-award-img { width: 110px; max-width: 110px; }
+}
