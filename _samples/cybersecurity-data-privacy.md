@@ -3,7 +3,7 @@ title: "Cybersecurity & Data Privacy — Module 1"
 client: "Cybersecurity & Data Privacy"
 tag: "Financial Services · Compliance Training"
 tag_color: "blue"
-sample_url: "/portfolio-cybersecurity.html"
+sample_url: "/_samples/portfolio-cybersecurity.html"
 order: 1
 outcomes:
   - "Phishing, ransomware, and insider threat identification"

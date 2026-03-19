@@ -441,6 +441,11 @@ button:focus-visible {
 
 footer {
   border-top:      0.5px solid var(--border-lt);
+  padding:         0;
+  display:         flex;
+  flex-direction:  column;
+}
+.footer-main {
   padding:         24px 48px;
   display:         flex;
   justify-content: space-between;
@@ -452,6 +457,41 @@ footer span         { font-size: 13px; font-weight: 300; }
 .footer-links       { display: flex; gap: 24px; }
 .footer-links a     { font-size: 13px; color: var(--text); transition: color 0.2s; }
 .footer-links a:hover { color: var(--white); }
+
+.footer-collab {
+  border-top:      0.5px solid var(--border-lt);
+  padding:         14px 48px;
+  display:         flex;
+  justify-content: center;
+  align-items:     center;
+  gap:             8px;
+}
+.footer-collab span {
+  font-size:       11px;
+  font-weight:     300;
+  color:           var(--text);
+  opacity:         0.6;
+}
+.footer-collab a {
+  color:           var(--text);
+  opacity:         0.6;
+  text-decoration: none;
+  font-size:       11px;
+  font-weight:     300;
+  transition:      opacity 0.2s;
+}
+.footer-collab a:hover {
+  opacity:         1;
+}
+.footer-collab img {
+  width:           14px;
+  height:          14px;
+  opacity:         0.6;
+  transition:      opacity 0.2s;
+}
+.footer-collab a:hover img {
+  opacity:         1;
+}
 
 
 /* ── Shared Icon Backgrounds ── */
@@ -1249,7 +1289,8 @@ footer span         { font-size: 13px; font-weight: 300; }
 
   /* Shared */
   .cta-row { flex-direction: column; align-items: stretch; text-align: center; }
-  footer   { padding: 20px; flex-direction: column; align-items: center; text-align: center; }
+  .footer-main   { padding: 20px; flex-direction: column; align-items: center; text-align: center; }
+  .footer-collab { padding: 14px 20px; }
 }
 
 @media (max-width: 480px) {

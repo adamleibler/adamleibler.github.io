@@ -3,7 +3,7 @@ title: "AML Compliance — Detecting Financial Red Flags"
 client: "AML Compliance"
 tag: "Financial Services · Compliance Training"
 tag_color: "orange"
-sample_url: "/portfolio-aml.html"
+sample_url: "/_samples/portfolio-aml.html"
 order: 3
 outcomes:
   - "Placement, layering, and integration stage recognition"
