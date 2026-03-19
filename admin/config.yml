@@ -7,6 +7,7 @@ backend:
   name: github
   repo: adamleibler/adamleibler.github.io
   branch: main
+  base_url: https://api.netlify.com
 
 # Where uploaded images get saved in your repo
 media_folder: "assets/uploads"
