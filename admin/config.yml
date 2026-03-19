@@ -5,10 +5,8 @@
 
 backend:
   name: github
-  repo: adamleibler/adamleibler.github.io   # your GitHub repo
+  repo: adamleibler/adamleibler.github.io
   branch: main
-  base_url: https://vocal-madeleine-a6220c.netlify.app
-  auth_endpoint: /.netlify/functions/github-oauth-token
 
 # Where uploaded images get saved in your repo
 media_folder: "assets/uploads"
