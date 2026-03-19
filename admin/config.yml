@@ -158,3 +158,67 @@ collections:
         name: "body"
         widget: "markdown"
         hint: "Full case study — approach, challenges, outcomes. Proprietary details can be kept vague."
+
+  # ── Interactive Samples ───────────────────────────────────────────────────
+  - name: "samples"
+    label: "Interactive Samples"
+    folder: "_samples"
+    create: true
+    slug: "{{slug}}"
+    summary: "{{title}}"
+    sortable_fields: ["order", "title"]
+    fields:
+
+      - label: "Title"
+        name: "title"
+        widget: "string"
+        hint: "Card heading, e.g. Cybersecurity & Data Privacy — Module 1"
+
+      - label: "Client / Subject"
+        name: "client"
+        widget: "string"
+        hint: "Subtitle shown above the title, e.g. Cybersecurity & Data Privacy"
+
+      - label: "Tag"
+        name: "tag"
+        widget: "string"
+        hint: "Colored label text, e.g. Financial Services · Compliance Training"
+
+      - label: "Tag Color"
+        name: "tag_color"
+        widget: "select"
+        options:
+          - label: "Blue"
+            value: "blue"
+          - label: "Purple"
+            value: "purple"
+          - label: "Orange"
+            value: "orange"
+        default: "blue"
+        hint: "Color of the tag badge on the card."
+
+      - label: "Sample URL"
+        name: "sample_url"
+        widget: "string"
+        hint: "Link to the live sample, e.g. /portfolio-cybersecurity.html"
+
+      - label: "Sort Order"
+        name: "order"
+        widget: "number"
+        default: 99
+        value_type: "int"
+        hint: "Controls display order. Lower numbers appear first."
+
+      - label: "Outcomes"
+        name: "outcomes"
+        widget: "list"
+        hint: "Learning outcomes shown as bullet points on the card."
+        field:
+          label: "Outcome"
+          name: "outcome"
+          widget: "string"
+
+      - label: "Body"
+        name: "body"
+        widget: "markdown"
+        hint: "Card description paragraph."
