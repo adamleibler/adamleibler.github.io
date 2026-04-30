@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Content Calendar</title>
+<script src="../auth.js"></script>
+<script>requireAuth();</script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0D0F12;--surface:#13161B;--surface2:#1C2028;--border:#252A33;--border2:#2E3440;
+    --text:#E8EAF0;--muted:#6B7385;--accent:#1A6BFF;--accent-dim:#1A6BFF18;
+    --green:#22C55E;--green-dim:#22C55E15;--amber:#F59E0B;--amber-dim:#F59E0B15;
+    --red:#EF4444;--red-dim:#EF444415;--purple:#A78BFA;--purple-dim:#A78BFA15;
+    --cyan:#22D3EE;--cyan-dim:#22D3EE15;--orange:#F97316;--orange-dim:#F9731615;
+    --twitch:#9146FF;--twitch-dim:#9146FF18;
+    --youtube:#FF0000;--youtube-dim:#FF000015;
+    --x:#E7E9EA;--x-dim:#E7E9EA12;
+    --bluesky:#0085FF;--bluesky-dim:#0085FF18;
+    --radius:10px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;min-height:100vh}
+  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.4}
+  .app{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:32px 24px}
+
+  /* HEADER */
+  header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:16px}
+  .header-label{font-family:'DM Mono',monospace;font-size:11px;color:var(--accent);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:6px}
+  .header-label a{color:var(--muted);text-decoration:none}
+  .header-label a:hover{color:var(--accent)}
+  h1{font-size:26px;font-weight:600;letter-spacing:-0.02em}
+  .header-right{display:flex;gap:10px;align-items:center}
+
+  /* STATS */
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin-bottom:24px}
+  .stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px}
+  .stat-num{font-family:'DM Mono',monospace;font-size:22px;font-weight:500;line-height:1;margin-bottom:3px}
+  .stat-label{font-size:11px;color:var(--muted)}
+
+  /* VIEW TOGGLE */
+  .view-toggle{display:flex;gap:6px;margin-bottom:20px;align-items:center;flex-wrap:wrap;justify-content:space-between}
+  .toggle-pills{display:flex;gap:6px}
+  .toggle-pill{font-family:'DM Mono',monospace;font-size:11px;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all 0.15s}
+  .toggle-pill:hover{border-color:var(--border2);color:var(--text)}
+  .toggle-pill.active{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
+  .channel-filters{display:flex;gap:6px;flex-wrap:wrap}
+  .ch-pill{font-family:'DM Mono',monospace;font-size:11px;padding:5px 11px;border-radius:99px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all 0.15s;display:flex;align-items:center;gap:5px}
+  .ch-pill:hover{border-color:var(--border2);color:var(--text)}
+  .ch-pill.active-twitch  {border-color:var(--twitch);  color:var(--twitch);  background:var(--twitch-dim)}
+  .ch-pill.active-youtube {border-color:var(--youtube); color:var(--youtube); background:var(--youtube-dim)}
+  .ch-pill.active-x       {border-color:var(--x);       color:var(--x);       background:var(--x-dim)}
+  .ch-pill.active-bluesky {border-color:var(--bluesky); color:var(--bluesky); background:var(--bluesky-dim)}
+
+  /* ── LIST VIEW ── */
+  #listView{display:flex;flex-direction:column;gap:8px}
+  .list-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;cursor:pointer;transition:all 0.12s;display:grid;grid-template-columns:auto 1fr auto auto;gap:12px;align-items:center}
+  .list-item:hover{border-color:var(--border2);transform:translateY(-1px)}
+  .list-date{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);white-space:nowrap;min-width:80px}
+  .list-date.today{color:var(--accent)}
+  .list-date.overdue{color:var(--red)}
+  .list-main{}
+  .list-title{font-weight:500;font-size:14px;margin-bottom:3px}
+  .list-caption{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:500px}
+  .list-badges{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+
+  /* ── KANBAN VIEW ── */
+  #kanbanView{display:none}
+  .kanban{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  @media(max-width:900px){.kanban{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:550px){.kanban{grid-template-columns:1fr}}
+  .kanban-col{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;min-height:200px}
+  .kanban-header{padding:12px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+  .kanban-title{font-family:'DM Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;font-weight:500}
+  .kanban-count{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted)}
+  .kanban-cards{padding:10px;display:flex;flex-direction:column;gap:8px}
+  .k-card{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:12px;cursor:pointer;transition:all 0.12s}
+  .k-card:hover{border-color:var(--border2)}
+  .k-title{font-size:13px;font-weight:500;margin-bottom:6px;line-height:1.4}
+  .k-meta{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+  .k-date{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted)}
+
+  /* BADGES */
+  .badge{display:inline-flex;align-items:center;gap:4px;font-family:'DM Mono',monospace;font-size:10px;padding:2px 7px;border-radius:99px;border:1px solid;white-space:nowrap}
+  .b-twitch  {color:var(--twitch);  border-color:var(--twitch);  background:var(--twitch-dim)}
+  .b-youtube {color:var(--youtube); border-color:var(--youtube); background:var(--youtube-dim)}
+  .b-x       {color:var(--x);       border-color:#444;           background:var(--x-dim)}
+  .b-bluesky {color:var(--bluesky); border-color:var(--bluesky); background:var(--bluesky-dim)}
+  .b-idea    {color:var(--purple);  border-color:var(--purple);  background:var(--purple-dim)}
+  .b-drafted {color:var(--amber);   border-color:var(--amber);   background:var(--amber-dim)}
+  .b-scheduled{color:var(--cyan);   border-color:var(--cyan);    background:var(--cyan-dim)}
+  .b-posted  {color:var(--green);   border-color:var(--green);   background:var(--green-dim)}
+
+  /* MODAL */
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.78);backdrop-filter:blur(4px);z-index:100;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity 0.2s}
+  .modal-overlay.open{opacity:1;pointer-events:all}
+  .modal{background:var(--surface);border:1px solid var(--border2);border-radius:14px;width:100%;max-width:600px;max-height:90vh;overflow-y:auto;transform:translateY(16px);transition:transform 0.2s;box-shadow:0 24px 64px rgba(0,0,0,0.65)}
+  .modal-overlay.open .modal{transform:translateY(0)}
+  .modal-header{padding:18px 22px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+  .modal-title{font-size:15px;font-weight:600}
+  .modal-body{padding:18px 22px;display:flex;flex-direction:column;gap:14px}
+  .modal-footer{padding:14px 22px;border-top:1px solid var(--border);display:flex;gap:10px;justify-content:flex-end}
+  .field{display:flex;flex-direction:column;gap:5px}
+  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  label{font-size:11px;font-weight:500;color:var(--muted);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:0.06em}
+  input,select,textarea{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border-color 0.15s;width:100%}
+  input:focus,select:focus,textarea:focus{border-color:var(--accent)}
+  textarea{resize:vertical;min-height:80px;line-height:1.6}
+  select option{background:var(--surface2)}
+
+  /* DETAIL */
+  .detail-section{margin-bottom:14px}
+  .detail-label{font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:5px}
+  .detail-value{font-size:13px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+  .detail-link{color:var(--accent);text-decoration:none;font-size:13px;word-break:break-all}
+  .detail-link:hover{text-decoration:underline}
+
+  .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:var(--radius);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:all 0.15s;border:none;white-space:nowrap}
+  .btn-primary{background:var(--accent);color:#fff}
+  .btn-primary:hover{background:#2a7aff}
+  .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted)}
+  .btn-ghost:hover{border-color:var(--border2);color:var(--text)}
+  .btn-danger{background:var(--red-dim);border:1px solid var(--red);color:var(--red)}
+  .btn-danger:hover{background:var(--red);color:#fff}
+  .btn-sm{padding:5px 10px;font-size:12px}
+  .icon-btn{width:28px;height:28px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;transition:all 0.15s}
+  .icon-btn:hover{border-color:var(--border2);color:var(--text)}
+
+  .empty-state{text-align:center;padding:48px 24px;color:var(--muted)}
+  .empty-icon{font-size:32px;margin-bottom:10px;opacity:0.4}
+
+  /* STATUS COLS */
+  .col-idea     .kanban-title{color:var(--purple)}
+  .col-drafted  .kanban-title{color:var(--amber)}
+  .col-scheduled.kanban-title{color:var(--cyan)}
+  .col-posted   .kanban-title{color:var(--green)}
+
+  @media(max-width:640px){.app{padding:20px 16px}h1{font-size:22px}header{flex-direction:column;align-items:flex-start}.field-row{grid-template-columns:1fr}.list-item{grid-template-columns:1fr;gap:6px}.list-badges{justify-content:flex-start}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div>
+      <div class="header-label"><a href="../index.html">← tools</a> / content</div>
+      <h1>Content calendar</h1>
+    </div>
+    <div class="header-right">
+      <button class="btn btn-primary" onclick="openModal()">+ New post</button>
+    </div>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-num" id="sTotal">—</div><div class="stat-label">Total</div></div>
+    <div class="stat"><div class="stat-num" style="color:var(--purple)"  id="sIdeas">—</div><div class="stat-label">Ideas</div></div>
+    <div class="stat"><div class="stat-num" style="color:var(--amber)"   id="sDrafted">—</div><div class="stat-label">Drafted</div></div>
+    <div class="stat"><div class="stat-num" style="color:var(--cyan)"    id="sScheduled">—</div><div class="stat-label">Scheduled</div></div>
+    <div class="stat"><div class="stat-num" style="color:var(--green)"   id="sPosted">—</div><div class="stat-label">Posted</div></div>
+    <div class="stat"><div class="stat-num" style="color:var(--twitch)"  id="sTwitch">—</div><div class="stat-label">Twitch</div></div>
+    <div class="stat"><div class="stat-num" style="color:var(--youtube)" id="sYT">—</div><div class="stat-label">YouTube</div></div>
+  </div>
+
+  <div class="view-toggle">
+    <div class="toggle-pills">
+      <button class="toggle-pill active" id="tList"   onclick="switchView('list',this)">≡ List</button>
+      <button class="toggle-pill"        id="tKanban" onclick="switchView('kanban',this)">⬜ Kanban</button>
+    </div>
+    <div class="channel-filters" id="chFilters">
+      <button class="ch-pill active-twitch"  data-ch="twitch"  onclick="toggleChannel('twitch',this)">🟣 Twitch</button>
+      <button class="ch-pill active-youtube" data-ch="youtube" onclick="toggleChannel('youtube',this)">🔴 YouTube</button>
+      <button class="ch-pill active-x"       data-ch="x"       onclick="toggleChannel('x',this)">✕ X</button>
+      <button class="ch-pill active-bluesky" data-ch="bluesky" onclick="toggleChannel('bluesky',this)">🦋 Bluesky</button>
+    </div>
+  </div>
+
+  <div id="listView"></div>
+  <div id="kanbanView">
+    <div class="kanban">
+      <div class="kanban-col col-idea">
+        <div class="kanban-header"><span class="kanban-title">💡 Idea</span><span class="kanban-count" id="kc-idea">0</span></div>
+        <div class="kanban-cards" id="k-idea"></div>
+      </div>
+      <div class="kanban-col col-drafted">
+        <div class="kanban-header"><span class="kanban-title">✏️ Drafted</span><span class="kanban-count" id="kc-drafted">0</span></div>
+        <div class="kanban-cards" id="k-drafted"></div>
+      </div>
+      <div class="kanban-col">
+        <div class="kanban-header"><span class="kanban-title" style="color:var(--cyan)">📅 Scheduled</span><span class="kanban-count" id="kc-scheduled">0</span></div>
+        <div class="kanban-cards" id="k-scheduled"></div>
+      </div>
+      <div class="kanban-col">
+        <div class="kanban-header"><span class="kanban-title" style="color:var(--green)">✅ Posted</span><span class="kanban-count" id="kc-posted">0</span></div>
+        <div class="kanban-cards" id="k-posted"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADD / EDIT MODAL -->
+<div class="modal-overlay" id="formModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle">New post</div>
+      <button class="icon-btn" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="field">
+        <label>Title / topic</label>
+        <input type="text" id="fTitle" placeholder="e.g. LNSF Ep 47 — Sagittarius A*, Black hole thread, JWST clip">
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Channel</label>
+          <select id="fChannel">
+            <option value="twitch">🟣 Twitch</option>
+            <option value="youtube">🔴 YouTube</option>
+            <option value="x">✕ X</option>
+            <option value="bluesky">🦋 Bluesky</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Status</label>
+          <select id="fStatus">
+            <option value="idea">💡 Idea</option>
+            <option value="drafted">✏️ Drafted</option>
+            <option value="scheduled">📅 Scheduled</option>
+            <option value="posted">✅ Posted</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Publish date</label>
+          <input type="date" id="fDate">
+        </div>
+        <div class="field">
+          <label>Publish time (optional)</label>
+          <input type="time" id="fTime">
+        </div>
+      </div>
+      <div class="field">
+        <label>Caption / script draft</label>
+        <textarea id="fCaption" placeholder="Post copy, stream title, video description, or talking points…"></textarea>
+      </div>
+      <div class="field">
+        <label>Asset / VOD link</label>
+        <input type="url" id="fLink" placeholder="https://— clip URL, Drive link, YouTube video…">
+      </div>
+      <div class="field">
+        <label>Notes</label>
+        <textarea id="fNotes" placeholder="Hashtags, thumbnail notes, cross-post reminders, anything else…" style="min-height:60px"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="savePost()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- DETAIL MODAL -->
+<div class="modal-overlay" id="detailModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="dTitle"></div>
+        <div style="display:flex;gap:6px;margin-top:6px" id="dBadges"></div>
+      </div>
+      <button class="icon-btn" onclick="closeDetail()">✕</button>
+    </div>
+    <div class="modal-body" id="dBody"></div>
+    <div class="modal-footer">
+      <button class="btn btn-danger btn-sm" id="dDelete">Delete</button>
+      <button class="btn btn-ghost" onclick="closeDetail()">Close</button>
+      <button class="btn btn-primary btn-sm" id="dEdit">Edit</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'content_calendar';
+const STATUS_ORDER = {idea:0,drafted:1,scheduled:2,posted:3};
+const CH_LABELS = {twitch:'Twitch',youtube:'YouTube',x:'X',bluesky:'Bluesky'};
+const CH_BADGE  = {twitch:'b-twitch',youtube:'b-youtube',x:'b-x',bluesky:'b-bluesky'};
+const ST_BADGE  = {idea:'b-idea',drafted:'b-drafted',scheduled:'b-scheduled',posted:'b-posted'};
+const ST_LABELS = {idea:'💡 Idea',drafted:'✏️ Drafted',scheduled:'📅 Scheduled',posted:'✅ Posted'};
+
+let posts = [];
+let activeView = 'list';
+let activeChannels = new Set(['twitch','youtube','x','bluesky']);
+let editingId = null;
+let viewingId = null;
+
+// ── STORAGE ──────────────────────────────────────────────────────────────────
+async function load() {
+  try {
+    const r = await window.storage.get(STORAGE_KEY);
+    posts = r ? JSON.parse(r.value) : getSampleData();
+  } catch { posts = getSampleData(); }
+  render();
+}
+async function persist() {
+  try { await window.storage.set(STORAGE_KEY, JSON.stringify(posts)); } catch(e) { console.warn(e); }
+}
+
+// ── SAVE ─────────────────────────────────────────────────────────────────────
+async function savePost() {
+  const record = {
+    title:   document.getElementById('fTitle').value.trim(),
+    channel: document.getElementById('fChannel').value,
+    status:  document.getElementById('fStatus').value,
+    date:    document.getElementById('fDate').value,
+    time:    document.getElementById('fTime').value,
+    caption: document.getElementById('fCaption').value.trim(),
+    link:    document.getElementById('fLink').value.trim(),
+    notes:   document.getElementById('fNotes').value.trim(),
+  };
+  if (!record.title) { alert('Title is required.'); return; }
+  if (editingId) posts = posts.map(p => p.id === editingId ? {...p,...record} : p);
+  else posts.unshift({id:Date.now().toString(), created:new Date().toISOString(), ...record});
+  await persist();
+  closeModal(); render();
+}
+
+async function deletePost(id) {
+  if (!confirm('Delete this post?')) return;
+  posts = posts.filter(p => p.id !== id);
+  await persist();
+  closeDetail(); render();
+}
+
+// ── FILTER ───────────────────────────────────────────────────────────────────
+function getFiltered() {
+  return posts.filter(p => activeChannels.has(p.channel));
+}
+
+// ── RENDER ────────────────────────────────────────────────────────────────────
+function render() {
+  const f = getFiltered();
+  document.getElementById('sTotal').textContent     = posts.length;
+  document.getElementById('sIdeas').textContent     = posts.filter(p=>p.status==='idea').length;
+  document.getElementById('sDrafted').textContent   = posts.filter(p=>p.status==='drafted').length;
+  document.getElementById('sScheduled').textContent = posts.filter(p=>p.status==='scheduled').length;
+  document.getElementById('sPosted').textContent    = posts.filter(p=>p.status==='posted').length;
+  document.getElementById('sTwitch').textContent    = posts.filter(p=>p.channel==='twitch').length;
+  document.getElementById('sYT').textContent        = posts.filter(p=>p.channel==='youtube').length;
+
+  if (activeView === 'list') renderList(f);
+  else renderKanban(f);
+}
+
+function renderList(f) {
+  const list = document.getElementById('listView');
+  const sorted = [...f].sort((a,b) => {
+    if (!a.date && !b.date) return 0;
+    if (!a.date) return 1;
+    if (!b.date) return -1;
+    return new Date(a.date) - new Date(b.date);
+  });
+
+  if (!sorted.length) {
+    list.innerHTML = `<div class="empty-state"><div class="empty-icon">📅</div><p>No posts yet. Add your first one.</p></div>`;
+    return;
+  }
+
+  const today = new Date(); today.setHours(0,0,0,0);
+  list.innerHTML = sorted.map(p => {
+    const pDate = p.date ? new Date(p.date+'T00:00:00') : null;
+    const isToday   = pDate && pDate.getTime() === today.getTime();
+    const isOverdue = pDate && pDate < today && p.status !== 'posted';
+    const dateClass = isToday ? 'today' : isOverdue ? 'overdue' : '';
+    return `
+    <div class="list-item" onclick="openDetail('${p.id}')">
+      <div class="list-date ${dateClass}">${p.date ? formatDate(p.date) : '—'}</div>
+      <div class="list-main">
+        <div class="list-title">${esc(p.title)}</div>
+        ${p.caption ? `<div class="list-caption">${esc(p.caption)}</div>` : ''}
+      </div>
+      <div class="list-badges">
+        <span class="badge ${CH_BADGE[p.channel]||''}">${CH_LABELS[p.channel]||p.channel}</span>
+        <span class="badge ${ST_BADGE[p.status]||''}">${ST_LABELS[p.status]||p.status}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderKanban(f) {
+  const statuses = ['idea','drafted','scheduled','posted'];
+  statuses.forEach(s => {
+    const col = f.filter(p=>p.status===s);
+    document.getElementById('kc-'+s).textContent = col.length;
+    document.getElementById('k-'+s).innerHTML = col.length
+      ? col.map(p=>`
+        <div class="k-card" onclick="openDetail('${p.id}')">
+          <div class="k-title">${esc(p.title)}</div>
+          <div class="k-meta">
+            <span class="badge ${CH_BADGE[p.channel]||''}">${CH_LABELS[p.channel]||p.channel}</span>
+            ${p.date?`<span class="k-date">${formatDate(p.date)}</span>`:''}
+          </div>
+        </div>`).join('')
+      : `<div style="text-align:center;padding:20px 10px;font-size:12px;color:var(--muted)">—</div>`;
+  });
+}
+
+// ── DETAIL ────────────────────────────────────────────────────────────────────
+function openDetail(id) {
+  const p = posts.find(x=>x.id===id);
+  if (!p) return;
+  viewingId = id;
+  document.getElementById('dTitle').textContent = p.title;
+  document.getElementById('dBadges').innerHTML = [
+    `<span class="badge ${CH_BADGE[p.channel]||''}">${CH_LABELS[p.channel]||p.channel}</span>`,
+    `<span class="badge ${ST_BADGE[p.status]||''}">${ST_LABELS[p.status]||p.status}</span>`,
+  ].join('');
+
+  const rows = [
+    ['Publish date', p.date ? formatDate(p.date)+(p.time?' at '+formatTime(p.time):'') : '—'],
+    p.caption ? ['Caption / script', p.caption] : null,
+    p.link    ? ['Asset / VOD link', p.link, true] : null,
+    p.notes   ? ['Notes', p.notes] : null,
+  ].filter(Boolean);
+
+  document.getElementById('dBody').innerHTML = rows.map(([label, val, isLink])=>`
+    <div class="detail-section">
+      <div class="detail-label">${label}</div>
+      <div class="detail-value">${isLink
+        ? `<a href="${esc(val)}" target="_blank" class="detail-link">${esc(val)}</a>`
+        : esc(val)
+      }</div>
+    </div>
+  `).join('');
+
+  // Quick status advance button
+  const nextStatus = {idea:'drafted',drafted:'scheduled',scheduled:'posted'};
+  const nextLabel  = {idea:'→ Mark drafted',drafted:'→ Mark scheduled',scheduled:'→ Mark posted'};
+  const extra = nextStatus[p.status] ? `<button class="btn btn-ghost btn-sm" onclick="advanceStatus('${id}')"> ${nextLabel[p.status]}</button>` : '';
+  document.getElementById('dBody').innerHTML += `<div style="display:flex;gap:8px;padding-top:4px">${extra}</div>`;
+
+  document.getElementById('dEdit').onclick   = () => { closeDetail(); openModal(id); };
+  document.getElementById('dDelete').onclick = () => deletePost(id);
+  document.getElementById('detailModal').classList.add('open');
+}
+function closeDetail() { document.getElementById('detailModal').classList.remove('open'); viewingId=null; }
+
+async function advanceStatus(id) {
+  const next = {idea:'drafted',drafted:'scheduled',scheduled:'posted'};
+  posts = posts.map(p => p.id===id ? {...p, status: next[p.status]||p.status} : p);
+  await persist();
+  closeDetail(); render();
+}
+
+// ── MODAL ─────────────────────────────────────────────────────────────────────
+function openModal(id=null) {
+  editingId = id;
+  const p = id ? posts.find(x=>x.id===id) : null;
+  document.getElementById('modalTitle').textContent = id ? 'Edit post' : 'New post';
+  document.getElementById('fTitle').value   = p?.title   || '';
+  document.getElementById('fChannel').value = p?.channel || 'twitch';
+  document.getElementById('fStatus').value  = p?.status  || 'idea';
+  document.getElementById('fDate').value    = p?.date    || '';
+  document.getElementById('fTime').value    = p?.time    || '';
+  document.getElementById('fCaption').value = p?.caption || '';
+  document.getElementById('fLink').value    = p?.link    || '';
+  document.getElementById('fNotes').value   = p?.notes   || '';
+  document.getElementById('formModal').classList.add('open');
+}
+function closeModal() { document.getElementById('formModal').classList.remove('open'); editingId=null; }
+
+// ── VIEW / FILTER ─────────────────────────────────────────────────────────────
+function switchView(v, el) {
+  activeView = v;
+  document.querySelectorAll('.toggle-pill').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('listView').style.display   = v==='list'   ? 'flex' : 'none';
+  document.getElementById('kanbanView').style.display = v==='kanban' ? 'block': 'none';
+  render();
+}
+function toggleChannel(ch, el) {
+  if (activeChannels.has(ch)) {
+    if (activeChannels.size === 1) return; // keep at least one
+    activeChannels.delete(ch);
+    el.className = 'ch-pill';
+  } else {
+    activeChannels.add(ch);
+    el.className = `ch-pill active-${ch}`;
+  }
+  render();
+}
+
+// ── HELPERS ───────────────────────────────────────────────────────────────────
+function formatDate(d) { if(!d) return '—'; const dt=new Date(d+'T00:00:00'); return dt.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}); }
+function formatTime(t) { if(!t) return ''; const [h,m]=t.split(':'); const hr=parseInt(h); return `${hr>12?hr-12:hr||12}:${m} ${hr>=12?'PM':'AM'}`; }
+function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function getSampleData() {
+  const today = new Date();
+  const d = (offset) => { const dt=new Date(today); dt.setDate(dt.getDate()+offset); return dt.toISOString().split('T')[0]; };
+  return [
+    {id:'1',title:'LNSF Ep 48 — Sagittarius A*',channel:'twitch',status:'scheduled',date:d(2),time:'21:00',caption:'Tonight we fly to the center of the galaxy. 4 million solar masses. The Event Horizon Telescope image. Real science, live in-game. 🔭',link:'',notes:'Pin the EHT image in chat. Remind Constellation about !fetch',created:''},
+    {id:'2',title:'Sgr A* stream VOD — highlights cut',channel:'youtube',status:'idea',date:d(4),time:'',caption:'',link:'',notes:'Cut: the moment Ripley walked in during the black hole explanation',created:''},
+    {id:'3',title:'Did you know Sgr A* has been flaring for millions of years?',channel:'x',status:'drafted',date:d(3),time:'10:00',caption:"The supermassive black hole at the center of our galaxy isn't quiet. It flares in X-ray and infrared. We flew there last night on #LNSF. Here's what we learned 🧵",link:'',notes:'Thread — 5 tweets. Attach EHT image.',created:''},
+    {id:'4',title:'Black hole at the center of the Milky Way — Bluesky thread',channel:'bluesky',status:'drafted',date:d(3),time:'10:30',caption:"We flew to Sagittarius A* last night on Late Night Space Flight. 26,000 light-years. 4 million solar masses. Here's what the real science says about what we'd actually experience near it.",link:'',notes:'Cross-post from X thread, reformat for Bluesky style',created:''},
+    {id:'5',title:'LNSF Ep 49 — Crab Nebula',channel:'twitch',status:'idea',date:d(7),time:'21:00',caption:'',link:'',notes:'Follow up from pulsar discussion last week',created:''},
+  ];
+}
+
+document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ closeModal(); closeDetail(); }});
+document.getElementById('formModal').addEventListener('click', e=>{ if(e.target===e.currentTarget) closeModal(); });
+document.getElementById('detailModal').addEventListener('click', e=>{ if(e.target===e.currentTarget) closeDetail(); });
+
+load();
+</script>
+</body>
+</html>

@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LNSF — Stream Prep</title>
+<script src="../auth.js"></script>
+<script>requireAuth();</script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0A0C10;--surface:#10131A;--surface2:#181D27;--border:#1E2535;--border2:#28334A;
+    --text:#E8EBF4;--muted:#5A6580;--accent:#1A6BFF;--accent-dim:#1A6BFF18;
+    --gold:#F5C842;--gold-dim:#F5C84218;--green:#22C55E;--green-dim:#22C55E15;
+    --red:#EF4444;--red-dim:#EF444415;--purple:#A78BFA;--purple-dim:#A78BFA15;
+    --cyan:#22D3EE;--cyan-dim:#22D3EE15;--amber:#F59E0B;--amber-dim:#F59E0B15;
+    --radius:10px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;min-height:100vh}
+
+  /* starfield */
+  body::before{content:'';position:fixed;inset:0;
+    background-image:
+      radial-gradient(1px 1px at 15% 25%, rgba(255,255,255,0.35) 0%, transparent 100%),
+      radial-gradient(1px 1px at 72% 14%, rgba(255,255,255,0.25) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 44% 68%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 88% 55%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 31% 82%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 60% 38%, rgba(255,255,255,0.15) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 8% 60%, rgba(255,255,255,0.25) 0%, transparent 100%),
+      radial-gradient(1px 1px at 95% 88%, rgba(255,255,255,0.2) 0%, transparent 100%);
+    pointer-events:none;z-index:0;opacity:0.6}
+
+  .app{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:32px 24px}
+
+  header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:16px}
+  .header-label{font-family:'DM Mono',monospace;font-size:11px;color:var(--gold);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:6px}
+  .header-label a{color:var(--muted);text-decoration:none}
+  .header-label a:hover{color:var(--gold)}
+  h1{font-size:26px;font-weight:600;letter-spacing:-0.02em}
+  .header-sub{font-size:13px;color:var(--muted);margin-top:3px;font-family:'DM Mono',monospace}
+  .header-right{display:flex;gap:10px;align-items:center}
+
+  /* STATS */
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:24px}
+  .stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:13px 15px}
+  .stat-num{font-family:'DM Mono',monospace;font-size:24px;font-weight:500;line-height:1;margin-bottom:3px}
+  .stat-label{font-size:11px;color:var(--muted)}
+
+  /* QUEUE */
+  .queue{display:flex;flex-direction:column;gap:10px}
+
+  /* EPISODE CARD */
+  .ep-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:border-color 0.15s}
+  .ep-card:hover{border-color:var(--border2)}
+  .ep-card.status-next{border-left:3px solid var(--gold)}
+  .ep-card.status-prepped{border-left:3px solid var(--green)}
+  .ep-card.status-aired{border-left:3px solid var(--muted);opacity:0.65}
+  .ep-card.status-idea{border-left:3px solid var(--purple)}
+
+  .ep-header{display:flex;align-items:center;gap:14px;padding:14px 18px;cursor:pointer;user-select:none}
+  .ep-drag{color:var(--muted);font-size:16px;cursor:grab;flex-shrink:0;opacity:0.4}
+  .ep-drag:hover{opacity:0.8}
+  .ep-main{flex:1;min-width:0}
+  .ep-destination{font-weight:500;font-size:15px;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ep-meta{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);display:flex;gap:10px;flex-wrap:wrap}
+  .ep-right{display:flex;gap:8px;align-items:center;flex-shrink:0}
+  .ep-expand{color:var(--muted);font-size:12px;transition:transform 0.2s;flex-shrink:0}
+  .ep-card.expanded .ep-expand{transform:rotate(180deg)}
+
+  /* EPISODE BODY */
+  .ep-body{display:none;border-top:1px solid var(--border);padding:18px}
+  .ep-card.expanded .ep-body{display:block}
+  .ep-sections{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+  @media(max-width:700px){.ep-sections{grid-template-columns:1fr}}
+  .ep-section{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:14px}
+  .ep-section-full{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:14px}
+  .sec-label{font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+  .sec-icon{font-size:13px}
+  .sec-content{font-size:13px;color:var(--text);line-height:1.7;white-space:pre-wrap}
+  .sec-empty{font-size:12px;color:var(--muted);font-style:italic}
+  .ep-actions{display:flex;gap:8px;flex-wrap:wrap;padding-top:14px;border-top:1px solid var(--border)}
+
+  /* CHECKLIST */
+  .checklist{display:flex;flex-direction:column;gap:6px}
+  .check-item{display:flex;align-items:flex-start;gap:8px;cursor:pointer;padding:3px 0}
+  .check-item input[type=checkbox]{width:14px;height:14px;margin-top:1px;accent-color:var(--gold);flex-shrink:0;cursor:pointer}
+  .check-label{font-size:13px;color:var(--text);line-height:1.4}
+  .check-item.done .check-label{text-decoration:line-through;color:var(--muted)}
+
+  /* BADGES */
+  .badge{display:inline-flex;align-items:center;font-family:'DM Mono',monospace;font-size:10px;padding:2px 8px;border-radius:99px;border:1px solid;white-space:nowrap}
+  .b-next   {color:var(--gold);  border-color:var(--gold);  background:var(--gold-dim)}
+  .b-prepped{color:var(--green); border-color:var(--green); background:var(--green-dim)}
+  .b-aired  {color:var(--muted); border-color:var(--border2);background:transparent}
+  .b-idea   {color:var(--purple);border-color:var(--purple);background:var(--purple-dim)}
+  .b-tue    {color:var(--cyan);  border-color:var(--cyan);  background:var(--cyan-dim)}
+  .b-thu    {color:var(--amber); border-color:var(--amber); background:var(--amber-dim)}
+
+  /* BUTTONS */
+  .btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:var(--radius);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:all 0.15s;border:none;white-space:nowrap}
+  .btn-primary{background:var(--accent);color:#fff}
+  .btn-primary:hover{background:#2a7aff}
+  .btn-gold{background:var(--gold-dim);border:1px solid var(--gold);color:var(--gold)}
+  .btn-gold:hover{background:var(--gold);color:#000}
+  .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted)}
+  .btn-ghost:hover{border-color:var(--border2);color:var(--text)}
+  .btn-danger{background:var(--red-dim);border:1px solid var(--red);color:var(--red)}
+  .btn-danger:hover{background:var(--red);color:#fff}
+  .btn-sm{padding:5px 10px;font-size:12px}
+  .icon-btn{width:28px;height:28px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;transition:all 0.15s}
+  .icon-btn:hover{border-color:var(--border2);color:var(--text)}
+  .icon-btn.danger:hover{border-color:var(--red);color:var(--red);background:var(--red-dim)}
+
+  /* MODAL */
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.8);backdrop-filter:blur(4px);z-index:100;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity 0.2s}
+  .modal-overlay.open{opacity:1;pointer-events:all}
+  .modal{background:var(--surface);border:1px solid var(--border2);border-radius:14px;width:100%;max-width:640px;max-height:90vh;overflow-y:auto;transform:translateY(16px);transition:transform 0.2s;box-shadow:0 24px 64px rgba(0,0,0,0.7)}
+  .modal-overlay.open .modal{transform:translateY(0)}
+  .modal-header{padding:18px 22px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+  .modal-title{font-size:15px;font-weight:600}
+  .modal-body{padding:18px 22px;display:flex;flex-direction:column;gap:14px}
+  .modal-footer{padding:14px 22px;border-top:1px solid var(--border);display:flex;gap:10px;justify-content:flex-end}
+  .field{display:flex;flex-direction:column;gap:5px}
+  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  label{font-size:11px;font-weight:500;color:var(--muted);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:0.06em}
+  input,select,textarea{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border-color 0.15s;width:100%}
+  input:focus,select:focus,textarea:focus{border-color:var(--gold)}
+  textarea{resize:vertical;min-height:90px;line-height:1.6}
+  select option{background:var(--surface2)}
+
+  .empty-state{text-align:center;padding:56px 24px;color:var(--muted)}
+  .empty-icon{font-size:36px;margin-bottom:12px;opacity:0.4}
+  .toolbar{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+  .filter-pills{display:flex;gap:6px;flex-wrap:wrap;flex:1}
+  .pill{font-family:'DM Mono',monospace;font-size:11px;padding:5px 12px;border-radius:99px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all 0.15s;white-space:nowrap}
+  .pill:hover{border-color:var(--border2);color:var(--text)}
+  .pill.active{border-color:var(--gold);color:var(--gold);background:var(--gold-dim)}
+
+  @media(max-width:640px){.app{padding:20px 16px}h1{font-size:22px}header{flex-direction:column;align-items:flex-start}.field-row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header>
+    <div>
+      <div class="header-label"><a href="../index.html">← tools</a> / malforthewin</div>
+      <h1>Late Night Space Flight</h1>
+      <div class="header-sub">Stream prep · Tue &amp; Thu</div>
+    </div>
+    <div class="header-right">
+      <button class="btn btn-gold" onclick="openModal()">+ New episode</button>
+    </div>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-num" style="color:var(--gold)"   id="sNext">—</div><div class="stat-label">Up next</div></div>
+    <div class="stat"><div class="stat-num" style="color:var(--green)"  id="sPrepped">—</div><div class="stat-label">Prepped</div></div>
+    <div class="stat"><div class="stat-num" style="color:var(--purple)" id="sIdeas">—</div><div class="stat-label">Ideas queue</div></div>
+    <div class="stat"><div class="stat-num" style="color:var(--muted)"  id="sAired">—</div><div class="stat-label">Aired</div></div>
+  </div>
+
+  <div class="toolbar">
+    <div class="filter-pills">
+      <button class="pill active" onclick="setFilter('active',this)">Active</button>
+      <button class="pill" onclick="setFilter('all',this)">All</button>
+      <button class="pill" onclick="setFilter('next',this)">Up next</button>
+      <button class="pill" onclick="setFilter('prepped',this)">Prepped</button>
+      <button class="pill" onclick="setFilter('idea',this)">Ideas</button>
+      <button class="pill" onclick="setFilter('aired',this)">Aired</button>
+    </div>
+  </div>
+
+  <div class="queue" id="queue">
+    <div style="text-align:center;padding:48px;color:var(--muted);font-family:'DM Mono',monospace;font-size:12px">Loading…</div>
+  </div>
+</div>
+
+<!-- ADD / EDIT MODAL -->
+<div class="modal-overlay" id="formModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle">New episode</div>
+      <button class="icon-btn" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="field">
+        <label>Destination object</label>
+        <input type="text" id="fDest" placeholder="e.g. Sagittarius A*, Crab Nebula, HD 189733b">
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Air date</label>
+          <input type="date" id="fDate">
+        </div>
+        <div class="field">
+          <label>Session</label>
+          <select id="fSession">
+            <option value="">— pick one —</option>
+            <option>Tuesday</option>
+            <option>Thursday</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Status</label>
+          <select id="fStatus">
+            <option value="idea">💡 Idea</option>
+            <option value="next">🚀 Up next</option>
+            <option value="prepped">✅ Prepped</option>
+            <option value="aired">📺 Aired</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Object type</label>
+          <input type="text" id="fType" placeholder="e.g. Black hole, Nebula, Exoplanet">
+        </div>
+      </div>
+      <div class="field">
+        <label>🔭 Science notes</label>
+        <textarea id="fScience" placeholder="Key facts, distance, mass, discovery history, what makes it scientifically interesting…"></textarea>
+      </div>
+      <div class="field">
+        <label>💬 Talking points + chat questions</label>
+        <textarea id="fTalking" placeholder="Main beats for the science conversation. Chat questions to seed. Analogies to use…"></textarea>
+      </div>
+      <div class="field">
+        <label>🐾 Community segment prep</label>
+        <textarea id="fCommunity" placeholder="!fetch payload, callbacks to last flight, community moments to reference, Ripley cam plan…"></textarea>
+      </div>
+      <div class="field">
+        <label>📼 VOD / clip notes</label>
+        <textarea id="fVod" placeholder="Fill in after the stream — highlight moments, clips to cut, what landed, what to revisit…" style="min-height:70px"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveEpisode()">Save</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'lnsf_episodes';
+let episodes = [];
+let activeFilter = 'active';
+let editingId = null;
+
+const STATUS_LABELS = { next:'🚀 Up next', prepped:'✅ Prepped', aired:'📺 Aired', idea:'💡 Idea' };
+const STATUS_BADGE  = { next:'b-next', prepped:'b-prepped', aired:'b-aired', idea:'b-idea' };
+const SESSION_BADGE = { Tuesday:'b-tue', Thursday:'b-thu' };
+
+// ── STORAGE ──────────────────────────────────────────────────────────────────
+async function load() {
+  try {
+    const result = await window.storage.get(STORAGE_KEY);
+    episodes = result ? JSON.parse(result.value) : getSampleData();
+  } catch {
+    episodes = getSampleData();
+  }
+  render();
+}
+
+async function save() {
+  try { await window.storage.set(STORAGE_KEY, JSON.stringify(episodes)); } catch(e) { console.warn('Storage unavailable', e); }
+}
+
+// ── SAVE EPISODE ─────────────────────────────────────────────────────────────
+async function saveEpisode() {
+  const record = {
+    destination: document.getElementById('fDest').value.trim(),
+    date:        document.getElementById('fDate').value,
+    session:     document.getElementById('fSession').value,
+    status:      document.getElementById('fStatus').value,
+    objectType:  document.getElementById('fType').value.trim(),
+    science:     document.getElementById('fScience').value.trim(),
+    talking:     document.getElementById('fTalking').value.trim(),
+    community:   document.getElementById('fCommunity').value.trim(),
+    vod:         document.getElementById('fVod').value.trim(),
+    checks:      editingId ? (episodes.find(e=>e.id===editingId)?.checks || defaultChecks()) : defaultChecks(),
+  };
+  if (!record.destination) { alert('Destination is required.'); return; }
+
+  if (editingId) {
+    episodes = episodes.map(e => e.id === editingId ? { ...e, ...record } : e);
+  } else {
+    episodes.unshift({ id: Date.now().toString(), created: new Date().toISOString(), ...record });
+  }
+  await save();
+  closeModal();
+  render();
+}
+
+function defaultChecks() {
+  return [
+    { id:'c1', label:'Research destination object', done:false },
+    { id:'c2', label:'Write science notes', done:false },
+    { id:'c3', label:'Draft talking points + chat questions', done:false },
+    { id:'c4', label:'Plan community segment / !fetch payload', done:false },
+    { id:'c5', label:'Set waypoint in Elite Dangerous', done:false },
+    { id:'c6', label:'Stream title + tags ready', done:false },
+  ];
+}
+
+async function toggleCheck(episodeId, checkId) {
+  episodes = episodes.map(e => {
+    if (e.id !== episodeId) return e;
+    return { ...e, checks: e.checks.map(c => c.id === checkId ? { ...c, done: !c.done } : c) };
+  });
+  await save();
+  render();
+}
+
+async function setStatus(id, status) {
+  episodes = episodes.map(e => e.id === id ? { ...e, status } : e);
+  await save();
+  render();
+}
+
+async function deleteEpisode(id) {
+  if (!confirm('Delete this episode?')) return;
+  episodes = episodes.filter(e => e.id !== id);
+  await save();
+  render();
+}
+
+// ── RENDER ────────────────────────────────────────────────────────────────────
+function getFiltered() {
+  if (activeFilter === 'active')  return episodes.filter(e => e.status !== 'aired');
+  if (activeFilter === 'next')    return episodes.filter(e => e.status === 'next');
+  if (activeFilter === 'prepped') return episodes.filter(e => e.status === 'prepped');
+  if (activeFilter === 'idea')    return episodes.filter(e => e.status === 'idea');
+  if (activeFilter === 'aired')   return episodes.filter(e => e.status === 'aired');
+  return episodes;
+}
+
+function render() {
+  document.getElementById('sNext').textContent    = episodes.filter(e=>e.status==='next').length;
+  document.getElementById('sPrepped').textContent = episodes.filter(e=>e.status==='prepped').length;
+  document.getElementById('sIdeas').textContent   = episodes.filter(e=>e.status==='idea').length;
+  document.getElementById('sAired').textContent   = episodes.filter(e=>e.status==='aired').length;
+
+  const filtered = getFiltered();
+  const queue = document.getElementById('queue');
+
+  if (!filtered.length) {
+    queue.innerHTML = `<div class="empty-state"><div class="empty-icon">🔭</div><p>${activeFilter==='active'?'No active episodes. Add your first flight.':'No episodes in this category.'}</p></div>`;
+    return;
+  }
+
+  queue.innerHTML = filtered.map(ep => {
+    const checks      = ep.checks || defaultChecks();
+    const doneCount   = checks.filter(c=>c.done).length;
+    const totalChecks = checks.length;
+    const pct         = Math.round((doneCount/totalChecks)*100);
+    const statusBadge = STATUS_BADGE[ep.status] || 'b-idea';
+    const sessBadge   = ep.session ? SESSION_BADGE[ep.session] || '' : '';
+
+    return `
+    <div class="ep-card status-${ep.status}" id="ep-${ep.id}">
+      <div class="ep-header" onclick="toggleExpand('${ep.id}')">
+        <span class="ep-drag" title="Drag to reorder" onclick="event.stopPropagation()">⠿</span>
+        <div class="ep-main">
+          <div class="ep-destination">${esc(ep.destination)}</div>
+          <div class="ep-meta">
+            ${ep.date ? `<span>${formatDate(ep.date)}</span>` : ''}
+            ${ep.objectType ? `<span>${esc(ep.objectType)}</span>` : ''}
+            ${ep.status !== 'idea' && ep.status !== 'aired' ? `<span>${doneCount}/${totalChecks} prep steps</span>` : ''}
+          </div>
+        </div>
+        <div class="ep-right">
+          ${ep.session ? `<span class="badge ${sessBadge}">${ep.session}</span>` : ''}
+          <span class="badge ${statusBadge}">${STATUS_LABELS[ep.status]||ep.status}</span>
+          <span class="ep-expand">▼</span>
+        </div>
+      </div>
+
+      <div class="ep-body">
+        <!-- PREP CHECKLIST -->
+        ${ep.status !== 'aired' ? `
+        <div class="ep-section-full">
+          <div class="sec-label"><span class="sec-icon">✅</span> Prep checklist
+            <span style="margin-left:auto;font-family:'DM Mono',monospace;font-size:10px;color:${pct===100?'var(--green)':'var(--muted)'}">${pct}%</span>
+          </div>
+          <div class="checklist">
+            ${checks.map(c=>`
+              <label class="check-item ${c.done?'done':''}" onclick="event.preventDefault();toggleCheck('${ep.id}','${c.id}')">
+                <input type="checkbox" ${c.done?'checked':''} onchange="toggleCheck('${ep.id}','${c.id}')">
+                <span class="check-label">${esc(c.label)}</span>
+              </label>
+            `).join('')}
+          </div>
+        </div>` : ''}
+
+        <!-- SCIENCE + TALKING + COMMUNITY -->
+        <div class="ep-sections">
+          <div class="ep-section">
+            <div class="sec-label"><span class="sec-icon">🔭</span> Science notes</div>
+            ${ep.science
+              ? `<div class="sec-content">${esc(ep.science)}</div>`
+              : `<div class="sec-empty">No science notes yet</div>`}
+          </div>
+          <div class="ep-section">
+            <div class="sec-label"><span class="sec-icon">💬</span> Talking points + chat Qs</div>
+            ${ep.talking
+              ? `<div class="sec-content">${esc(ep.talking)}</div>`
+              : `<div class="sec-empty">No talking points yet</div>`}
+          </div>
+        </div>
+
+        <div class="ep-sections">
+          <div class="ep-section">
+            <div class="sec-label"><span class="sec-icon">🐾</span> Community segment</div>
+            ${ep.community
+              ? `<div class="sec-content">${esc(ep.community)}</div>`
+              : `<div class="sec-empty">No community prep yet</div>`}
+          </div>
+          <div class="ep-section">
+            <div class="sec-label"><span class="sec-icon">📼</span> VOD / clip notes</div>
+            ${ep.vod
+              ? `<div class="sec-content">${esc(ep.vod)}</div>`
+              : `<div class="sec-empty">${ep.status==='aired'?'No VOD notes added':'Fill in after the stream'}</div>`}
+          </div>
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="ep-actions">
+          <button class="btn btn-ghost btn-sm" onclick="openEdit('${ep.id}')">✎ Edit</button>
+          ${ep.status==='idea'  ? `<button class="btn btn-gold btn-sm" onclick="setStatus('${ep.id}','next')">→ Queue it</button>` : ''}
+          ${ep.status==='next'  ? `<button class="btn btn-ghost btn-sm" onclick="setStatus('${ep.id}','prepped')">✅ Mark prepped</button>` : ''}
+          ${ep.status==='prepped' ? `<button class="btn btn-ghost btn-sm" onclick="setStatus('${ep.id}','aired')">📺 Mark aired</button>` : ''}
+          ${ep.status==='aired' ? `<button class="btn btn-ghost btn-sm" onclick="setStatus('${ep.id}','idea')">↩ Requeue</button>` : ''}
+          <button class="btn btn-danger btn-sm" style="margin-left:auto" onclick="deleteEpisode('${ep.id}')">Delete</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleExpand(id) {
+  const card = document.getElementById('ep-'+id);
+  card.classList.toggle('expanded');
+}
+
+// ── MODAL ─────────────────────────────────────────────────────────────────────
+function openModal(id=null) {
+  editingId = id;
+  const ep = id ? episodes.find(e=>e.id===id) : null;
+  document.getElementById('modalTitle').textContent = id ? 'Edit episode' : 'New episode';
+  document.getElementById('fDest').value      = ep?.destination || '';
+  document.getElementById('fDate').value      = ep?.date || '';
+  document.getElementById('fSession').value   = ep?.session || '';
+  document.getElementById('fStatus').value    = ep?.status || 'idea';
+  document.getElementById('fType').value      = ep?.objectType || '';
+  document.getElementById('fScience').value   = ep?.science || '';
+  document.getElementById('fTalking').value   = ep?.talking || '';
+  document.getElementById('fCommunity').value = ep?.community || '';
+  document.getElementById('fVod').value       = ep?.vod || '';
+  document.getElementById('formModal').classList.add('open');
+}
+function openEdit(id) { openModal(id); }
+function closeModal() { document.getElementById('formModal').classList.remove('open'); editingId=null; }
+function setFilter(f,el) { activeFilter=f; document.querySelectorAll('.pill').forEach(p=>p.classList.remove('active')); el.classList.add('active'); render(); }
+
+// ── HELPERS ───────────────────────────────────────────────────────────────────
+function formatDate(d) { if(!d) return ''; const dt=new Date(d+'T00:00:00'); return dt.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}); }
+function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function getSampleData() {
+  return [
+    {
+      id:'1', created:'', destination:'Sagittarius A*', date:'2026-05-06', session:'Tuesday',
+      status:'next', objectType:'Supermassive black hole',
+      science:'4 million solar masses. 26,000 light-years away. Event Horizon Telescope imaged it in 2022 — second black hole ever imaged. Flares detected in X-ray, IR and radio. Stars orbiting it (S2 most famous) confirm GR predictions.',
+      talking:'Why is it so hard to image? (dust, gas, scintillation)\nHow do we know it\'s there if we can\'t see it?\nChat Q: If you were in a ship near Sgr A*, what would you actually see?\nAnalogy: bowling ball on a trampoline, but the trampoline is spacetime itself',
+      community:'!fetch → Thargoid artifact (Leo\'s been suspiciously quiet about this one)\nCallback: last week someone asked if black holes "suck" — address that\nRipley cam: she\'ll be in the chair for departure',
+      vod:'',
+      checks:[
+        {id:'c1',label:'Research destination object',done:true},
+        {id:'c2',label:'Write science notes',done:true},
+        {id:'c3',label:'Draft talking points + chat questions',done:true},
+        {id:'c4',label:'Plan community segment / !fetch payload',done:true},
+        {id:'c5',label:'Set waypoint in Elite Dangerous',done:false},
+        {id:'c6',label:'Stream title + tags ready',done:false},
+      ]
+    },
+    {
+      id:'2', created:'', destination:'Crab Nebula (M1)', date:'2026-05-08', session:'Thursday',
+      status:'prepped', objectType:'Supernova remnant / pulsar',
+      science:'Remnant of SN 1054 — recorded by Chinese astronomers. 6,500 ly away. Pulsar at center spins 30x/sec. One of the most studied objects in sky. Strong X-ray and radio source.',
+      talking:'What is a supernova remnant vs a nebula?\nHow do we know it was seen in 1054?\nChat Q: Would SN 1054 have been visible in daylight from Earth?\nThe pulsar: spinning neutron star — city-sized, sun-massed',
+      community:'!fetch → pulsar timing data (Leo has been calculating)\nNew community member shoutout — Constellation welcomed 3 new members\nRipley fetch: she once retrieved a neutron star diagram, unclear how',
+      vod:'',
+      checks:[
+        {id:'c1',label:'Research destination object',done:true},
+        {id:'c2',label:'Write science notes',done:true},
+        {id:'c3',label:'Draft talking points + chat questions',done:true},
+        {id:'c4',label:'Plan community segment / !fetch payload',done:true},
+        {id:'c5',label:'Set waypoint in Elite Dangerous',done:true},
+        {id:'c6',label:'Stream title + tags ready',done:true},
+      ]
+    },
+    {
+      id:'3', created:'', destination:'HD 189733b', date:'', session:'',
+      status:'idea', objectType:'Hot Jupiter exoplanet',
+      science:'63 ly away. Rains glass sideways at 5,400 mph. Deep cobalt blue — not from water, from silicate particles. 1,000°C dayside. One of most studied exoplanet atmospheres.',
+      talking:'', community:'', vod:'',
+      checks:defaultChecks()
+    },
+  ];
+  function defaultChecks(){return[{id:'c1',label:'Research destination object',done:false},{id:'c2',label:'Write science notes',done:false},{id:'c3',label:'Draft talking points + chat questions',done:false},{id:'c4',label:'Plan community segment / !fetch payload',done:false},{id:'c5',label:'Set waypoint in Elite Dangerous',done:false},{id:'c6',label:'Stream title + tags ready',done:false}];}
+}
+
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
+document.getElementById('formModal').addEventListener('click', e=>{ if(e.target===e.currentTarget) closeModal(); });
+
+load();
+</script>
+</body>
+</html>

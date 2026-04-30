@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Income Tracker</title>
+<script src="../auth.js"></script>
+<script>requireAuth();</script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0D0F12;--surface:#13161B;--surface2:#1C2028;--border:#252A33;--border2:#2E3440;
+    --text:#E8EAF0;--muted:#6B7385;--accent:#1A6BFF;--accent-dim:#1A6BFF18;
+    --green:#22C55E;--green-dim:#22C55E15;--amber:#F59E0B;--amber-dim:#F59E0B15;
+    --red:#EF4444;--red-dim:#EF444415;--purple:#A78BFA;--purple-dim:#A78BFA15;
+    --cyan:#22D3EE;--cyan-dim:#22D3EE15;--orange:#F97316;--orange-dim:#F9731615;
+    --radius:10px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;min-height:100vh}
+  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.4}
+  .app{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:32px 24px}
+
+  header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:16px}
+  .header-label{font-family:'DM Mono',monospace;font-size:11px;color:var(--accent);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:6px}
+  .header-label a{color:var(--muted);text-decoration:none}
+  .header-label a:hover{color:var(--accent)}
+  h1{font-size:26px;font-weight:600;letter-spacing:-0.02em}
+  .header-right{display:flex;gap:10px;align-items:center}
+
+  /* GOAL BAR */
+  .goal-bar{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:20px;display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+  .goal-income{flex:1;min-width:200px}
+  .goal-label{font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:6px}
+  .goal-amount{font-family:'DM Mono',monospace;font-size:32px;font-weight:500;color:var(--amber);line-height:1}
+  .goal-sub{font-size:12px;color:var(--muted);margin-top:4px}
+  .goal-progress{flex:2;min-width:260px}
+  .progress-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+  .progress-label{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted)}
+  .progress-pct{font-family:'DM Mono',monospace;font-size:13px;font-weight:500}
+  .progress-track{height:8px;background:var(--surface2);border-radius:99px;overflow:hidden}
+  .progress-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--green));transition:width 0.4s ease}
+  .goal-edit-btn{font-family:'DM Mono',monospace;font-size:11px;padding:6px 12px;border-radius:var(--radius);border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all 0.15s;white-space:nowrap}
+  .goal-edit-btn:hover{border-color:var(--border2);color:var(--text)}
+
+  /* STATS */
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:24px}
+  .stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:13px 15px}
+  .stat-num{font-family:'DM Mono',monospace;font-size:22px;font-weight:500;line-height:1;margin-bottom:3px}
+  .stat-label{font-size:11px;color:var(--muted)}
+
+  /* TABS */
+  .tabs{display:flex;gap:2px;margin-bottom:20px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:4px}
+  .tab{flex:1;font-family:'DM Mono',monospace;font-size:11px;padding:8px 12px;border-radius:8px;border:none;background:transparent;color:var(--muted);cursor:pointer;transition:all 0.15s;text-align:center;white-space:nowrap}
+  .tab:hover{color:var(--text)}
+  .tab.active{background:var(--surface2);color:var(--text);border:1px solid var(--border)}
+
+  /* PANEL */
+  .panel{display:none}
+  .panel.active{display:block}
+
+  /* INCOME STREAMS */
+  .stream-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin-bottom:16px}
+  .stream-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;cursor:pointer;transition:all 0.12s;position:relative}
+  .stream-card:hover{border-color:var(--border2)}
+  .stream-card.active-stream{border-left:3px solid var(--green)}
+  .stream-card.inactive-stream{border-left:3px solid var(--border);opacity:0.6}
+  .stream-card.pending-stream{border-left:3px solid var(--amber)}
+  .stream-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px}
+  .stream-name{font-weight:500;font-size:14px}
+  .stream-amount{font-family:'DM Mono',monospace;font-size:16px;font-weight:500;color:var(--green);margin-bottom:4px}
+  .stream-meta{font-size:12px;color:var(--muted)}
+  .stream-actions{display:flex;gap:6px;margin-top:10px;opacity:0;transition:opacity 0.15s}
+  .stream-card:hover .stream-actions{opacity:1}
+
+  /* WEEKLY TASKS */
+  .week-block{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:12px}
+  .week-block-header{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;cursor:pointer}
+  .week-block-title{font-weight:500;font-size:14px}
+  .week-block-meta{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);display:flex;gap:10px;align-items:center}
+  .week-pct{font-family:'DM Mono',monospace;font-size:11px}
+  .week-expand{color:var(--muted);font-size:11px;transition:transform 0.2s}
+  .week-block.expanded .week-expand{transform:rotate(180deg)}
+  .week-body{display:none;padding:14px 16px}
+  .week-block.expanded .week-body{display:block}
+  .checklist{display:flex;flex-direction:column;gap:6px}
+  .check-item{display:flex;align-items:flex-start;gap:10px;padding:8px 10px;border-radius:8px;cursor:pointer;border:1px solid transparent;transition:all 0.12s}
+  .check-item:hover{background:var(--surface2);border-color:var(--border)}
+  .check-item.done{opacity:0.55}
+  .check-item.done .check-label{text-decoration:line-through;color:var(--muted)}
+  .check-box{width:16px;height:16px;border-radius:4px;border:1.5px solid var(--border);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;transition:all 0.15s}
+  .check-item.done .check-box{background:var(--green);border-color:var(--green)}
+  .check-mark{display:none;color:#000;font-size:10px;font-weight:700}
+  .check-item.done .check-mark{display:block}
+  .check-label{font-size:13px;line-height:1.5}
+  .add-task-row{display:flex;gap:8px;margin-top:10px}
+  .add-task-input{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:7px 12px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none}
+  .add-task-input:focus{border-color:var(--accent)}
+
+  /* RESOURCES */
+  .resource-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+  .resource-link{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;text-decoration:none;color:var(--text);display:flex;align-items:center;gap:10px;transition:all 0.15s;font-size:13px;font-weight:500}
+  .resource-link:hover{border-color:var(--accent);color:var(--accent)}
+  .resource-icon{font-size:18px;flex-shrink:0}
+
+  /* VETERAN RESOURCES */
+  .vet-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:10px}
+  .vet-name{font-weight:500;margin-bottom:4px}
+  .vet-desc{font-size:13px;color:var(--muted);line-height:1.5}
+  .vet-link{font-family:'DM Mono',monospace;font-size:11px;color:var(--accent);text-decoration:none;margin-top:6px;display:inline-block}
+  .vet-link:hover{text-decoration:underline}
+
+  /* CRISIS PLAN */
+  .crisis-section{background:var(--red-dim);border:1px solid var(--red);border-radius:var(--radius);padding:18px;margin-bottom:12px}
+  .crisis-title{font-weight:500;color:var(--red);margin-bottom:10px;font-size:14px}
+  .crisis-list{display:flex;flex-direction:column;gap:6px}
+  .crisis-item{font-size:13px;color:var(--text);padding-left:16px;position:relative;line-height:1.5}
+  .crisis-item::before{content:'→';position:absolute;left:0;color:var(--red)}
+
+  /* BUTTONS */
+  .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:var(--radius);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:all 0.15s;border:none;white-space:nowrap}
+  .btn-primary{background:var(--accent);color:#fff}
+  .btn-primary:hover{background:#2a7aff}
+  .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted)}
+  .btn-ghost:hover{border-color:var(--border2);color:var(--text)}
+  .btn-danger{background:var(--red-dim);border:1px solid var(--red);color:var(--red)}
+  .btn-danger:hover{background:var(--red);color:#fff}
+  .btn-sm{padding:5px 10px;font-size:12px}
+  .icon-btn{width:26px;height:26px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;transition:all 0.15s}
+  .icon-btn:hover{border-color:var(--border2);color:var(--text)}
+  .icon-btn.danger:hover{border-color:var(--red);color:var(--red);background:var(--red-dim)}
+
+  /* MODAL */
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.78);backdrop-filter:blur(4px);z-index:100;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity 0.2s}
+  .modal-overlay.open{opacity:1;pointer-events:all}
+  .modal{background:var(--surface);border:1px solid var(--border2);border-radius:14px;width:100%;max-width:520px;max-height:88vh;overflow-y:auto;transform:translateY(16px);transition:transform 0.2s;box-shadow:0 24px 64px rgba(0,0,0,0.65)}
+  .modal-overlay.open .modal{transform:translateY(0)}
+  .modal-header{padding:18px 22px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+  .modal-title{font-size:15px;font-weight:600}
+  .modal-body{padding:18px 22px;display:flex;flex-direction:column;gap:14px}
+  .modal-footer{padding:14px 22px;border-top:1px solid var(--border);display:flex;gap:10px;justify-content:flex-end}
+  .field{display:flex;flex-direction:column;gap:5px}
+  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  label{font-size:11px;font-weight:500;color:var(--muted);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:0.06em}
+  input,select,textarea{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border-color 0.15s;width:100%}
+  input:focus,select:focus,textarea:focus{border-color:var(--accent)}
+  select option{background:var(--surface2)}
+
+  .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+  .section-title{font-family:'DM Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted)}
+  .empty-state{text-align:center;padding:40px 24px;color:var(--muted)}
+  .empty-icon{font-size:28px;margin-bottom:8px;opacity:0.4}
+
+  @media(max-width:640px){.app{padding:20px 16px}h1{font-size:22px}header{flex-direction:column;align-items:flex-start}.field-row{grid-template-columns:1fr}.tabs{flex-wrap:wrap}.goal-bar{flex-direction:column;gap:16px}}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header>
+    <div>
+      <div class="header-label"><a href="../index.html">← tools</a> / life & admin</div>
+      <h1>Income tracker</h1>
+    </div>
+    <div class="header-right">
+      <button class="goal-edit-btn" onclick="openGoalModal()">⚙ Edit goal</button>
+    </div>
+  </header>
+
+  <!-- GOAL BAR -->
+  <div class="goal-bar">
+    <div class="goal-income">
+      <div class="goal-label">Monthly income goal</div>
+      <div class="goal-amount" id="goalAmount">$3,250</div>
+      <div class="goal-sub">committed / month</div>
+    </div>
+    <div class="goal-progress">
+      <div class="progress-row">
+        <span class="progress-label">Current committed</span>
+        <span class="progress-pct" id="progressPct" style="color:var(--amber)">$0 / $3,250</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+      <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);margin-top:6px" id="progressLabel">Keep going — every stream counts.</div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat"><div class="stat-num" style="color:var(--green)"  id="sActive">0</div><div class="stat-label">Active streams</div></div>
+    <div class="stat"><div class="stat-num" style="color:var(--amber)"  id="sPending">0</div><div class="stat-label">Pending</div></div>
+    <div class="stat"><div class="stat-num" style="color:var(--accent)" id="sApps">0</div><div class="stat-label">Applications sent</div></div>
+    <div class="stat"><div class="stat-num" style="color:var(--purple)" id="sInterviews">0</div><div class="stat-label">Interviews</div></div>
+    <div class="stat"><div class="stat-num" style="color:var(--cyan)"   id="sProposals">0</div><div class="stat-label">Proposals out</div></div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('streams',this)">💰 Income streams</button>
+    <button class="tab" onclick="switchTab('tasks',this)">✅ Weekly tasks</button>
+    <button class="tab" onclick="switchTab('activity',this)">📊 Activity log</button>
+    <button class="tab" onclick="switchTab('resources',this)">🔗 Resources</button>
+    <button class="tab" onclick="switchTab('crisis',this)">🚨 Crisis plan</button>
+  </div>
+
+  <!-- STREAMS PANEL -->
+  <div class="panel active" id="panel-streams">
+    <div class="section-header">
+      <span class="section-title">Income streams</span>
+      <button class="btn btn-primary btn-sm" onclick="openStreamModal()">+ Add stream</button>
+    </div>
+    <div class="stream-grid" id="streamGrid">
+      <div class="empty-state"><div class="empty-icon">💸</div><p>No income streams yet. Add your first one.</p></div>
+    </div>
+  </div>
+
+  <!-- TASKS PANEL -->
+  <div class="panel" id="panel-tasks">
+    <div class="section-header">
+      <span class="section-title">Weekly task blocks</span>
+      <button class="btn btn-primary btn-sm" onclick="openTaskBlockModal()">+ Add block</button>
+    </div>
+    <div id="taskBlocks">
+      <div class="empty-state"><div class="empty-icon">📋</div><p>No task blocks yet. Add one to start tracking.</p></div>
+    </div>
+  </div>
+
+  <!-- ACTIVITY PANEL -->
+  <div class="panel" id="panel-activity">
+    <div class="section-header">
+      <span class="section-title">Activity log</span>
+      <button class="btn btn-primary btn-sm" onclick="openActivityModal()">+ Log activity</button>
+    </div>
+    <div id="activityLog">
+      <div class="empty-state"><div class="empty-icon">📊</div><p>No activity logged yet.</p></div>
+    </div>
+  </div>
+
+  <!-- RESOURCES PANEL -->
+  <div class="panel" id="panel-resources">
+    <div class="section-header"><span class="section-title">Quick links</span></div>
+    <div class="resource-grid" style="margin-bottom:24px">
+      <a href="https://www.upwork.com" target="_blank" class="resource-link"><span class="resource-icon">💼</span>Upwork</a>
+      <a href="https://www.fiverr.com" target="_blank" class="resource-link"><span class="resource-icon">🟢</span>Fiverr</a>
+      <a href="https://www.linkedin.com/jobs" target="_blank" class="resource-link"><span class="resource-icon">🔵</span>LinkedIn Jobs</a>
+      <a href="https://www.indeed.com" target="_blank" class="resource-link"><span class="resource-icon">🔍</span>Indeed</a>
+      <a href="https://teachable.com" target="_blank" class="resource-link"><span class="resource-icon">🎓</span>Teachable</a>
+      <a href="https://adamleibler.com" target="_blank" class="resource-link"><span class="resource-icon">🌐</span>Your portfolio</a>
+      <a href="https://www.handshake.com" target="_blank" class="resource-link"><span class="resource-icon">🤝</span>Handshake</a>
+      <a href="https://hireheroesusa.org" target="_blank" class="resource-link"><span class="resource-icon">🎖️</span>Hire Heroes USA</a>
+    </div>
+
+    <div class="section-header"><span class="section-title">Veteran resources</span></div>
+    <div>
+      <div class="vet-card">
+        <div class="vet-name">Vocational Rehabilitation & Employment (VR&E)</div>
+        <div class="vet-desc">Chapter 31 benefits — can fund course creation as a self-employment track. Call 1-800-827-1000 and ask specifically for "Chapter 31."</div>
+      </div>
+      <div class="vet-card">
+        <div class="vet-name">Hire Heroes USA</div>
+        <div class="vet-desc">Free job search support, resume review, and interview coaching for veterans and military spouses.</div>
+        <a href="https://hireheroesusa.org" target="_blank" class="vet-link">hireheroesusa.org →</a>
+      </div>
+      <div class="vet-card">
+        <div class="vet-name">VetJobs</div>
+        <div class="vet-desc">Job board focused on veteran-friendly employers. Good for W2 roles with companies that actively recruit vets.</div>
+        <a href="https://vetjobs.com" target="_blank" class="vet-link">vetjobs.com →</a>
+      </div>
+      <div class="vet-card">
+        <div class="vet-name">DAV / American Legion Emergency Grants</div>
+        <div class="vet-desc">Emergency financial assistance for disabled veterans. Contact local chapter for fastest response.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CRISIS PANEL -->
+  <div class="panel" id="panel-crisis">
+    <div style="background:var(--red-dim);border:1px solid var(--red);border-radius:var(--radius);padding:14px 16px;margin-bottom:16px;font-size:13px;color:var(--red)">This plan exists so you never have to improvise under pressure. Review it now while you're calm, not when you need it.</div>
+
+    <div class="crisis-section">
+      <div class="crisis-title">If income target is missed — immediate actions</div>
+      <div class="crisis-list">
+        <div class="crisis-item">Contact car lender: "I'm a disabled veteran facing financial hardship. Can we defer 2 months?"</div>
+        <div class="crisis-item">Contact storage facility: request split payment (half now, half in 30 days)</div>
+        <div class="crisis-item">File or reapply for unemployment — even if previously denied</div>
+        <div class="crisis-item">Contact DAV or American Legion local chapter for emergency grant</div>
+        <div class="crisis-item">Apply for gig bridge work: DoorDash, Instacart, TaskRabbit</div>
+        <div class="crisis-item">List non-essentials on Facebook Marketplace and eBay</div>
+        <div class="crisis-item">Apply to 10 remote bridge roles/day: admin, data entry, customer support ($15–20/hr)</div>
+      </div>
+    </div>
+
+    <div class="section-header" style="margin-top:20px"><span class="section-title">Rate adjustment triggers</span></div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+      <div style="font-weight:500;margin-bottom:8px;font-size:13px">If no freelance work after 3 weeks:</div>
+      <div class="crisis-list" style="margin-top:0">
+        <div class="crisis-item" style="color:var(--text)">Drop Upwork rate to $50/hr (from $70)</div>
+        <div class="crisis-item" style="color:var(--text)">Add 2 lower-tier Fiverr gigs ($150–300 range)</div>
+        <div class="crisis-item" style="color:var(--text)">Email 10 past colleagues and LinkedIn connections directly</div>
+      </div>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--green);border-radius:var(--radius);padding:16px">
+      <div style="font-weight:500;margin-bottom:8px;font-size:13px;color:var(--green)">If freelance work is landing:</div>
+      <div class="crisis-list" style="margin-top:0">
+        <div class="crisis-item" style="color:var(--text)">Double down — increase Upwork apps to 4/day</div>
+        <div class="crisis-item" style="color:var(--text)">Ask current client for referrals</div>
+        <div class="crisis-item" style="color:var(--text)">Build a case study from the project for your portfolio</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- GOAL MODAL -->
+<div class="modal-overlay" id="goalModal">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">Edit income goal</div><button class="icon-btn" onclick="closeGoalModal()">✕</button></div>
+    <div class="modal-body">
+      <div class="field"><label>Monthly income target ($)</label><input type="number" id="gGoal" placeholder="3250"></div>
+      <div class="field-row">
+        <div class="field"><label>Applications sent (total)</label><input type="number" id="gApps" placeholder="0"></div>
+        <div class="field"><label>Interviews scheduled</label><input type="number" id="gInterviews" placeholder="0"></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Proposals out</label><input type="number" id="gProposals" placeholder="0"></div>
+        <div class="field"></div>
+      </div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-ghost" onclick="closeGoalModal()">Cancel</button><button class="btn btn-primary" onclick="saveGoal()">Save</button></div>
+  </div>
+</div>
+
+<!-- STREAM MODAL -->
+<div class="modal-overlay" id="streamModal">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title" id="streamModalTitle">Add income stream</div><button class="icon-btn" onclick="closeStreamModal()">✕</button></div>
+    <div class="modal-body">
+      <div class="field"><label>Stream name</label><input type="text" id="sName" placeholder="e.g. Freelance LXD — Acme Corp, W2 — Deloitte offer, Teachable course"></div>
+      <div class="field-row">
+        <div class="field">
+          <label>Type</label>
+          <select id="sType">
+            <option>Freelance</option>
+            <option>W2 / Full-time</option>
+            <option>Part-time</option>
+            <option>Course / Product</option>
+            <option>Contract</option>
+            <option>Gig / Bridge</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Status</label>
+          <select id="sStatus">
+            <option value="pending">Pending</option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Monthly amount ($)</label><input type="number" id="sAmount" placeholder="0"></div>
+        <div class="field"><label>Start date (if known)</label><input type="date" id="sDate"></div>
+      </div>
+      <div class="field"><label>Notes</label><textarea id="sNotes" placeholder="Contact name, next step, rate negotiation details…" style="min-height:70px"></textarea></div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-ghost" onclick="closeStreamModal()">Cancel</button><button class="btn btn-primary" onclick="saveStream()">Save</button></div>
+  </div>
+</div>
+
+<!-- TASK BLOCK MODAL -->
+<div class="modal-overlay" id="taskBlockModal">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">Add task block</div><button class="icon-btn" onclick="closeTaskBlockModal()">✕</button></div>
+    <div class="modal-body">
+      <div class="field"><label>Block title</label><input type="text" id="tbTitle" placeholder="e.g. Daily job search, Week of May 5, Freelance outreach"></div>
+      <div class="field"><label>First task (add more after saving)</label><input type="text" id="tbTask" placeholder="e.g. Apply to 2 Upwork jobs (30 min)"></div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-ghost" onclick="closeTaskBlockModal()">Cancel</button><button class="btn btn-primary" onclick="saveTaskBlock()">Save</button></div>
+  </div>
+</div>
+
+<!-- ACTIVITY MODAL -->
+<div class="modal-overlay" id="activityModal">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">Log activity</div><button class="icon-btn" onclick="closeActivityModal()">✕</button></div>
+    <div class="modal-body">
+      <div class="field-row">
+        <div class="field">
+          <label>Type</label>
+          <select id="aType">
+            <option>Upwork application</option>
+            <option>W2 application</option>
+            <option>Fiverr order</option>
+            <option>Proposal sent</option>
+            <option>Interview</option>
+            <option>Client outreach</option>
+            <option>Course work</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="field"><label>Date</label><input type="date" id="aDate"></div>
+      </div>
+      <div class="field"><label>Notes</label><input type="text" id="aNotes" placeholder="Company, role, outcome, next step…"></div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-ghost" onclick="closeActivityModal()">Cancel</button><button class="btn btn-primary" onclick="saveActivity()">Save</button></div>
+  </div>
+</div>
+
+<script>
+const SK = 'income_tracker';
+let data = {
+  goal: 3250,
+  apps: 0, interviews: 0, proposals: 0,
+  streams: [],
+  taskBlocks: [],
+  activity: [],
+};
+let editingStreamId = null;
+
+// ── STORAGE ──────────────────────────────────────────────────────────────────
+async function load() {
+  try {
+    const r = await window.storage.get(SK);
+    if (r) data = { ...data, ...JSON.parse(r.value) };
+    else data.taskBlocks = getDefaultTasks();
+  } catch { data.taskBlocks = getDefaultTasks(); }
+  render();
+}
+async function persist() {
+  try { await window.storage.set(SK, JSON.stringify(data)); } catch(e) { console.warn(e); }
+}
+
+// ── RENDER ────────────────────────────────────────────────────────────────────
+function render() {
+  const committed = data.streams.filter(s=>s.status==='active').reduce((sum,s)=>sum+(parseFloat(s.amount)||0),0);
+  const pct = Math.min(100, Math.round((committed/data.goal)*100));
+
+  document.getElementById('goalAmount').textContent  = '$'+data.goal.toLocaleString();
+  document.getElementById('progressPct').textContent = '$'+committed.toLocaleString()+' / $'+data.goal.toLocaleString();
+  document.getElementById('progressPct').style.color = pct>=100?'var(--green)':pct>=60?'var(--amber)':'var(--red)';
+  document.getElementById('progressFill').style.width = pct+'%';
+  document.getElementById('progressLabel').textContent = pct>=100
+    ? '🎉 Target reached!' : pct>=75
+    ? 'Almost there — keep pushing.' : pct>=40
+    ? 'Good progress — keep stacking.' : 'Keep going — every stream counts.';
+
+  document.getElementById('sActive').textContent     = data.streams.filter(s=>s.status==='active').length;
+  document.getElementById('sPending').textContent    = data.streams.filter(s=>s.status==='pending').length;
+  document.getElementById('sApps').textContent       = data.apps;
+  document.getElementById('sInterviews').textContent = data.interviews;
+  document.getElementById('sProposals').textContent  = data.proposals;
+
+  renderStreams();
+  renderTaskBlocks();
+  renderActivity();
+}
+
+function renderStreams() {
+  const grid = document.getElementById('streamGrid');
+  if (!data.streams.length) {
+    grid.innerHTML = '<div class="empty-state"><div class="empty-icon">💸</div><p>No income streams yet. Add your first one.</p></div>';
+    return;
+  }
+  const order = {active:0,pending:1,inactive:2};
+  const sorted = [...data.streams].sort((a,b)=>(order[a.status]??9)-(order[b.status]??9));
+  grid.innerHTML = sorted.map(s=>`
+    <div class="stream-card ${s.status}-stream" onclick="openStreamModal('${s.id}')">
+      <div class="stream-header">
+        <div class="stream-name">${esc(s.name)}</div>
+        <span class="badge ${s.status==='active'?'b-active':s.status==='pending'?'b-pending':'b-inactive'}" style="font-family:'DM Mono',monospace;font-size:10px;padding:2px 7px;border-radius:99px;border:1px solid;${s.status==='active'?'color:var(--green);border-color:var(--green);background:var(--green-dim)':s.status==='pending'?'color:var(--amber);border-color:var(--amber);background:var(--amber-dim)':'color:var(--muted);border-color:var(--border2);background:transparent'}">${s.status}</span>
+      </div>
+      <div class="stream-amount">${s.amount?'$'+parseFloat(s.amount).toLocaleString()+'/mo':'TBD'}</div>
+      <div class="stream-meta">${esc(s.type)}${s.date?' · starts '+formatDate(s.date):''}</div>
+      ${s.notes?`<div class="stream-meta" style="margin-top:6px;font-size:12px">${esc(s.notes)}</div>`:''}
+      <div class="stream-actions">
+        <button class="icon-btn danger" onclick="event.stopPropagation();deleteStream('${s.id}')">✕</button>
+      </div>
+    </div>`).join('');
+}
+
+function renderTaskBlocks() {
+  const container = document.getElementById('taskBlocks');
+  if (!data.taskBlocks.length) {
+    container.innerHTML = '<div class="empty-state"><div class="empty-icon">📋</div><p>No task blocks yet.</p></div>';
+    return;
+  }
+  container.innerHTML = data.taskBlocks.map(block => {
+    const done  = block.tasks.filter(t=>t.done).length;
+    const total = block.tasks.length;
+    const pct   = total ? Math.round((done/total)*100) : 0;
+    return `
+    <div class="week-block" id="tb-${block.id}">
+      <div class="week-block-header" onclick="toggleBlock('${block.id}')">
+        <span class="week-block-title">${esc(block.title)}</span>
+        <div class="week-block-meta">
+          <span class="week-pct" style="color:${pct===100?'var(--green)':'var(--muted)'}">${done}/${total} done</span>
+          <button class="icon-btn danger" style="width:22px;height:22px;font-size:11px" onclick="event.stopPropagation();deleteBlock('${block.id}')">✕</button>
+          <span class="week-expand">▼</span>
+        </div>
+      </div>
+      <div class="week-body">
+        <div class="checklist">
+          ${block.tasks.map(t=>`
+            <div class="check-item ${t.done?'done':''}" onclick="toggleTask('${block.id}','${t.id}')">
+              <div class="check-box"><span class="check-mark">✓</span></div>
+              <span class="check-label">${esc(t.label)}</span>
+            </div>`).join('')}
+        </div>
+        <div class="add-task-row">
+          <input class="add-task-input" id="newTask-${block.id}" placeholder="Add task…" onkeydown="if(event.key==='Enter')addTask('${block.id}')">
+          <button class="btn btn-ghost btn-sm" onclick="addTask('${block.id}')">Add</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderActivity() {
+  const container = document.getElementById('activityLog');
+  if (!data.activity.length) {
+    container.innerHTML = '<div class="empty-state"><div class="empty-icon">📊</div><p>No activity logged yet.</p></div>';
+    return;
+  }
+  const sorted = [...data.activity].sort((a,b)=>new Date(b.date)-new Date(a.date));
+  container.innerHTML = `<div style="display:flex;flex-direction:column;gap:8px">`+sorted.map(a=>`
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;display:flex;align-items:center;gap:12px">
+      <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);white-space:nowrap;min-width:80px">${a.date?formatDate(a.date):'—'}</span>
+      <span style="font-family:'DM Mono',monospace;font-size:11px;padding:2px 8px;border-radius:99px;border:1px solid var(--border);color:var(--muted);white-space:nowrap">${esc(a.type)}</span>
+      <span style="font-size:13px;color:var(--text);flex:1">${esc(a.notes||'')}</span>
+      <button class="icon-btn danger" onclick="deleteActivity('${a.id}')">✕</button>
+    </div>`).join('')+`</div>`;
+}
+
+// ── ACTIONS ───────────────────────────────────────────────────────────────────
+async function toggleTask(blockId, taskId) {
+  data.taskBlocks = data.taskBlocks.map(b => b.id!==blockId ? b : {
+    ...b, tasks: b.tasks.map(t => t.id!==taskId ? t : {...t, done:!t.done})
+  });
+  await persist(); renderTaskBlocks();
+}
+
+async function addTask(blockId) {
+  const input = document.getElementById('newTask-'+blockId);
+  const label = input.value.trim();
+  if (!label) return;
+  data.taskBlocks = data.taskBlocks.map(b => b.id!==blockId ? b : {
+    ...b, tasks: [...b.tasks, {id:Date.now().toString(), label, done:false}]
+  });
+  await persist(); input.value=''; renderTaskBlocks();
+  document.getElementById('tb-'+blockId).classList.add('expanded');
+}
+
+async function toggleBlock(id) {
+  document.getElementById('tb-'+id).classList.toggle('expanded');
+}
+
+async function deleteBlock(id) {
+  if (!confirm('Delete this task block?')) return;
+  data.taskBlocks = data.taskBlocks.filter(b=>b.id!==id);
+  await persist(); renderTaskBlocks();
+}
+
+async function deleteStream(id) {
+  if (!confirm('Delete this income stream?')) return;
+  data.streams = data.streams.filter(s=>s.id!==id);
+  await persist(); render();
+}
+
+async function deleteActivity(id) {
+  data.activity = data.activity.filter(a=>a.id!==id);
+  await persist(); renderActivity();
+}
+
+// ── MODALS ────────────────────────────────────────────────────────────────────
+function openGoalModal() {
+  document.getElementById('gGoal').value      = data.goal;
+  document.getElementById('gApps').value      = data.apps;
+  document.getElementById('gInterviews').value= data.interviews;
+  document.getElementById('gProposals').value = data.proposals;
+  document.getElementById('goalModal').classList.add('open');
+}
+function closeGoalModal() { document.getElementById('goalModal').classList.remove('open'); }
+async function saveGoal() {
+  data.goal       = parseFloat(document.getElementById('gGoal').value)||3250;
+  data.apps       = parseInt(document.getElementById('gApps').value)||0;
+  data.interviews = parseInt(document.getElementById('gInterviews').value)||0;
+  data.proposals  = parseInt(document.getElementById('gProposals').value)||0;
+  await persist(); closeGoalModal(); render();
+}
+
+function openStreamModal(id=null) {
+  editingStreamId = id;
+  const s = id ? data.streams.find(x=>x.id===id) : null;
+  document.getElementById('streamModalTitle').textContent = id?'Edit stream':'Add income stream';
+  document.getElementById('sName').value   = s?.name||'';
+  document.getElementById('sType').value   = s?.type||'Freelance';
+  document.getElementById('sStatus').value = s?.status||'pending';
+  document.getElementById('sAmount').value = s?.amount||'';
+  document.getElementById('sDate').value   = s?.date||'';
+  document.getElementById('sNotes').value  = s?.notes||'';
+  document.getElementById('streamModal').classList.add('open');
+}
+function closeStreamModal() { document.getElementById('streamModal').classList.remove('open'); editingStreamId=null; }
+async function saveStream() {
+  const record = {
+    name:   document.getElementById('sName').value.trim(),
+    type:   document.getElementById('sType').value,
+    status: document.getElementById('sStatus').value,
+    amount: document.getElementById('sAmount').value,
+    date:   document.getElementById('sDate').value,
+    notes:  document.getElementById('sNotes').value.trim(),
+  };
+  if (!record.name) { alert('Name is required.'); return; }
+  if (editingStreamId) data.streams = data.streams.map(s=>s.id===editingStreamId?{...s,...record}:s);
+  else data.streams.push({id:Date.now().toString(),...record});
+  await persist(); closeStreamModal(); render();
+}
+
+function openTaskBlockModal() { document.getElementById('taskBlockModal').classList.add('open'); }
+function closeTaskBlockModal() { document.getElementById('taskBlockModal').classList.remove('open'); document.getElementById('tbTitle').value=''; document.getElementById('tbTask').value=''; }
+async function saveTaskBlock() {
+  const title = document.getElementById('tbTitle').value.trim();
+  const task  = document.getElementById('tbTask').value.trim();
+  if (!title) { alert('Title is required.'); return; }
+  const block = { id:Date.now().toString(), title, tasks: task?[{id:'t1',label:task,done:false}]:[] };
+  data.taskBlocks.push(block);
+  await persist(); closeTaskBlockModal(); renderTaskBlocks();
+  setTimeout(()=>{ const el=document.getElementById('tb-'+block.id); if(el) el.classList.add('expanded'); },50);
+}
+
+function openActivityModal() {
+  document.getElementById('aDate').value = new Date().toISOString().split('T')[0];
+  document.getElementById('activityModal').classList.add('open');
+}
+function closeActivityModal() { document.getElementById('activityModal').classList.remove('open'); }
+async function saveActivity() {
+  const record = {
+    id:    Date.now().toString(),
+    type:  document.getElementById('aType').value,
+    date:  document.getElementById('aDate').value,
+    notes: document.getElementById('aNotes').value.trim(),
+  };
+  data.activity.push(record);
+  // auto-increment stats
+  if (record.type.includes('application')) data.apps++;
+  if (record.type==='Interview') data.interviews++;
+  if (record.type==='Proposal sent') data.proposals++;
+  await persist(); closeActivityModal(); render();
+}
+
+function switchTab(tab, el) {
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('panel-'+tab).classList.add('active');
+}
+
+function formatDate(d) { if(!d) return ''; const dt=new Date(d+'T00:00:00'); return dt.toLocaleDateString('en-US',{month:'short',day:'numeric'}); }
+function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function getDefaultTasks() {
+  return [
+    { id:'daily', title:'Daily job search routine', tasks:[
+      {id:'d1',label:'Apply to 2–3 Upwork jobs (30 min)',done:false},
+      {id:'d2',label:'Respond to all messages within 2 hours',done:false},
+      {id:'d3',label:'Apply to 1 W2 role (20 min)',done:false},
+      {id:'d4',label:'Work on course content or client deliverable (2–3 hrs)',done:false},
+      {id:'d5',label:'Update income tracker (5 min)',done:false},
+    ]},
+    { id:'weekly', title:'Weekly outreach targets', tasks:[
+      {id:'w1',label:'10+ Upwork applications',done:false},
+      {id:'w2',label:'5+ W2 applications',done:false},
+      {id:'w3',label:'Follow up on all open proposals',done:false},
+      {id:'w4',label:'1 LinkedIn post promoting services or course',done:false},
+    ]},
+  ];
+}
+
+document.addEventListener('keydown', e=>{
+  if(e.key==='Escape'){
+    closeGoalModal();closeStreamModal();closeTaskBlockModal();closeActivityModal();
+  }
+});
+['goalModal','streamModal','taskBlockModal','activityModal'].forEach(id=>{
+  document.getElementById(id).addEventListener('click',e=>{ if(e.target===e.currentTarget) e.target.classList.remove('open'); });
+});
+
+load();
+</script>
+</body>
+</html>
