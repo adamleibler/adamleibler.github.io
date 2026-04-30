@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Unbroken Circle Saga</title>
+<script src="../auth.js"></script>
+<script>requireAuth();</script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0D0F12;--surface:#13161B;--surface2:#1C2028;--border:#252A33;--border2:#2E3440;
+    --text:#E8EAF0;--muted:#6B7385;--accent:#1A6BFF;--accent-dim:#1A6BFF18;
+    --green:#22C55E;--green-dim:#22C55E15;--amber:#F59E0B;--amber-dim:#F59E0B15;
+    --red:#EF4444;--red-dim:#EF444415;--purple:#A78BFA;--purple-dim:#A78BFA15;
+    --cyan:#22D3EE;--cyan-dim:#22D3EE15;--orange:#F97316;--orange-dim:#F9731615;
+    --gold:#F5C842;--gold-dim:#F5C84218;
+    --radius:10px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;min-height:100vh}
+  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.4}
+  .app{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:32px 24px}
+
+  header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:16px}
+  .header-label{font-family:'DM Mono',monospace;font-size:11px;color:var(--accent);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:6px}
+  .header-label a{color:var(--muted);text-decoration:none}
+  .header-label a:hover{color:var(--accent)}
+  .header-title{display:flex;align-items:baseline;gap:12px}
+  h1{font-size:26px;font-weight:600;letter-spacing:-0.02em}
+  .book-title-display{font-size:15px;color:var(--muted);font-style:italic;cursor:pointer}
+  .book-title-display:hover{color:var(--text)}
+  .header-right{display:flex;gap:10px;align-items:center}
+
+  /* PROGRESS BAR */
+  .progress-block{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:20px}
+  .progress-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px}
+  .progress-fraction{font-family:'DM Mono',monospace;font-size:28px;font-weight:500;color:var(--gold)}
+  .progress-label{font-size:13px;color:var(--muted)}
+  .progress-pct{font-family:'DM Mono',monospace;font-size:13px;color:var(--muted)}
+  .progress-track{height:6px;background:var(--surface2);border-radius:99px;overflow:hidden}
+  .progress-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--gold));transition:width 0.5s ease}
+  .progress-sub{font-size:12px;color:var(--muted);margin-top:8px;font-style:italic}
+
+  /* STATS */
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:24px}
+  .stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:13px 15px}
+  .stat-num{font-family:'DM Mono',monospace;font-size:22px;font-weight:500;line-height:1;margin-bottom:3px}
+  .stat-label{font-size:11px;color:var(--muted)}
+
+  /* TABS */
+  .tabs{display:flex;gap:2px;margin-bottom:20px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:4px}
+  .tab{flex:1;font-family:'DM Mono',monospace;font-size:11px;padding:8px 12px;border-radius:8px;border:none;background:transparent;color:var(--muted);cursor:pointer;transition:all 0.15s;text-align:center;white-space:nowrap}
+  .tab:hover{color:var(--text)}
+  .tab.active{background:var(--surface2);color:var(--text);border:1px solid var(--border)}
+  .panel{display:none}
+  .panel.active{display:block}
+
+  /* CHAPTER LIST */
+  .chapter-list{display:flex;flex-direction:column;gap:8px}
+  .chapter-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;cursor:pointer;transition:all 0.12s;display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center}
+  .chapter-card:hover{border-color:var(--border2)}
+  .chapter-card.status-draft    {border-left:3px solid var(--amber)}
+  .chapter-card.status-revised  {border-left:3px solid var(--cyan)}
+  .chapter-card.status-done     {border-left:3px solid var(--green)}
+  .chapter-card.status-outline  {border-left:3px solid var(--purple)}
+  .chapter-card.status-blank    {border-left:3px solid var(--border)}
+  .chapter-num{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);min-width:28px}
+  .chapter-main{}
+  .chapter-title{font-weight:500;font-size:14px;margin-bottom:3px}
+  .chapter-synopsis{font-size:12px;color:var(--muted);display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+  .chapter-right{display:flex;gap:8px;align-items:center;flex-shrink:0}
+  .chapter-actions{display:flex;gap:6px;opacity:0;transition:opacity 0.15s}
+  .chapter-card:hover .chapter-actions{opacity:1}
+
+  /* RESEARCH */
+  .source-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
+  .source-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;cursor:pointer;transition:all 0.12s}
+  .source-card:hover{border-color:var(--border2)}
+  .source-title{font-weight:500;font-size:13px;margin-bottom:4px}
+  .source-type{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-bottom:6px}
+  .source-notes{font-size:12px;color:var(--muted);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .source-actions{display:flex;gap:6px;margin-top:8px;opacity:0;transition:opacity 0.15s}
+  .source-card:hover .source-actions{opacity:1}
+
+  /* IDEA BOARD */
+  .idea-list{display:flex;flex-direction:column;gap:8px}
+  .idea-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;display:flex;align-items:flex-start;gap:12px;cursor:pointer;transition:all 0.12s}
+  .idea-card:hover{border-color:var(--border2)}
+  .idea-tag{font-family:'DM Mono',monospace;font-size:10px;padding:2px 8px;border-radius:99px;border:1px solid;white-space:nowrap;flex-shrink:0;margin-top:2px}
+  .idea-text{font-size:13px;line-height:1.6;flex:1}
+  .idea-actions{display:flex;gap:6px;opacity:0;transition:opacity 0.15s;flex-shrink:0}
+  .idea-card:hover .idea-actions{opacity:1}
+
+  /* BADGES */
+  .badge{display:inline-flex;align-items:center;font-family:'DM Mono',monospace;font-size:10px;padding:2px 8px;border-radius:99px;border:1px solid;white-space:nowrap}
+  .b-outline  {color:var(--purple);border-color:var(--purple);background:var(--purple-dim)}
+  .b-draft    {color:var(--amber); border-color:var(--amber); background:var(--amber-dim)}
+  .b-revised  {color:var(--cyan);  border-color:var(--cyan);  background:var(--cyan-dim)}
+  .b-done     {color:var(--green); border-color:var(--green); background:var(--green-dim)}
+  .b-blank    {color:var(--muted); border-color:var(--border2);background:transparent}
+
+  /* BUTTONS */
+  .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:var(--radius);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:all 0.15s;border:none;white-space:nowrap}
+  .btn-primary{background:var(--accent);color:#fff}
+  .btn-primary:hover{background:#2a7aff}
+  .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted)}
+  .btn-ghost:hover{border-color:var(--border2);color:var(--text)}
+  .btn-danger{background:var(--red-dim);border:1px solid var(--red);color:var(--red)}
+  .btn-danger:hover{background:var(--red);color:#fff}
+  .btn-sm{padding:5px 10px;font-size:12px}
+  .icon-btn{width:26px;height:26px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;transition:all 0.15s}
+  .icon-btn:hover{border-color:var(--border2);color:var(--text)}
+  .icon-btn.danger:hover{border-color:var(--red);color:var(--red);background:var(--red-dim)}
+
+  /* MODAL */
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.78);backdrop-filter:blur(4px);z-index:100;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity 0.2s}
+  .modal-overlay.open{opacity:1;pointer-events:all}
+  .modal{background:var(--surface);border:1px solid var(--border2);border-radius:14px;width:100%;max-width:560px;max-height:88vh;overflow-y:auto;transform:translateY(16px);transition:transform 0.2s;box-shadow:0 24px 64px rgba(0,0,0,0.65)}
+  .modal-overlay.open .modal{transform:translateY(0)}
+  .modal-header{padding:18px 22px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+  .modal-title{font-size:15px;font-weight:600}
+  .modal-body{padding:18px 22px;display:flex;flex-direction:column;gap:14px}
+  .modal-footer{padding:14px 22px;border-top:1px solid var(--border);display:flex;gap:10px;justify-content:flex-end}
+  .field{display:flex;flex-direction:column;gap:5px}
+  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  label{font-size:11px;font-weight:500;color:var(--muted);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:0.06em}
+  input,select,textarea{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border-color 0.15s;width:100%}
+  input:focus,select:focus,textarea:focus{border-color:var(--accent)}
+  textarea{resize:vertical;min-height:80px;line-height:1.6}
+  select option{background:var(--surface2)}
+
+  .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+  .section-title{font-family:'DM Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted)}
+  .empty-state{text-align:center;padding:48px 24px;color:var(--muted)}
+  .empty-icon{font-size:32px;margin-bottom:10px;opacity:0.4}
+
+  @media(max-width:640px){.app{padding:20px 16px}h1{font-size:22px}header{flex-direction:column;align-items:flex-start}.field-row{grid-template-columns:1fr}.tabs{flex-wrap:wrap}.chapter-card{grid-template-columns:auto 1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header>
+    <div>
+      <div class="header-label"><a href="../index.html">← tools</a> / writing</div>
+      <div class="header-title">
+        <h1>The Unbroken Circle Saga</h1>
+        <span class="book-title-display" id="bookTitleDisplay" onclick="openSettingsModal()" title="Click to edit"></span>
+      </div>
+    </div>
+    <div class="header-right">
+      <a href="bible.html" class="btn btn-ghost btn-sm" style="text-decoration:none">📜 Writer's bible</a>
+      <button class="btn btn-ghost btn-sm" onclick="openSettingsModal()">⚙ Settings</button>
+    </div>
+  </header>
+
+  <!-- PROGRESS -->
+  <div class="progress-block">
+    <div class="progress-row">
+      <div>
+        <div class="progress-fraction"><span id="chapsDone">0</span> / <span id="chapsTotal">0</span></div>
+        <div class="progress-label">chapters completed</div>
+      </div>
+      <div style="text-align:right">
+        <div class="progress-pct" id="progressPct">0%</div>
+        <div class="progress-label">of first draft</div>
+      </div>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <div class="progress-sub" id="progressSub">Add your first chapter to get started.</div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat"><div class="stat-num" style="color:var(--green)"  id="sDone">0</div><div class="stat-label">Done</div></div>
+    <div class="stat"><div class="stat-num" style="color:var(--cyan)"   id="sRevised">0</div><div class="stat-label">Revised</div></div>
+    <div class="stat"><div class="stat-num" style="color:var(--amber)"  id="sDraft">0</div><div class="stat-label">In draft</div></div>
+    <div class="stat"><div class="stat-num" style="color:var(--purple)" id="sOutline">0</div><div class="stat-label">Outlined</div></div>
+    <div class="stat"><div class="stat-num" style="color:var(--accent)" id="sSources">0</div><div class="stat-label">Sources</div></div>
+    <div class="stat"><div class="stat-num" style="color:var(--gold)"   id="sIdeas">0</div><div class="stat-label">Ideas</div></div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('chapters',this)">📖 Chapters</button>
+    <button class="tab" onclick="switchTab('research',this)">🔬 Research</button>
+    <button class="tab" onclick="switchTab('ideas',this)">💡 Ideas</button>
+  </div>
+
+  <!-- CHAPTERS PANEL -->
+  <div class="panel active" id="panel-chapters">
+    <div class="section-header">
+      <span class="section-title">Chapter list</span>
+      <button class="btn btn-primary btn-sm" onclick="openChapterModal()">+ Add chapter</button>
+    </div>
+    <div class="chapter-list" id="chapterList">
+      <div class="empty-state"><div class="empty-icon">📖</div><p>No chapters yet. Add your first one — even just a title and a one-line idea.</p></div>
+    </div>
+  </div>
+
+  <!-- RESEARCH PANEL -->
+  <div class="panel" id="panel-research">
+    <div class="section-header">
+      <span class="section-title">Research & sources</span>
+      <button class="btn btn-primary btn-sm" onclick="openSourceModal()">+ Add source</button>
+    </div>
+    <div class="source-grid" id="sourceGrid">
+      <div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">🔬</div><p>No sources yet. Add books, articles, websites, interviews — anything you're drawing on.</p></div>
+    </div>
+  </div>
+
+  <!-- IDEAS PANEL -->
+  <div class="panel" id="panel-ideas">
+    <div class="section-header">
+      <span class="section-title">Ideas & notes</span>
+      <button class="btn btn-primary btn-sm" onclick="openIdeaModal()">+ Add idea</button>
+    </div>
+    <div class="idea-list" id="ideaList">
+      <div class="empty-state"><div class="empty-icon">💡</div><p>Capture ideas, character notes, plot threads, themes — anything that comes to mind.</p></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- SETTINGS MODAL -->
+<div class="modal-overlay" id="settingsModal">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">Book settings</div><button class="icon-btn" onclick="closeSettingsModal()">✕</button></div>
+    <div class="modal-body">
+      <div class="field"><label>Book title (working title is fine)</label><input type="text" id="setTitle" placeholder="My novel"></div>
+      <div class="field"><label>Genre / sub-genre</label><input type="text" id="setGenre" placeholder="e.g. Sci-fi thriller, Literary fiction"></div>
+      <div class="field"><label>One-line premise</label><textarea id="setPremise" placeholder="What's the book about in one sentence?" style="min-height:60px"></textarea></div>
+      <div class="field"><label>Target chapter count</label><input type="number" id="setTargetChaps" placeholder="e.g. 30"></div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-ghost" onclick="closeSettingsModal()">Cancel</button><button class="btn btn-primary" onclick="saveSettings()">Save</button></div>
+  </div>
+</div>
+
+<!-- CHAPTER MODAL -->
+<div class="modal-overlay" id="chapterModal">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title" id="chapterModalTitle">Add chapter</div><button class="icon-btn" onclick="closeChapterModal()">✕</button></div>
+    <div class="modal-body">
+      <div class="field-row">
+        <div class="field"><label>Chapter number</label><input type="number" id="cNum" placeholder="1"></div>
+        <div class="field">
+          <label>Status</label>
+          <select id="cStatus">
+            <option value="blank">Not started</option>
+            <option value="outline">Outlined</option>
+            <option value="draft">In draft</option>
+            <option value="revised">Revised</option>
+            <option value="done">Done</option>
+          </select>
+        </div>
+      </div>
+      <div class="field"><label>Chapter title</label><input type="text" id="cTitle" placeholder="e.g. The Arrival, or leave blank for untitled"></div>
+      <div class="field"><label>Synopsis / what happens</label><textarea id="cSynopsis" placeholder="A brief summary of what this chapter covers — POV, key events, how it moves the story forward…"></textarea></div>
+      <div class="field"><label>Notes / to-do</label><textarea id="cNotes" placeholder="Things to fix, research needed, beats to hit…" style="min-height:60px"></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-danger btn-sm" id="cDeleteBtn" style="margin-right:auto;display:none" onclick="deleteChapterFromModal()">Delete</button>
+      <button class="btn btn-ghost" onclick="closeChapterModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveChapter()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- SOURCE MODAL -->
+<div class="modal-overlay" id="sourceModal">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title" id="sourceModalTitle">Add source</div><button class="icon-btn" onclick="closeSourceModal()">✕</button></div>
+    <div class="modal-body">
+      <div class="field"><label>Title / name</label><input type="text" id="srcTitle" placeholder="e.g. A Brief History of Time, NASA Exoplanet Archive"></div>
+      <div class="field-row">
+        <div class="field">
+          <label>Type</label>
+          <select id="srcType">
+            <option>Book</option>
+            <option>Article / paper</option>
+            <option>Website</option>
+            <option>Interview</option>
+            <option>Documentary</option>
+            <option>Personal experience</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="field"><label>Author / source</label><input type="text" id="srcAuthor" placeholder="Author or publisher"></div>
+      </div>
+      <div class="field"><label>URL (if applicable)</label><input type="url" id="srcUrl" placeholder="https://"></div>
+      <div class="field"><label>Notes — what's useful about it</label><textarea id="srcNotes" placeholder="Key facts, quotes, page references, how it connects to the story…"></textarea></div>
+      <div class="field"><label>Relevant chapters</label><input type="text" id="srcChapters" placeholder="e.g. Ch. 3, 7, 12 — or 'throughout'"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-danger btn-sm" id="srcDeleteBtn" style="margin-right:auto;display:none" onclick="deleteSourceFromModal()">Delete</button>
+      <button class="btn btn-ghost" onclick="closeSourceModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveSource()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- IDEA MODAL -->
+<div class="modal-overlay" id="ideaModal">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title" id="ideaModalTitle">Add idea</div><button class="icon-btn" onclick="closeIdeaModal()">✕</button></div>
+    <div class="modal-body">
+      <div class="field">
+        <label>Category</label>
+        <select id="iTag">
+          <option>Plot</option>
+          <option>Character</option>
+          <option>Setting</option>
+          <option>Theme</option>
+          <option>Dialogue</option>
+          <option>Opening / ending</option>
+          <option>Research needed</option>
+          <option>General</option>
+        </select>
+      </div>
+      <div class="field"><label>Idea</label><textarea id="iText" placeholder="Write it down before it disappears…"></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-danger btn-sm" id="iDeleteBtn" style="margin-right:auto;display:none" onclick="deleteIdeaFromModal()">Delete</button>
+      <button class="btn btn-ghost" onclick="closeIdeaModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveIdea()">Save</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const SK = 'book_tracker';
+let data = {
+  title:'', genre:'', premise:'', targetChaps:0,
+  chapters:[], sources:[], ideas:[],
+};
+let editingChapterId = null;
+let editingSourceId  = null;
+let editingIdeaId    = null;
+
+const STATUS_BADGE  = {blank:'b-blank',outline:'b-outline',draft:'b-draft',revised:'b-revised',done:'b-done'};
+const STATUS_LABELS = {blank:'Not started',outline:'Outlined',draft:'In draft',revised:'Revised',done:'Done'};
+const IDEA_COLORS   = {
+  'Plot':'color:var(--accent);border-color:var(--accent);background:var(--accent-dim)',
+  'Character':'color:var(--purple);border-color:var(--purple);background:var(--purple-dim)',
+  'Setting':'color:var(--cyan);border-color:var(--cyan);background:var(--cyan-dim)',
+  'Theme':'color:var(--gold);border-color:var(--gold);background:var(--gold-dim)',
+  'Dialogue':'color:var(--green);border-color:var(--green);background:var(--green-dim)',
+  'Opening / ending':'color:var(--orange);border-color:var(--orange);background:var(--orange-dim)',
+  'Research needed':'color:var(--red);border-color:var(--red);background:var(--red-dim)',
+  'General':'color:var(--muted);border-color:var(--border2);background:transparent',
+};
+
+async function load() {
+  try {
+    const r = await window.storage.get(SK);
+    if (r) data = {...data,...JSON.parse(r.value)};
+  } catch {}
+  render();
+}
+async function persist() {
+  try { await window.storage.set(SK, JSON.stringify(data)); } catch(e){console.warn(e);}
+}
+
+function render() {
+  // Book title
+  document.getElementById('bookTitleDisplay').textContent = data.title || '';
+
+  // Progress
+  const total  = data.targetChaps || data.chapters.length;
+  const done   = data.chapters.filter(c=>c.status==='done').length;
+  const pct    = total ? Math.round((done/total)*100) : 0;
+  document.getElementById('chapsDone').textContent  = done;
+  document.getElementById('chapsTotal').textContent = total || '?';
+  document.getElementById('progressPct').textContent= pct+'%';
+  document.getElementById('progressFill').style.width = pct+'%';
+  document.getElementById('progressSub').textContent =
+    pct===100 ? '🎉 First draft complete!' :
+    pct>=75   ? 'So close — the end is in sight.' :
+    pct>=50   ? 'Past the halfway point. Keep going.' :
+    pct>=25   ? 'Good momentum building.' :
+    data.chapters.length ? 'Early days — every chapter counts.' :
+    'Add your first chapter to get started.';
+
+  // Stats
+  document.getElementById('sDone').textContent    = data.chapters.filter(c=>c.status==='done').length;
+  document.getElementById('sRevised').textContent = data.chapters.filter(c=>c.status==='revised').length;
+  document.getElementById('sDraft').textContent   = data.chapters.filter(c=>c.status==='draft').length;
+  document.getElementById('sOutline').textContent = data.chapters.filter(c=>c.status==='outline').length;
+  document.getElementById('sSources').textContent = data.sources.length;
+  document.getElementById('sIdeas').textContent   = data.ideas.length;
+
+  renderChapters();
+  renderSources();
+  renderIdeas();
+}
+
+function renderChapters() {
+  const list = document.getElementById('chapterList');
+  if (!data.chapters.length) {
+    list.innerHTML = '<div class="empty-state"><div class="empty-icon">📖</div><p>No chapters yet. Add your first one — even just a title and a one-line idea.</p></div>';
+    return;
+  }
+  const sorted = [...data.chapters].sort((a,b)=>(parseInt(a.num)||0)-(parseInt(b.num)||0));
+  list.innerHTML = sorted.map(c=>`
+    <div class="chapter-card status-${c.status}" onclick="openChapterModal('${c.id}')">
+      <span class="chapter-num">Ch.${c.num||'?'}</span>
+      <div class="chapter-main">
+        <div class="chapter-title">${esc(c.title||'Untitled chapter')}</div>
+        ${c.synopsis?`<div class="chapter-synopsis">${esc(c.synopsis)}</div>`:''}
+      </div>
+      <div class="chapter-right">
+        <span class="badge ${STATUS_BADGE[c.status]||'b-blank'}">${STATUS_LABELS[c.status]||c.status}</span>
+        <div class="chapter-actions" onclick="event.stopPropagation()">
+          <button class="icon-btn danger" onclick="deleteChapter('${c.id}')">✕</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function renderSources() {
+  const grid = document.getElementById('sourceGrid');
+  if (!data.sources.length) {
+    grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">🔬</div><p>No sources yet.</p></div>';
+    return;
+  }
+  grid.innerHTML = data.sources.map(s=>`
+    <div class="source-card" onclick="openSourceModal('${s.id}')">
+      <div class="source-title">${esc(s.title)}</div>
+      <div class="source-type">${esc(s.type)}${s.author?' · '+esc(s.author):''}</div>
+      ${s.notes?`<div class="source-notes">${esc(s.notes)}</div>`:''}
+      ${s.chapters?`<div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:6px">${esc(s.chapters)}</div>`:''}
+      <div class="source-actions" onclick="event.stopPropagation()">
+        ${s.url?`<a href="${esc(s.url)}" target="_blank" class="icon-btn" onclick="event.stopPropagation()" title="Open link">↗</a>`:''}
+        <button class="icon-btn danger" onclick="deleteSource('${s.id}')">✕</button>
+      </div>
+    </div>`).join('');
+}
+
+function renderIdeas() {
+  const list = document.getElementById('ideaList');
+  if (!data.ideas.length) {
+    list.innerHTML = '<div class="empty-state"><div class="empty-icon">💡</div><p>Capture ideas before they disappear.</p></div>';
+    return;
+  }
+  list.innerHTML = data.ideas.map(i=>`
+    <div class="idea-card" onclick="openIdeaModal('${i.id}')">
+      <span class="idea-tag" style="${IDEA_COLORS[i.tag]||IDEA_COLORS['General']}">${esc(i.tag)}</span>
+      <span class="idea-text">${esc(i.text)}</span>
+      <div class="idea-actions" onclick="event.stopPropagation()">
+        <button class="icon-btn danger" onclick="deleteIdea('${i.id}')">✕</button>
+      </div>
+    </div>`).join('');
+}
+
+// ── CHAPTER ───────────────────────────────────────────────────────────────────
+function openChapterModal(id=null) {
+  editingChapterId = id;
+  const c = id ? data.chapters.find(x=>x.id===id) : null;
+  document.getElementById('chapterModalTitle').textContent = id?'Edit chapter':'Add chapter';
+  document.getElementById('cNum').value      = c?.num     || (data.chapters.length+1);
+  document.getElementById('cStatus').value   = c?.status  || 'blank';
+  document.getElementById('cTitle').value    = c?.title   || '';
+  document.getElementById('cSynopsis').value = c?.synopsis|| '';
+  document.getElementById('cNotes').value    = c?.notes   || '';
+  document.getElementById('cDeleteBtn').style.display = id?'inline-flex':'none';
+  document.getElementById('chapterModal').classList.add('open');
+}
+function closeChapterModal() { document.getElementById('chapterModal').classList.remove('open'); editingChapterId=null; }
+async function saveChapter() {
+  const record = {
+    num:      document.getElementById('cNum').value,
+    status:   document.getElementById('cStatus').value,
+    title:    document.getElementById('cTitle').value.trim(),
+    synopsis: document.getElementById('cSynopsis').value.trim(),
+    notes:    document.getElementById('cNotes').value.trim(),
+  };
+  if (editingChapterId) data.chapters = data.chapters.map(c=>c.id===editingChapterId?{...c,...record}:c);
+  else data.chapters.push({id:Date.now().toString(),...record});
+  await persist(); closeChapterModal(); render();
+}
+async function deleteChapter(id) {
+  if(!confirm('Delete this chapter?')) return;
+  data.chapters=data.chapters.filter(c=>c.id!==id);
+  await persist(); render();
+}
+function deleteChapterFromModal() { if(editingChapterId){ deleteChapter(editingChapterId); closeChapterModal(); } }
+
+// ── SOURCE ────────────────────────────────────────────────────────────────────
+function openSourceModal(id=null) {
+  editingSourceId = id;
+  const s = id ? data.sources.find(x=>x.id===id) : null;
+  document.getElementById('sourceModalTitle').textContent = id?'Edit source':'Add source';
+  document.getElementById('srcTitle').value    = s?.title   ||'';
+  document.getElementById('srcType').value     = s?.type    ||'Book';
+  document.getElementById('srcAuthor').value   = s?.author  ||'';
+  document.getElementById('srcUrl').value      = s?.url     ||'';
+  document.getElementById('srcNotes').value    = s?.notes   ||'';
+  document.getElementById('srcChapters').value = s?.chapters||'';
+  document.getElementById('srcDeleteBtn').style.display = id?'inline-flex':'none';
+  document.getElementById('sourceModal').classList.add('open');
+}
+function closeSourceModal() { document.getElementById('sourceModal').classList.remove('open'); editingSourceId=null; }
+async function saveSource() {
+  const record = {
+    title:    document.getElementById('srcTitle').value.trim(),
+    type:     document.getElementById('srcType').value,
+    author:   document.getElementById('srcAuthor').value.trim(),
+    url:      document.getElementById('srcUrl').value.trim(),
+    notes:    document.getElementById('srcNotes').value.trim(),
+    chapters: document.getElementById('srcChapters').value.trim(),
+  };
+  if(!record.title){alert('Title is required.');return;}
+  if(editingSourceId) data.sources=data.sources.map(s=>s.id===editingSourceId?{...s,...record}:s);
+  else data.sources.push({id:Date.now().toString(),...record});
+  await persist(); closeSourceModal(); render();
+}
+async function deleteSource(id) {
+  if(!confirm('Delete this source?')) return;
+  data.sources=data.sources.filter(s=>s.id!==id);
+  await persist(); render();
+}
+function deleteSourceFromModal() { if(editingSourceId){ deleteSource(editingSourceId); closeSourceModal(); } }
+
+// ── IDEA ──────────────────────────────────────────────────────────────────────
+function openIdeaModal(id=null) {
+  editingIdeaId = id;
+  const i = id ? data.ideas.find(x=>x.id===id) : null;
+  document.getElementById('ideaModalTitle').textContent = id?'Edit idea':'Add idea';
+  document.getElementById('iTag').value  = i?.tag  ||'General';
+  document.getElementById('iText').value = i?.text ||'';
+  document.getElementById('iDeleteBtn').style.display = id?'inline-flex':'none';
+  document.getElementById('ideaModal').classList.add('open');
+}
+function closeIdeaModal() { document.getElementById('ideaModal').classList.remove('open'); editingIdeaId=null; }
+async function saveIdea() {
+  const record = { tag:document.getElementById('iTag').value, text:document.getElementById('iText').value.trim() };
+  if(!record.text){alert('Idea text is required.');return;}
+  if(editingIdeaId) data.ideas=data.ideas.map(i=>i.id===editingIdeaId?{...i,...record}:i);
+  else data.ideas.unshift({id:Date.now().toString(),...record});
+  await persist(); closeIdeaModal(); render();
+}
+async function deleteIdea(id) {
+  data.ideas=data.ideas.filter(i=>i.id!==id);
+  await persist(); render();
+}
+function deleteIdeaFromModal() { if(editingIdeaId){ deleteIdea(editingIdeaId); closeIdeaModal(); } }
+
+// ── SETTINGS ──────────────────────────────────────────────────────────────────
+function openSettingsModal() {
+  document.getElementById('setTitle').value       = data.title||'';
+  document.getElementById('setGenre').value       = data.genre||'';
+  document.getElementById('setPremise').value     = data.premise||'';
+  document.getElementById('setTargetChaps').value = data.targetChaps||'';
+  document.getElementById('settingsModal').classList.add('open');
+}
+function closeSettingsModal() { document.getElementById('settingsModal').classList.remove('open'); }
+async function saveSettings() {
+  data.title       = document.getElementById('setTitle').value.trim();
+  data.genre       = document.getElementById('setGenre').value.trim();
+  data.premise     = document.getElementById('setPremise').value.trim();
+  data.targetChaps = parseInt(document.getElementById('setTargetChaps').value)||0;
+  await persist(); closeSettingsModal(); render();
+}
+
+function switchTab(tab,el) {
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('panel-'+tab).classList.add('active');
+}
+
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){closeSettingsModal();closeChapterModal();closeSourceModal();closeIdeaModal();}
+});
+['settingsModal','chapterModal','sourceModal','ideaModal'].forEach(id=>{
+  document.getElementById(id).addEventListener('click',e=>{if(e.target===e.currentTarget)e.target.classList.remove('open');});
+});
+
+load();
+</script>
+</body>
+</html>

@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Unbroken Circle — Trilogy Treatment v3.0</title>
+<script src="../auth.js"></script>
+<script>requireAuth();</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  .back-link{position:fixed;top:16px;right:16px;z-index:200;font-family:'JetBrains Mono',monospace;font-size:11px;padding:6px 12px;border-radius:6px;border:1px solid #252830;background:#13151a;color:#6b7080;text-decoration:none;letter-spacing:0.08em;transition:all 0.15s}
+  .back-link:hover{color:#e8eaf0;border-color:#3a3d47}
+</style>
+<style>
+  :root {
+    --bg:        #0d0e11;
+    --surface:   #13151a;
+    --border:    #252830;
+    --muted:     #3a3d47;
+    --dim:       #6b7080;
+    --body:      #c8cad4;
+    --bright:    #e8eaf0;
+    --accent:    #b08d57;
+    --accent2:   #7a9bbf;
+    --danger:    #8b4a4a;
+    --font-display: 'Cinzel', serif;
+    --font-body:    'Cormorant Garamond', serif;
+    --font-mono:    'JetBrains Mono', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--body);
+    font-family: var(--font-body);
+    font-size: 19px;
+    line-height: 1.75;
+    min-height: 100vh;
+  }
+
+  /* ── LAYOUT ── */
+  .layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    min-height: 100vh;
+  }
+
+  /* ── SIDEBAR NAV ── */
+  nav {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 2rem 0;
+    scrollbar-width: thin;
+    scrollbar-color: var(--muted) transparent;
+  }
+
+  .nav-title {
+    font-family: var(--font-display);
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent);
+    padding: 0 1.5rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 1rem;
+  }
+
+  .nav-version {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--dim);
+    margin-top: 0.3rem;
+    letter-spacing: 0.1em;
+  }
+
+  nav ul { list-style: none; }
+
+  nav ul li a {
+    display: block;
+    padding: 0.35rem 1.5rem;
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    color: var(--dim);
+    text-decoration: none;
+    transition: color 0.2s, background 0.2s;
+    border-left: 2px solid transparent;
+  }
+
+  nav ul li a:hover {
+    color: var(--bright);
+    background: rgba(176,141,87,0.06);
+    border-left-color: var(--accent);
+  }
+
+  nav ul li a.active {
+    color: var(--accent);
+    border-left-color: var(--accent);
+  }
+
+  nav ul li.nav-sub a {
+    padding-left: 2.5rem;
+    font-size: 0.78rem;
+  }
+
+  /* ── MAIN CONTENT ── */
+  main {
+    padding: 0;
+    max-width: 860px;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 5rem 4rem 3rem;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(ellipse at 20% 50%, rgba(176,141,87,0.04) 0%, transparent 70%),
+                radial-gradient(ellipse at 80% 20%, rgba(122,155,191,0.03) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.25rem;
+  }
+
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: 3.2rem;
+    font-weight: 400;
+    color: var(--bright);
+    letter-spacing: 0.08em;
+    line-height: 1.15;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero-sub {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 300;
+    color: var(--dim);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+  }
+
+  .hero-epigraph {
+    font-style: italic;
+    color: var(--dim);
+    font-size: 1rem;
+    border-left: 2px solid var(--accent);
+    padding-left: 1.25rem;
+    margin-top: 1.5rem;
+    max-width: 500px;
+  }
+
+  .meta-bar {
+    display: flex;
+    gap: 2rem;
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .meta-item {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: var(--dim);
+  }
+
+  .meta-item span {
+    display: block;
+    color: var(--accent2);
+    margin-top: 0.2rem;
+  }
+
+  /* ── SECTIONS ── */
+  .section {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.75rem 4rem;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.2s;
+  }
+
+  .section-header:hover {
+    background: rgba(255,255,255,0.02);
+  }
+
+  .section-header h2 {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--bright);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .section-num {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    margin-right: 1rem;
+  }
+
+  .toggle-icon {
+    font-size: 0.75rem;
+    color: var(--muted);
+    transition: transform 0.3s;
+    flex-shrink: 0;
+  }
+
+  .section.open .toggle-icon { transform: rotate(180deg); }
+
+  .section-body {
+    display: none;
+    padding: 0 4rem 3rem;
+    animation: fadeIn 0.25s ease;
+  }
+
+  .section.open .section-body { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── TYPOGRAPHY ── */
+  h3 {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 400;
+    color: var(--accent);
+    letter-spacing: 0.06em;
+    margin: 2.5rem 0 0.75rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  h4 {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--bright);
+    letter-spacing: 0.04em;
+    margin: 1.75rem 0 0.5rem;
+  }
+
+  p { margin-bottom: 1rem; }
+
+  p:last-child { margin-bottom: 0; }
+
+  em { color: var(--bright); font-style: italic; }
+
+  strong {
+    color: var(--bright);
+    font-weight: 600;
+  }
+
+  /* ── CHARACTER CARDS ── */
+  .char-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    padding: 1.75rem 2rem;
+    margin: 2rem 0;
+    position: relative;
+  }
+
+  .char-card.secondary {
+    border-left-color: var(--accent2);
+  }
+
+  .char-name {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: var(--bright);
+    letter-spacing: 0.08em;
+    margin-bottom: 0.25rem;
+  }
+
+  .char-birthname {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--dim);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .char-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.6rem;
+    border-radius: 2px;
+  }
+
+  .tag-jung   { background: rgba(176,141,87,0.12); color: var(--accent); border: 1px solid rgba(176,141,87,0.25); }
+  .tag-camp   { background: rgba(122,155,191,0.1); color: var(--accent2); border: 1px solid rgba(122,155,191,0.2); }
+  .tag-arthu  { background: rgba(200,202,212,0.06); color: var(--dim); border: 1px solid var(--border); }
+
+  /* ── ARTIFACT TABLE ── */
+  .artifact-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.88rem;
+  }
+
+  .artifact-table th {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    text-align: left;
+    padding: 0.6rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .artifact-table td {
+    padding: 0.65rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    color: var(--body);
+    line-height: 1.5;
+  }
+
+  .artifact-table tr:last-child td { border-bottom: none; }
+
+  .artifact-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+  .artifact-table td:first-child {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--accent2);
+    white-space: nowrap;
+    width: 28%;
+  }
+
+  /* ── BOOK BLOCKS ── */
+  .book-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 2rem;
+    margin: 2rem 0;
+  }
+
+  .book-title {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--bright);
+    font-style: italic;
+    margin-bottom: 0.25rem;
+  }
+
+  .book-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem 2rem;
+    margin: 1.25rem 0;
+    padding: 1rem 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .book-meta-item {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    color: var(--dim);
+  }
+
+  .book-meta-item strong {
+    color: var(--accent2);
+    font-weight: 400;
+    display: block;
+    margin-bottom: 0.15rem;
+  }
+
+  /* ── OH SHIT MOMENTS ── */
+  .oh-shit {
+    background: rgba(139,74,74,0.08);
+    border: 1px solid rgba(139,74,74,0.25);
+    border-left: 3px solid var(--danger);
+    padding: 1.25rem 1.5rem;
+    margin: 1.5rem 0;
+  }
+
+  .oh-shit-label {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--danger);
+    margin-bottom: 0.5rem;
+  }
+
+  /* ── CALLOUT ── */
+  .callout {
+    background: rgba(176,141,87,0.06);
+    border: 1px solid rgba(176,141,87,0.2);
+    padding: 1.25rem 1.5rem;
+    margin: 1.5rem 0;
+    font-style: italic;
+    color: var(--bright);
+  }
+
+  /* ── NOTE ── */
+  .note {
+    background: rgba(122,155,191,0.06);
+    border: 1px solid rgba(122,155,191,0.15);
+    padding: 1rem 1.25rem;
+    margin: 1.25rem 0;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--dim);
+    line-height: 1.6;
+  }
+
+  .note strong { color: var(--accent2); font-weight: 400; }
+
+  /* ── REFERENCE TABLE ── */
+  .ref-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.25rem 0;
+    font-size: 0.88rem;
+  }
+
+  .ref-table th {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--dim);
+    text-align: left;
+    padding: 0.5rem 0.75rem;
+    background: rgba(255,255,255,0.02);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .ref-table td {
+    padding: 0.6rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    line-height: 1.5;
+    font-size: 0.9rem;
+  }
+
+  .ref-table tr:last-child td { border-bottom: none; }
+  .ref-table tr:hover td { background: rgba(255,255,255,0.015); }
+
+  .ref-table td:first-child {
+    font-weight: 600;
+    color: var(--bright);
+    white-space: nowrap;
+    width: 22%;
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--muted); border-radius: 2px; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; }
+    nav { position: relative; height: auto; }
+    .hero, .section-header, .section-body { padding-left: 1.5rem; padding-right: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+<a href="index.html" class="back-link">← dashboard</a>
+
+<div class="layout">
+
+<!-- ── SIDEBAR ── -->
+<nav id="sidebar">
+  <div class="nav-title">
+    The Unbroken Circle
+    <div class="nav-version">Treatment v3.0</div>
+  </div>
+  <ul>
+    <li><a href="#world">I. The World</a></li>
+    <li><a href="#artifacts">II. The Artifacts</a></li>
+    <li class="nav-sub"><a href="#artifacts">Physical Form</a></li>
+    <li class="nav-sub"><a href="#artifacts">Naming System</a></li>
+    <li class="nav-sub"><a href="#artifacts">Effects</a></li>
+    <li class="nav-sub"><a href="#artifacts">The Answering</a></li>
+    <li><a href="#factions">III. Factions</a></li>
+    <li><a href="#primary">IV. Primary Cast</a></li>
+    <li class="nav-sub"><a href="#primary">Edran Vael</a></li>
+    <li class="nav-sub"><a href="#primary">Calder</a></li>
+    <li class="nav-sub"><a href="#primary">Sera Voss</a></li>
+    <li class="nav-sub"><a href="#primary">Davan</a></li>
+    <li class="nav-sub"><a href="#primary">Thessaly Vorn</a></li>
+    <li class="nav-sub"><a href="#primary">Kett</a></li>
+    <li><a href="#secondary">V. Secondary Cast</a></li>
+    <li><a href="#reference">VI. Reference List</a></li>
+    <li><a href="#arc">VII. Trilogy Arc</a></li>
+    <li><a href="#voice">VIII. Voice & POV</a></li>
+    <li class="nav-sub"><a href="#voice">Edran's 1st Person</a></li>
+    <li class="nav-sub"><a href="#voice">3rd Person Shifts</a></li>
+    <li class="nav-sub"><a href="#voice">Temporal Architecture</a></li>
+    <li><a href="#book1">IX. Book One</a></li>
+    <li><a href="#book2">X. Book Two</a></li>
+    <li><a href="#book3">XI. Book Three</a></li>
+    <li><a href="#themes">XII. Thematic Architecture</a></li>
+  </ul>
+</nav>
+
+<!-- ── MAIN ── -->
+<main>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow">Trilogy Treatment · Preliminary Story Document</div>
+    <h1>The Unbroken Circle</h1>
+    <div class="hero-sub">A Science Fiction Trilogy</div>
+    <div class="hero-epigraph">"The question of who deserves power cannot be answered by power."</div>
+    <div class="meta-bar">
+      <div class="meta-item">Version<span>3.0</span></div>
+      <div class="meta-item">Register<span>Philosophical / Literary SF</span></div>
+      <div class="meta-item">Analog<span>Stewart · Le Guin · Wolfe</span></div>
+      <div class="meta-item">Status<span>Pre-Writer's Bible</span></div>
+    </div>
+  </div>
+
+  <!-- I. THE WORLD -->
+  <div class="section open" id="world">
+    <div class="section-header" onclick="toggle(this)">
+      <div style="display:flex;align-items:center">
+        <span class="section-num">I</span>
+        <h2>The World</h2>
+      </div>
+      <span class="toggle-icon">▲</span>
+    </div>
+    <div class="section-body">
+      <p>Three centuries after <strong>the Collapse</strong> — a cascading failure of faster-than-light relay infrastructure that severed humanity's interstellar civilization into isolated fragments — the known worlds have regressed. Not to barbarism, but to something more dangerous: <em>feudalism with memory</em>.</p>
+      <p>People know what they lost. They have oral traditions, degraded data cores, half-understood machines, and the ruins of a civilization that spanned dozens of star systems. Political power belongs to whoever can hoard and weaponize fragments of the old knowledge. Technology is unevenly distributed, deliberately suppressed in some regions, worshipped as relic in others.</p>
+      <p>The dominant political structure is the <strong>Concordance</strong> — a confederation of fractured systems held together by treaty, dynastic marriage, and mutual fear. It functions like post-Roman Britain: nominally unified, practically tribal, with sector lords and sovereign holders maintaining fiefdoms under a shared flag that means less every decade. The Concordance's central deliberative body, the <strong>High Table</strong>, has not passed binding legislation in forty years. It exists to ratify the decisions of whoever currently holds the most leverage.</p>
+      <p>Outside the Concordance, smaller, more experimental polities have emerged. The most significant is <strong>the Free Reaches</strong> — a loose confederation of smaller systems that rebuilt without dynastic succession, governed instead by elected councils and merit appointment. It is the most successful democratic experiment since the Collapse, and the Concordance regards it with a contempt that barely conceals fear.</p>
+      <p>Beyond both powers: unmapped space, dead stations, ghost systems, and the long silence of the alien.</p>
+    </div>
+  </div>
+
+  <!-- II. THE ARTIFACTS -->
+  <div class="section" id="artifacts">
+    <div class="section-header" onclick="toggle(this)">
+      <div style="display:flex;align-items:center">
+        <span class="section-num">II</span>
+        <h2>The Artifacts — Full System</h2>
+      </div>
+      <span class="toggle-icon">▼</span>
+    </div>
+    <div class="section-body">
+
+      <h3>Origin & Distribution</h3>
+      <p>Five artifacts exist. They predate humanity's spacefaring history by an order of magnitude that resists easy comprehension. Each was found — or became findable — on a planetary surface, typically buried at varying depths. Whether they arrived this way, were placed this way, or worked their way to these positions through some property of their own is not known and may not be knowable.</p>
+      <p>The artifact at Threshold Station is the exception: unearthed during a pre-Collapse survey and in the Learned's possession ever since. The other four remain buried at the trilogy's opening, on worlds ranging from inhabited to unmapped. They have not been found because — as far as anyone knows — they do not exist.</p>
+      <div class="callout">Whether the artifacts are <em>passive objects that have not yet been found</em>, or <em>objects that have not yet chosen to be found</em>, is a question the trilogy raises and does not answer. Several characters form strong opinions in both directions. The text declines to adjudicate.</div>
+
+      <h3>Physical Description</h3>
+      <p>All five artifacts are identical in every measurable physical regard. Same dimensions. Same mass. Same surface quality. No feature distinguishes one from another — not shape, not any instrument-detectable property.</p>
+      <p>Each is matte black, with a surface that absorbs light rather than reflecting it. They are difficult to photograph, difficult to describe, and have a quality of visual absence that makes them hard to hold in peripheral vision. In a room, they pull the eye and then resist being looked at directly.</p>
+      <p>Their surfaces are featureless in the absolute sense — no seams, no markings, no apparent mechanism. They do not react to impact, cutting, sawing, drilling, laser or plasma application, or any form of radiation bombardment. They leave no thermal signature. No scan returns interior data — not because they absorb the scan, but because results are consistent with solid, homogeneous material of a composition matching no known element or compound.</p>
+      <p>When resting on a surface, they are perfectly, unnaturally still — they do not shift with vibration, do not respond to surfaces the way objects should. They simply sit. When lifted, everything changes. Each artifact feels precisely the right weight for its size — exactly calibrated to the lifter's unconscious expectation — but resists stabilization with a quality described variously as gyroscopic, magnetic, or alive. Holding it perfectly still requires constant, conscious attention. The moment attention lapses, the artifact drifts toward an orientation that is not the holder's preferred one. Toward something. No one has determined what. The effect passes completely the moment the artifact is set down.</p>
+
+      <h3>Marking & Identification</h3>
+      <p>Because the artifacts are physically identical, distinguishing one from another is a practical problem with no solution. Every attempt fails. Markings adhere to the surface normally — ink, paint, adhesive labels, laser etching, plasma scoring — and appear to take hold. For approximately ten seconds. Then the marking fades, not by flaking or peeling but by appearing to be absorbed into the surface material, until it is gone entirely. The surface beneath is unchanged.</p>
+      <p>This property has been independently discovered, documented, and re-discovered multiple times. The reaction of people discovering it for the first time is itself characterization. Edran Vael, the first time he witnessed it as a young operative, sat for four hours, marking and re-marking, and wrote in his field notes: <em>It is not erasing the marks. It is not interested in the marks. This is different.</em></p>
+      <p>In practice, the Learned track artifacts by location and chain of custody. This works until Book Two, when chains of custody become complicated.</p>
+
+      <h3>The Naming System</h3>
+      <table class="artifact-table">
+        <tr><th>Who</th><th>Term Used</th><th>What It Reveals</th></tr>
+        <tr><td>The Concordance</td><td>"The Relic"</td><td>Implies ownership, trophy, salvage right. Treats it as unique — a weapon to reverse-engineer.</td></tr>
+        <tr><td>The Learned</td><td>"The Key" / "The Keys"</td><td>Named for what they hoped it was. What it actually unlocks is not a door.</td></tr>
+        <tr><td>Folk / Unaffiliated</td><td>"Artifact" / "Artifacts"</td><td>Clean, functional, without implication. These people tend to have clearer intuitions about what the objects are not.</td></tr>
+        <tr><td>Those who completed the Answering</td><td>Whatever their audience uses</td><td>They know the collective true name. They do not volunteer it. The uniformity of this discipline — unreinforced by any institution — is itself a datum Edran has spent years sitting with.</td></tr>
+      </table>
+      <div class="note"><strong>Note — Collective True Name:</strong> Placeholder for the Writer's Bible. Established: it is a single word; its grammar is alien to any human language; the least-wrong translation involves an adverb functioning as a noun. All other approximations are worse in more damaging directions.</div>
+
+      <h3>Effects — Single & Emergent</h3>
+      <p>The artifacts have no individual names and no named powers. Effects are referred to only by description of what they do. Naming an effect is the first step toward believing you understand it. No one in this story should believe that.</p>
+      <table class="artifact-table">
+        <tr><th>Count</th><th>Effect</th></tr>
+        <tr><td>One artifact</td><td>Subtle mental quieting. The low-level performance of self — the constant internal narration — stills. Some find this peaceful. The ones who find it intolerable are, in Edran's experience, the more instructive cases. Extended proximity required; presence alone does not trigger the Answering.</td></tr>
+        <tr><td>Two in conjunction</td><td>Self-deception becomes uncomfortable to maintain. Sustained dishonesty — with others, but especially with oneself — becomes a physical effort. People do not become saints. They become uncomfortable in ways they cannot identify the source of.</td></tr>
+        <tr><td>Three in conjunction</td><td>The first effect that resists purely psychological explanation. Consequences of choices become viscerally imaginable before decisions are made. The cost of a bad decision is felt, dimly but unmistakably, in advance.</td></tr>
+        <tr><td>Four in conjunction</td><td>Obligations to others become gravitational. Other people's needs are present and real in ways the ordinary social contract allows one to set aside. Armies do not march. People keep stopping to ask who will be hurt. Kett interprets this as alien pacification technology. He is wrong about the mechanism. Not entirely wrong about the danger.</td></tr>
+        <tr><td>All five in conjunction</td><td>No cataclysm. Everyone present understands, simultaneously and with complete certainty, that they are not the first civilization to find these objects. The knowledge arrives not as information but as presence — the way you know your own name. The only word anyone agrees on afterward is: <em>already.</em></td></tr>
+      </table>
+
+      <h3>The Answering</h3>
+      <p>When a person spends extended time in proximity to one or more artifacts, a threshold is crossed. The Learned call this the Answering. It is not the artifact doing something to a person — it is what happens when the artifact's ambient effect accumulates beyond a person's ability to maintain their ordinary self-presentation. The artifact does not reach in. It simply makes the inside of a person too quiet for the noise to continue.</p>
+      <p>Most who reach the Answering fragment to some degree. A very few pass through coherent — changed, but whole, integrated. These people are described by those who know them as unusually <em>present</em>. Not more intelligent, not more virtuous. More <em>there</em> than people ordinarily are.</p>
+
+      <h4>The Sixth Artifact — The Deeper Answering</h4>
+      <p>Near the end of the Answering, when the self has been most thoroughly stripped, almost everyone reports a moment of reaching. A conviction that one more step, one more object, would complete the set and resolve the remaining incompleteness. The rumor of a sixth artifact originates entirely from this moment.</p>
+      <div class="callout">There is no sixth artifact. The reaching is the last test. The people who walk out of the Answering chasing a sixth have passed the surface examination but remain, at depth, unconvinced that what they need cannot be found or owned. The distinction between those who come out looking for the next thing and those who come out looking at what is already in front of them is the only diagnostic the artifacts reliably provide.</div>
+    </div>
+  </div>
+
+  <!-- III. FACTIONS -->
+  <div class="section" id="factions">
+    <div class="section-header" onclick="toggle(this)">
+      <div style="display:flex;align-items:center">
+        <span class="section-num">III</span>
+        <h2>Institutions & Factions</h2>
+      </div>
+      <span class="toggle-icon">▼</span>
+    </div>
+    <div class="section-body">
+      <table class="ref-table">
+        <tr><th>Name</th><th>Description</th></tr>
+        <tr><td>The Concordance</td><td>The dominant interstellar political body. Held together by the Concordance Compact — three centuries old, amended past meaning. The High Table has not passed binding legislation in forty years. Its actual governing force is leverage. Calls any artifact it encounters "the Relic" — singular, unique, a trophy to be reverse-engineered.</td></tr>
+        <tr><td>The Free Reaches</td><td>A confederation of smaller systems rebuilt without dynastic rule. Governed by elected councils and the rotating Reaches Assembly. Militarily modest, politically stable, economically innovative. Led as the trilogy opens by Sera Voss.</td></tr>
+        <tr><td>The Learned</td><td>Archivists, scientists, and philosophers who believe knowledge — not force, not birth — is the only legitimate basis for governance. Maintain pre-Collapse knowledge and selectively deploy it to shape political outcomes. Not neutral. Have an agenda. Have known about the first artifact — their "Key" — longer than anyone. Believed until Book Two it was the only one. The discovery that it is one of five is an institutional earthquake.</td></tr>
+        <tr><td>The Circle</td><td>Calder's governing experiment: authority rotates on demonstrated competence, no seat is permanent, the purpose of power is to make itself unnecessary. The physical round table at the Seat is almost a joke at first. It becomes a symbol faster than anyone is comfortable with.</td></tr>
+        <tr><td>The High Table</td><td>The Concordance's nominal governing body. Exists to ratify leverage.</td></tr>
+        <tr><td>The Reaches Assembly</td><td>The Free Reaches' rotating deliberative body. Genuinely functional in ways that perplex Concordance observers.</td></tr>
+        <tr><td>The Open Reach</td><td>Kett's popular movement, emerging in Book Three. Demands the artifacts be declared a public resource and the Learned dissolved. Democratic in argument. Incomplete in vision. Contains genuine idealists, opportunists, and people frightened enough by the artifacts to call dismantling them progress.</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- IV. PRIMARY CAST -->
+  <div class="section" id="primary">
+    <div class="section-header" onclick="toggle(this)">
+      <div style="display:flex;align-items:center">
+        <span class="section-num">IV</span>
+        <h2>Primary Cast</h2>
+      </div>
+      <span class="toggle-icon">▼</span>
+    </div>
+    <div class="section-body">
+
+      <!-- EDRAN -->
+      <div class="char-card">
+        <div class="char-name">Edran Vael</div>
+        <div class="char-birthname">Born: Sorvane Thaelis</div>
+        <div class="char-tags">
+          <span class="tag tag-jung">Jung: Wise Old Man / Magician + Shadow</span>
+          <span class="tag tag-camp">Campbell: Mentor & Hero</span>
+          <span class="tag tag-arthu">Arthurian: Merlin · Fisher King</span>
+        </div>
+        <h4>The Name</h4>
+        <p>Born <strong>Sorvane Thaelis</strong> — three syllables of inherited obligation. Left behind at twenty-two when his family attempted to use him as a political instrument in a succession dispute he found morally indefensible. Field colleagues called him <em>Edran</em> — origin murky even to him. He stopped correcting people. Then he stopped wanting to. The surname <em>Vael</em> he chose himself, the year he formally severed his Thaelis affiliation. It carries the feel of concealment — a veil he walks behind. <em>Sorvane Thaelis</em> appears in the text exactly three times: a historical document, one confrontation, and the final chapter. Each instance lands differently.</p>
+        <h4>Arthurian Analog</h4>
+        <p>Primarily <strong>Merlin</strong> — Stewart's Merlin specifically: the man who sees the king before the king sees himself, who holds the secret of legitimate power and cannot transfer it, only witness it. Secondary: <strong>the Fisher King</strong> — the wound that cannot heal until the right question is asked, self-inflicted by the thirty-year refusal to attempt the Answering.</p>
+        <h4>Profile</h4>
+        <p>Mid-fifties as the trilogy opens. Thirty years as a Learned operative. Not a field soldier, not a political theorist — something rarer: a person who has spent decades watching powerful people fail with enough clarity to understand why. He has never attempted the Answering. The reader will spend three books learning why, and the answer is not what they expect.</p>
+        <p>His voice is the trilogy's moral conscience — dry, precise, occasionally devastating, shot through with a grief he rarely examines directly. He loves more than is safe. He sees further than he wishes he could. He has built a world he cannot control, and slowly understands this may have been the only way to build something real.</p>
+        <h4>Arc</h4>
+        <p>Architect → Witness → Supplicant. He begins holding all significant information. He ends applying to himself the standard he has applied to everyone else.</p>
+      </div>
+
+      <!-- CALDER -->
+      <div class="char-card">
+        <div class="char-name">Calder</div>
+        <div class="char-tags">
+          <span class="tag tag-jung">Jung: The Hero · Reluctant King</span>
+          <span class="tag tag-camp">Campbell: Hero (Books 2–3)</span>
+          <span class="tag tag-arthu">Arthurian: King Arthur · Once & Future King</span>
+        </div>
+        <h4>Arthurian Analog</h4>
+        <p>Primarily <strong>King Arthur</strong> — Stewart's and First Knight's reading: not a warrior-king fantasy but a man frightened by his own conclusions about power. Secondary: <strong>the Once and Future King</strong> — the ruler whose return is implied even in departure, whose legend outlasts his life.</p>
+        <h4>Profile</h4>
+        <p>Illegitimate son of sector lord Aldric Voss. Raised without expectation of inheritance. His name is one syllable, unadorned. Never tried to change it. He asks questions people with secure power never ask: <em>By what right do you decide? What do you owe the people who cannot refuse you?</em> Edran finds him not through destiny but through exhaustion — after decades of watching the powerful, Calder is the first person he has met who doesn't want power for the reasons that corrupt.</p>
+        <h4>Arc</h4>
+        <p>Obscure sector scion → reluctant inheritor → architect of the Circle → the man who faces Kett at Threshold Station. His tragedy is not failure. His tragedy is success, and what success costs.</p>
+      </div>
+
+      <!-- SERA -->
+      <div class="char-card">
+        <div class="char-name">Sera Voss</div>
+        <div class="char-tags">
+          <span class="tag tag-jung">Jung: Integrated Anima · The Sovereign</span>
+          <span class="tag tag-camp">Campbell: The Goddess / Sovereign</span>
+          <span class="tag tag-arthu">Arthurian: Guinevere · Lady of the Lake (political)</span>
+        </div>
+        <h4>Arthurian Analog</h4>
+        <p>Primarily <strong>Guinevere</strong> — First Knight's reading: intelligent, morally serious, not defined by the triangle. Secondary: <strong>the Lady of the Lake</strong> in her political dimension — the one who holds the kingdom together when the king cannot.</p>
+        <h4>Profile</h4>
+        <p>Elected leader of the Free Reaches. Daughter of Aldric Voss — making her Calder's half-sister by blood, a fact neither knows at the trilogy's opening. This surfaces not as melodrama but as slow clarification: two people drawn to each other because they recognized the same wound, discovering the wound has the same origin.</p>
+        <p>Her relationship with Calder is a merger of love and statecraft. The tension between those two things — whether they can coexist or whether one must eventually consume the other — is the B-story engine of the trilogy.</p>
+        <h4>Arc</h4>
+        <p>Autonomous leader → partner in the Circle's experiment → the figure who holds the political structure together when Calder cannot. Her final scenes are among the most quietly devastating in the trilogy.</p>
+      </div>
+
+      <!-- DAVAN -->
+      <div class="char-card">
+        <div class="char-name">Davan</div>
+        <div class="char-tags">
+          <span class="tag tag-jung">Jung: Trickster-Hero · Radical Transparency</span>
+          <span class="tag tag-camp">Campbell: Threshold Guardian → Ally → Crisis Agent</span>
+          <span class="tag tag-arthu">Arthurian: Lancelot · Galahad</span>
+        </div>
+        <h4>Arthurian Analog</h4>
+        <p>Primarily <strong>Lancelot</strong> — First Knight's reading: the man who loves without calculation, which is either the purest thing or the most destructive. Secondary: <strong>Galahad</strong> in his moral completion — genuinely worthy, and whose worthiness is itself the problem because a system built on flawed people has no architecture for someone who isn't.</p>
+        <h4>Profile</h4>
+        <p>No surname. No traceable family record. Arrives as Sera's envoy and immediately destabilizes every room he enters — not through aggression, but through a quality of presence that makes other people's self-presentations feel suddenly inadequate. He has passed the Answering. Edran does not trust the result — not from suspicion of deception, but because the Answering has never produced someone this transparently whole, and Edran has learned to distrust anything that looks like a perfect answer. What he slowly understands is that Davan is not a perfect answer. He is a perfect question.</p>
+        <p>When the Davan-Sera relationship becomes public — through Davan's refusal, when directly questioned, to lie — the political damage is immediate. He does not apologize. He does not explain. He lives with the consequences without self-pity, which is either integrity or cruelty depending on where you're standing.</p>
+        <h4>Arc</h4>
+        <p>Arrives. Transforms every relationship he touches. Refuses to lie when lying would save everything. The most difficult characterization in the trilogy to execute, and the most important to get right.</p>
+      </div>
+
+      <!-- THESSALY -->
+      <div class="char-card">
+        <div class="char-name">Thessaly Vorn</div>
+        <div class="char-tags">
+          <span class="tag tag-jung">Jung: The Shadow (Edran's)</span>
+          <span class="tag tag-camp">Campbell: Shapeshifter · Threshold Guardian (Act III)</span>
+          <span class="tag tag-arthu">Arthurian: Morgan le Fay · Nimue (dangerous aspect)</span>
+        </div>
+        <h4>Arthurian Analog</h4>
+        <p>Primarily <strong>Morgan le Fay</strong> — not the villain of later tradition but the rival who believes she understands the deeper power better than those who oppose her, and who may not be entirely wrong. Secondary: <strong>Nimue</strong> in her dangerous dimension — the one who acts unilaterally not through malice but through conviction that she has earned the right.</p>
+        <h4>Profile</h4>
+        <p>Senior figure within the Learned. Edran's intellectual equal and longest-running colleague. She has reached a different conclusion from the same evidence: the Answering should not be a threshold. It should be a <em>test</em>. Systematic. Repeatable. Administered to anyone seeking significant authority. She is not wrong. The case she makes is coherent and genuinely more democratic than Edran's. The trilogy does not dismiss her argument. It inhabits it long enough to find what it costs.</p>
+        <p>When the other artifacts are discovered in Book Two, she accelerates. She has three of them at Threshold Station by early Book Three and has stopped asking Edran's permission for anything.</p>
+        <h4>Arc</h4>
+        <p>Trusted colleague → the figure who forces the trilogy's central confrontation. Her final choice is the scene the entire second half of Book Three builds toward.</p>
+      </div>
+
+      <!-- KETT -->
+      <div class="char-card">
+        <div class="char-name">Kett</div>
+        <div class="char-tags">
+          <span class="tag tag-jung">Jung: The Rebel · Ego without Shadow</span>
+          <span class="tag tag-camp">Campbell: Herald → Dragon</span>
+          <span class="tag tag-arthu">Arthurian: Mordred · The Grail Questioner (asks it wrong)</span>
+        </div>
+        <h4>Arthurian Analog</h4>
+        <p>Primarily <strong>Mordred</strong> — stripped of familial betrayal, reconceived as a democratic critic of legitimacy conferred by the inexplicable and unverifiable. Secondary: <strong>the questioner at the Grail castle</strong> — arrives with the right instinct, asks the wrong question, leaves without healing the king.</p>
+        <h4>Profile</h4>
+        <p>One syllable. Blunt as a closed door. Rose through Calder's own Circle on pure meritocratic merit. Never changed his name to sound like the people he worked alongside. He regards this as integrity. Others regard it differently in retrospect.</p>
+        <p>Kett believes the myth of the Answering functions exactly like divine right: an unfalsifiable credential that cannot be challenged without appearing to challenge the cosmos. He is not entirely wrong. His movement contains genuine democratic argument. What he refuses to examine is what he would replace the current order with. In that refusal, the trilogy finds its tragedy.</p>
+        <h4>Arc</h4>
+        <p>Protégé → critic → the man who forces Calder to Threshold Station. Leaves the Station changed in a way he has no words for. His movement continues without him for a while. Then it doesn't.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- V. SECONDARY CAST -->
+  <div class="section" id="secondary">
+    <div class="section-header" onclick="toggle(this)">
+      <div style="display:flex;align-items:center">
+        <span class="section-num">V</span>
+        <h2>Secondary Cast</h2>
+      </div>
+      <span class="toggle-icon">▼</span>
+    </div>
+    <div class="section-body">
+
+      <div class="char-card secondary">
+        <div class="char-name">Renn</div>
+        <div class="char-tags">
+          <span class="tag tag-jung">Jung: Loyal Companion · Continuity of Self</span>
+          <span class="tag tag-arthu">Arthurian: Bedivere</span>
+        </div>
+        <p>Edran's oldest colleague. One syllable. Still standing when everyone else has fallen. Knows the name Sorvane Thaelis and has never once used it. His conversation with Edran before the final Answering — the only time in three books Edran speaks without concealment — is what the ending earns. What Renn says in response is three words. They are not recorded in the text.</p>
+      </div>
+
+      <div class="char-card secondary">
+        <div class="char-name">Brek</div>
+        <div class="char-tags">
+          <span class="tag tag-jung">Jung: Shadow-Brother · The Road Not Taken</span>
+          <span class="tag tag-arthu">Arthurian: Kay</span>
+        </div>
+        <p>Calder's foster-brother. Abrasive, technically brilliant, constitutionally unable to perform deference to people he doesn't respect. Manages the Seat's operational logistics. Routinely underestimated by everyone Calder brings into the Circle. This never stops being a mistake.</p>
+      </div>
+
+      <div class="char-card secondary">
+        <div class="char-name">Solen</div>
+        <div class="char-tags">
+          <span class="tag tag-jung">Jung: The Divine Child</span>
+          <span class="tag tag-arthu">Arthurian: Galahad · Percival</span>
+        </div>
+        <p>Young. Encountered the artifact early. Whether he passed or failed the Answering is not immediately clear. His absolute conviction that a sixth artifact exists is genuine and unwavering. His eventual recognition that it doesn't — that the reaching was the last test, and he failed it — is the trilogy's most quietly devastating minor arc and its clearest illustration of the deeper Answering.</p>
+      </div>
+
+      <div class="char-card secondary">
+        <div class="char-name">Vaya</div>
+        <div class="char-tags">
+          <span class="tag tag-jung">Jung: Anima Made Manifest</span>
+          <span class="tag tag-arthu">Arthurian: Nimue · Lady of the Lake</span>
+        </div>
+        <p>Gone before the trilogy opens. Present in everything. The Learned operative who brought Edran to the order and to the artifact for the first time. What she told him. What she saw in him. Whether she completed the Answering. Whether she knew other artifacts existed. Whether her departure was chosen. These questions unspool across all three books, answered partially, never completely.</p>
+      </div>
+
+      <div class="char-card secondary">
+        <div class="char-name">Pael</div>
+        <div class="char-tags">
+          <span class="tag tag-jung">Jung: The Innocent · The Fool</span>
+          <span class="tag tag-arthu">Arthurian: No direct analog — a genuinely new type</span>
+        </div>
+        <p>An independent explorer who finds and carries one of the buried artifacts for six hours through a crowded transit station in Book Two, without knowing what she has. The changes that occur in that station — arguments resolved, estranged people reconciled, a minor official confessing embezzlement unprompted — go entirely unconnected to Pael and the object in her pack. The reader sees the connection. This scene is one of the trilogy's most important: artifact effects with none of the institutional framing that surrounds every other encounter.</p>
+      </div>
+
+      <div class="char-card secondary">
+        <div class="char-name">Maren</div>
+        <div class="char-tags">
+          <span class="tag tag-jung">Jung: Earthly Anima · Clarity Without Illusion</span>
+          <span class="tag tag-arthu">Arthurian: Elaine</span>
+        </div>
+        <p>Loves Davan without illusion — with full knowledge of what he is, what he cannot be, and what proximity to him costs. Her conversation with Sera Voss in Book Two is the scene that most clearly articulates what the triangle is actually about: not betrayal, not weakness, but the collision between two incompatible forms of integrity.</p>
+      </div>
+
+      <div class="char-card secondary">
+        <div class="char-name">Cors</div>
+        <div class="char-tags">
+          <span class="tag tag-jung">Jung: Trickster in Service to the Shadow</span>
+          <span class="tag tag-arthu">Arthurian: Agravaine</span>
+        </div>
+        <p>Kett's most effective instrument. Whether a true believer or a pure opportunist is a question even Kett stops trying to answer by Book Three. The distinction may not matter.</p>
+      </div>
+
+      <div class="char-card secondary">
+        <div class="char-name">Aldric Voss</div>
+        <div class="char-tags">
+          <span class="tag tag-jung">Jung: The Terrible Father</span>
+          <span class="tag tag-arthu">Arthurian: Uther Pendragon</span>
+        </div>
+        <p>Dead before the trilogy's main action. Present through consequence, document, and the two people who carry his damage: Sera, who inherited his name and chose what to do with it; Calder, who carries the wound of illegitimacy without the name. The revelation of their shared parentage is not a plot twist. It is a slow, sad clarification of something the reader has been feeling without knowing why.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- VI. REFERENCE LIST -->
+  <div class="section" id="reference">
+    <div class="section-header" onclick="toggle(this)">
+      <div style="display:flex;align-items:center">
+        <span class="section-num">VI</span>
+        <h2>Places & Things — Reference List</h2>
+      </div>
+      <span class="toggle-icon">▼</span>
+    </div>
+    <div class="section-body">
+
+      <h3>Places</h3>
+      <table class="ref-table">
+        <tr><th>Name</th><th>Description</th></tr>
+        <tr><td>Threshold Station</td><td>The deep-space research installation housing the first known artifact. Called <em>the Station</em> by the Learned; designated <em>Avalon</em> on pre-Collapse navigation charts. Precise location known to fewer than twenty people at the trilogy's opening. Maintained in secret for generations. The most consequential location in the known systems — not because of what it contains, but because of what finding it does to people who aren't ready.</td></tr>
+        <tr><td>The Seat</td><td>Where Calder's Circle convenes. Originally a repurposed Concordance administrative station. Deliberately unglamorous — Calder refused proposals to make it monumental. <em>A seat is what you sit in to do work.</em> The name stuck.</td></tr>
+        <tr><td>The Free Reaches</td><td>Confederation of outer systems without dynastic succession. Sera Voss's political home. The most successful democratic experiment since the Collapse.</td></tr>
+        <tr><td>Aldric's Hold</td><td>The Concordance's capital system. Named with characteristic unselfconsciousness after the Voss family's founding contribution to the post-Collapse order.</td></tr>
+        <tr><td>The Thaelis Sector</td><td>Edran's birthplace. Mentioned but never visited. Exists as weight, backstory, and the thing he walked away from.</td></tr>
+        <tr><td>The Outer Dark</td><td>Common term for unmapped space beyond reliable navigation — and, in some usage, anything beyond political accountability. Edran uses it as a dry synonym for <em>the place things go that we don't want to look at.</em></td></tr>
+      </table>
+
+      <h3>Key Concepts</h3>
+      <table class="ref-table">
+        <tr><th>Term</th><th>Description</th></tr>
+        <tr><td>The Answering</td><td>The threshold experience that occurs with extended artifact proximity. Strips self-narrative and comfortable fictions. Most fragment to some degree. A very few pass through coherent and integrated. The deeper Answering is the recognition that there is no sixth artifact — that completion is not available through objects.</td></tr>
+        <tr><td>The Collapse</td><td>The cascading FTL relay failure three centuries ago. The wound the trilogy's world is still organized around.</td></tr>
+        <tr><td>The Relay</td><td>The FTL communication and transit infrastructure. Surviving fragments are among the most fiercely controlled resources in the known systems.</td></tr>
+        <tr><td>The Compact</td><td>The Concordance's founding treaty. Three centuries old. Amended past meaning. Cited constantly.</td></tr>
+        <tr><td>The Archive</td><td>The Learned's distributed network of secure knowledge repositories. Their leverage, their identity, their liability.</td></tr>
+        <tr><td>Sorvane Thaelis</td><td>Edran Vael's birth name. Appears in the text exactly three times.</td></tr>
+      </table>
+
+      <h3>Artifact System — Quick Reference</h3>
+      <table class="ref-table">
+        <tr><th>Property</th><th>Detail</th></tr>
+        <tr><td>Quantity</td><td>Five exist. One known at trilogy's opening; four buried on planetary surfaces, undiscovered.</td></tr>
+        <tr><td>Appearance</td><td>All five identical in every measurable regard. Matte black, featureless, light-absorbing.</td></tr>
+        <tr><td>At rest</td><td>Perfectly, unnaturally still.</td></tr>
+        <tr><td>When held</td><td>Resists stabilization. Gyroscopic drift toward an unknown orientation. Requires constant conscious attention to hold still.</td></tr>
+        <tr><td>Response to force</td><td>None. Immune to all physical, thermal, electromagnetic intervention.</td></tr>
+        <tr><td>Markings</td><td>Any marking adheres for approximately ten seconds, then fades into the surface and vanishes.</td></tr>
+        <tr><td>Discovery rule</td><td>All artifacts are found buried on planetary surfaces. Threshold Station's artifact is the sole exception — unearthed pre-Collapse.</td></tr>
+        <tr><td>The sixth artifact</td><td>Does not exist. The rumor originates in the Answering's final stage. Recognizing the reaching as the self's last disguise is the deeper Answering.</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- VII. TRILOGY ARC -->
+  <div class="section" id="arc">
+    <div class="section-header" onclick="toggle(this)">
+      <div style="display:flex;align-items:center">
+        <span class="section-num">VII</span>
+        <h2>Trilogy Arc — Overview</h2>
+      </div>
+      <span class="toggle-icon">▼</span>
+    </div>
+    <div class="section-body">
+      <h3>The Central Question — Asked Three Times</h3>
+      <table class="ref-table">
+        <tr><th>Book</th><th>Scale</th><th>Question</th></tr>
+        <tr><td>One</td><td>The Individual</td><td>What does a person owe the civilization they were born into, and what do they owe the one they're trying to build?</td></tr>
+        <tr><td>Two</td><td>The Institution</td><td>Can a system designed for justice survive contact with the humans who must operate it?</td></tr>
+        <tr><td>Three</td><td>History</td><td>When the thing you built becomes the thing you fought, what do you do with what remains?</td></tr>
+      </table>
+
+      <h3>The Artifact Arc</h3>
+      <p>The artifacts are not the story. They are the pressure the story is told under. Their presence reveals character, shifts power, and ultimately demonstrates — through the failure of every faction that tries to weaponize them — that power cannot be gained through power.</p>
+      <table class="ref-table">
+        <tr><th>Book</th><th>Artifact Status</th></tr>
+        <tr><td>One</td><td>One artifact known; believed unique. Second discovered in the epilogue. The world is not what anyone thought.</td></tr>
+        <tr><td>Two</td><td>Other buried artifacts begin surfacing. Multiple-artifact effects documented for the first time. Factions reorganize around possession rather than ideas. This is the warning.</td></tr>
+        <tr><td>Three</td><td>Fourth and fifth found. All five briefly united. The cycle revealed. All five dispersed. The epilogue: not over.</td></tr>
+      </table>
+
+      <h3>The Cyclical Ending</h3>
+      <p>The five-artifact conjunction produces not cataclysm but certainty: humanity is not the first civilization to find these objects, be changed by them, and let them go. The trilogy ends with the artifacts dispersed on trajectories taking centuries to complete, and a civilization that knows something it cannot unknow — that it, too, will not last forever, and that this is not a tragedy.</p>
+      <div class="callout">The final image: an artifact in unmapped space, perfectly still on a surface no human hands have touched. Something approaches — alive, curious, having never seen anything like this before. The artifact waits. Not for the right person. Not for the chosen one. The way things with no urgency wait, for whatever comes next.<br><br><em>The story is not over.</em></div>
+
+      <h3>Jungian Throughline — Individuation</h3>
+      <table class="ref-table">
+        <tr><th>Character</th><th>Function in Edran's Individuation</th></tr>
+        <tr><td>Calder</td><td>Edran's vision of uncorrupted will — the revelation that even uncorrupted will makes catastrophic choices.</td></tr>
+        <tr><td>Davan</td><td>Shadow-complement: the man who cannot hide, where Edran hides everything.</td></tr>
+        <tr><td>Sera</td><td>Integrated Anima: full personhood, power and love held simultaneously.</td></tr>
+        <tr><td>Thessaly</td><td>Shadow proper: the self Edran would have become with different conclusions from the same evidence.</td></tr>
+        <tr><td>Kett</td><td>The Rebel voice in Edran's psyche, suppressed for thirty years, that Book Three forces him to stop ignoring.</td></tr>
+      </table>
+
+      <h3>Campbell Throughline — The Return</h3>
+      <p>The overarching structure is the <strong>Return</strong> phase of the monomyth — specifically the <em>Refusal of the Return</em>. Edran Vael has spent thirty years in the belly of the whale. The trilogy is his return to himself.</p>
+      <table class="ref-table">
+        <tr><th>Book</th><th>Campbell Phase</th></tr>
+        <tr><td>One</td><td>The Call to Adventure — the artifact's uniqueness shattered; the old understanding ending.</td></tr>
+        <tr><td>Two</td><td>The Road of Trials — the Circle; multiple artifacts; the first cracks.</td></tr>
+        <tr><td>Three</td><td>The Supreme Ordeal and Return — the confrontation; the five-artifact conjunction; the Answering finally attempted; what Edran does with what he finds.</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- VIII. VOICE & POV -->
+  <div class="section" id="voice">
+    <div class="section-header" onclick="toggle(this)">
+      <div style="display:flex;align-items:center">
+        <span class="section-num">VIII</span>
+        <h2>Voice, POV & Narrative Architecture</h2>
+      </div>
+      <span class="toggle-icon">▼</span>
+    </div>
+    <div class="section-body">
+
+      <h3>The Governing Voice — Edran Vael, First Person</h3>
+      <p>The trilogy is Edran's story told in Edran's voice. First person, past tense, with the characteristic texture of someone who survived everything he's about to describe and still isn't sure how he feels about most of it.</p>
+      <p>The voice is a genuine hybrid of two distinct literary registers:</p>
+
+      <div class="book-block">
+        <div class="book-meta" style="grid-template-columns:1fr 1fr;gap:1.5rem;">
+          <div class="book-meta-item">
+            <strong>From Murderbot Diaries (Wells)</strong>
+            Dry observational humor. Self-deprecating internal monologue. Deflection through wit. The habit of describing his own emotional states in clinical or peripheral terms to avoid admitting he has them. The small, precise joke inserted immediately after something devastating — not to minimize it, but because he genuinely doesn't know what else to do. A reflexive distrust of his own importance. The tendency to notice the wrong thing at the wrong moment with absolute accuracy.
+          </div>
+          <div class="book-meta-item">
+            <strong>From Stewart's Merlin (Crystal Cave et al.)</strong>
+            Genuine lyrical depth. The capacity for love that is admitted, not deflected. Precision of observation that turns occasionally beautiful without trying to. The long view — a narrator who has lived enough to know what mattered and what didn't, and who is honest about which was which. Stillness. The willingness to sit with a feeling rather than immediately process it into something manageable.
+          </div>
+        </div>
+      </div>
+
+      <p>The productive tension between these two registers is Edran's character made audible. The Murderbot surface is what he presents; the Stewart depth is what the reader perceives through it. He will undercut his own most important moments. He will describe something that broke him and then make a small, accurate observation about something peripheral — the temperature of a room, a colleague's bad choice of footwear, the specific way a bureaucratic form was incorrectly filled out. The joke will not land the way he intends, because the reader will have just seen what he's deflecting from. That gap between his self-presentation and what the reader perceives is his entire character arc, compressed into voice.</p>
+
+      <div class="callout">Edran at fourteen, first touching the artifact: <em>"I held it for about four seconds before I had to set it down. I don't have a useful description of what happened in those four seconds. I have a very detailed description of the floor, which I studied for approximately ten minutes afterward while pretending I was just resting."</em></div>
+
+      <div class="callout">Edran at fifty-three, watching Calder address the Circle for the first time: <em>"He was not a great speaker. He paused in the wrong places and his hands didn't know what to do with themselves. I watched two hundred people decide, one by one, that none of that mattered. I don't know what I expected to feel. Not that."</em></div>
+
+      <h3>Third Person Omniscient — The Shift Chapters</h3>
+      <p>Third person omniscient chapters are <strong>deliberately rare</strong> and structurally load-bearing. Their appearance is itself an event — a signal to the reader that something is happening that Edran cannot see, will not look at, or has actively decided not to witness. The register shift is abrupt and intentional. These chapters do not try to sound like Edran.</p>
+
+      <p>They are used for:</p>
+      <table class="ref-table">
+        <tr><th>When 3rd Person Appears</th><th>Why Edran Can't Tell It</th></tr>
+        <tr><td>Scenes Edran is not present for</td><td>He is elsewhere, deliberately or not. The reader needs to see what he's missing.</td></tr>
+        <tr><td>Scenes Edran is present for but cannot narrate honestly</td><td>His emotional investment is too high. His 1st person account would be unreliable in ways he doesn't know.</td></tr>
+        <tr><td>The Calder-Kett confrontation at Threshold Station</td><td>Edran waits outside. He does not witness this scene. He never fully learns what was said. The reader does.</td></tr>
+        <tr><td>The Davan-Sera relationship as it actually develops</td><td>Edran's account of this is filtered through thirty years of complicated feeling. The 3rd person chapter shows what it actually was.</td></tr>
+        <tr><td>The epilogue</td><td>Edran is not there. No human is. The shift to 3rd person omniscient for the final pages makes the cosmic scale legible without reducing it.</td></tr>
+      </table>
+
+      <div class="note"><strong>Structural note:</strong> The 3rd person chapters do not have a consistent POV character — they are genuinely omniscient, moving freely. This distinguishes them from chapters that might merely be Calder or Sera's close-third perspective. The reader should feel the difference: Edran's chapters are intimate and subjective; the omniscient chapters are vast and slightly cold, like watching from a long way away.</div>
+
+      <h3>The Trilogy's Temporal Architecture</h3>
+      <table class="ref-table">
+        <tr><th>Book</th><th>Edran's Age</th><th>Analog Pairing</th><th>Narrative Mode</th></tr>
+        <tr><td>One — <em>The Crystal Dark</em></td><td>~14–25</td><td>The Crystal Cave + All Systems Red</td><td>Primarily 1st person. 3rd person used 2–3 times for scenes young Edran cannot access or understand.</td></tr>
+        <tr><td>Two — <em>The Round Table</em></td><td>~45–53</td><td>Artificial Condition + The Hollow Hills</td><td>1st person default. More 3rd person chapters than Book One — the world is expanding beyond what Edran can directly witness.</td></tr>
+        <tr><td>Three — <em>Avalon's Fall</em></td><td>~53–56</td><td>The Last Enchantment + Rogue Protocol / Exit Strategy</td><td>Primarily 1st person. The final 3rd person chapter is the epilogue — the only one Edran could not narrate even if he wanted to.</td></tr>
+      </table>
+
+      <div class="note"><strong>On the gap:</strong> Book One ends when Edran is ~25, having just identified Calder (then approximately 8–10 years old) and recognized what he is. Book Two opens ~20 years later. That gap — Edran becoming Edran Vael, the slow construction of the veil, the thirty years of Learned service — is narrated only in retrospect, in fragments, across Books Two and Three. The reader assembles it from what Edran lets slip. This is intentional. The gap is the most important thing that ever happened to him and he is least able to talk about it directly.</div>
+
+    </div>
+  </div>
+
+  <!-- IX. BOOK ONE -->
+  <div class="section" id="book1">
+    <div class="section-header" onclick="toggle(this)">
+      <div style="display:flex;align-items:center">
+        <span class="section-num">IX</span>
+        <h2>Book One — The Crystal Dark</h2>
+      </div>
+      <span class="toggle-icon">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="book-block">
+        <div class="book-title">The Crystal Dark</div>
+        <div class="book-meta">
+          <div class="book-meta-item"><strong>Thematic Question</strong>What do we owe the future we're trying to build?</div>
+          <div class="book-meta-item"><strong>Edran's Age</strong>14–25 (coming of age)</div>
+          <div class="book-meta-item"><strong>Analog Pairing</strong>The Crystal Cave + All Systems Red</div>
+          <div class="book-meta-item"><strong>Artifacts in Play</strong>One known; one discovered in epilogue</div>
+          <div class="book-meta-item"><strong>POV</strong>Edran 1st person throughout; 2–3 omniscient chapters</div>
+          <div class="book-meta-item"><strong>Arthurian Phase</strong>Merlin's youth, education, first sight of the sword in the stone</div>
+        </div>
+      </div>
+
+      <h3>Overview</h3>
+      <p>Book One is a coming-of-age novel in the key of literary science fiction. It begins with Edran at fourteen — Sorvane Thaelis, still — inside the suffocating architecture of a minor dynastic family in a Concordance sector that peaked two generations ago and has been declining in slow motion ever since. The book ends with him at roughly twenty-five, having survived the Answering, shed his birth name, entered the Learned as a junior operative, and — in the final chapters — encountered a child named Calder for the first time and understood, with a clarity he is entirely unprepared for, what he is looking at.</p>
+
+      <p>The <em>All Systems Red</em> register operates here in terms of tone and situation: a young person with unusual cognitive gifts navigating an institution (the Learned) that doesn't know quite what to do with them, surrounded by competent and well-meaning people who are still, somehow, slightly missing the point. Edran is not a chosen one. He is a fourteen-year-old who touched something he shouldn't have and cannot explain what happened, in a family that would find the explanation politically inconvenient regardless.</p>
+
+      <h3>Act Structure</h3>
+
+      <h4>Act One — The Thaelis Sector (Ages 14–17)</h4>
+      <p>Sorvane Thaelis is the third child of a sector family with more history than influence, and they are not shy about making clear which of those things they value. He is being prepared for a role he doesn't want in a succession dispute he understands better than anyone in the family suspects. The Thaelis sector is on the edge of the Concordance's mapped space — not quite the Outer Dark, but close enough to feel it. Pre-Collapse infrastructure still functions here, barely, in the way that things function when they haven't been maintained and people have stopped expecting them to fail.</p>
+      <p>At fourteen, during a survey expedition accompanying his older brother — assigned to assess a candidate mining site — Edran finds the entrance to something buried. His brother files it as a geological anomaly and moves on. Edran goes back alone. What he finds is the first artifact he has ever seen. He doesn't know what it is. He picks it up. He holds it for approximately four seconds. He sets it down carefully, sits on the floor of a cave that smells like cold stone and old time, and stays there until he hears his brother calling.</p>
+      <p>He doesn't tell anyone. This is, in retrospect, the first characteristically Edran decision of his life.</p>
+
+      <div class="oh-shit">
+        <div class="oh-shit-label">Oh Shit Moment · Act One</div>
+        <p>Edran returns to the cave three more times over the following month. On the fourth visit, he is there for six hours. When he comes out, it is dark and his brother has sent people looking for him. He cannot account for the time. He is not distressed by this in the way he suspects he should be. He is distressed by something else entirely: the quality of silence the cave had on his way out compared to the quality of silence it had on the way in. Something has changed. He does not know if the change is in the cave or in him. He will spend approximately fifteen years figuring out the answer is both, and approximately thirty more sitting with what that means.</p>
+      </div>
+
+      <h4>Act Two — Finding the Learned (Ages 17–21)</h4>
+      <p>The succession dispute comes to a head. Edran is seventeen. His family's plan for him is specific, legal, and something he finds morally indefensible in a way he cannot yet fully articulate but feels with complete physical certainty. He leaves. This is less dramatic than it sounds and more irreversible than anyone expects. He takes almost nothing. He does not say goodbye to anyone except, obliquely, to a younger household servant named something he will remember for the rest of his life and mention once, in Book Three, in a context that makes the reader understand what he meant by it.</p>
+      <p>The Learned find him before he finds them — which is how they prefer it. Specifically, Vaya finds him. She is not what he expected an archivist-philosopher to look like, which he will later understand was precisely the point. She tells him she has been aware of him since the survey expedition three years ago. He asks how. She doesn't answer. He decides this is probably fine.</p>
+      <p>The middle section of Act Two is Edran's apprenticeship — his education in what the Learned actually are (more complicated than the description suggests, less noble, more pragmatic, genuinely committed to something he cannot fully name but recognizes as real). He is good at this work in ways that make his instructors slightly uncomfortable. He is bad at the parts of this work that require him to perform not-knowing-things he already knows. He is, for the first time in his life, somewhere that rewards what he actually is. He finds this almost intolerably uncomfortable for about eighteen months, and then it becomes the thing he builds his identity on.</p>
+
+      <h4>Act Three — Threshold Station (Ages 21–23)</h4>
+      <p>Vaya takes him to Threshold Station. This is not standard Learned procedure — junior operatives do not go to the Station; the Station is the Learned's deepest secret and its most significant liability. Vaya takes him anyway. She has reasons she shares with him partially and in the wrong order, which he will only understand years later.</p>
+      <p>The artifact at Threshold Station is the same type of object as the thing he found in the cave at fourteen — he knows this instantly, with a recognition that is physical before it is cognitive. The Learned have had this one for generations. They have studied it. They have a name for what it does to people. Vaya explains the Answering. She tells him the survival rate. She tells him she has never attempted it herself. She does not tell him what she thinks he should do.</p>
+      <p>He attempts it. He is twenty-one.</p>
+
+      <div class="oh-shit">
+        <div class="oh-shit-label">Oh Shit Moment · Act Three — The Answering</div>
+        <p>The Answering at twenty-one is not the same as the Answering at fifty. What it does to a person who is still in the process of becoming a person is something the Learned have no good data on — their previous subjects have all been adults, most of them middle-aged. Edran goes in as Sorvane Thaelis and comes out as something that is not yet Edran Vael but is definitively not Sorvane Thaelis either. He spends three weeks in a Learned medical facility. He is not physically harmed. He is, in the assessment of everyone who interacts with him during this period, somewhere else — present in body but processing something they cannot reach. When he comes back he is quieter. Not sad. Quieter. Vaya sits with him for most of those three weeks without speaking. This is what he means, thirty years later, when he tries to explain to someone what love looks like when it doesn't ask for anything.</p>
+      </div>
+
+      <h4>Act Four — The Field (Ages 23–25)</h4>
+      <p>Two years as a junior field operative. The work is not glamorous — information retrieval, archive verification, the careful placement of knowledge in the hands of people who might use it well. He is very good at this. He is also developing, during this period, the habit of observation that will define his professional life: he watches powerful people with the focused attention of someone who has seen, briefly and without context, what is actually inside them, and cannot stop noticing the gap between that and what they present.</p>
+      <p>In the final chapters of Book One, a field assignment takes him to a minor outer sector — genuinely unremarkable, administratively — where a sector lord named Aldric Voss has recently produced an illegitimate son. The child is approximately eight years old. Edran's assignment has nothing to do with the child. He notices him anyway, in the way he notices things: completely, without appearing to, and then doesn't know what to do with what he noticed.</p>
+      <p>The child's name is Calder. He is asking an archivist who has been brought in to catalog the sector's pre-Collapse records a series of questions about the people who used to live in the systems they can no longer reach. The archivist is being politely patient. The child's questions are not childish questions. Edran stands in a doorway for about four minutes and then continues with his assignment.</p>
+      <p>He files a report that night that has nothing to do with his official assignment and everything to do with what he saw in that doorway. He sends it to Vaya. She responds in two words. He will not know what she meant by them for approximately twenty years.</p>
+
+      <div class="oh-shit">
+        <div class="oh-shit-label">Oh Shit Moment · Climax — The Cave Artifact</div>
+        <p>Before the epilogue: Edran returns, on his own time and his own resources, to the Thaelis sector. To the cave. The artifact he found at fourteen is still there — he was the only person who knew about it, and he never told anyone. He reports it to the Learned. This is the procedurally correct thing to do. It is also the thing that will, decades later, set the epilogue in motion, because the Learned send an archivist to retrieve it, and that archivist's route takes her through a dead station where she finds something resting on a decommissioned console that she was not expecting.</p>
+      </div>
+
+      <h3>The Epilogue</h3>
+      <p>A minor Learned archivist on a routine survey of a dead station in an outer system finds something resting on a decommissioned console. Matte black. Same dimensions as the one at Threshold Station. When she picks it up, it resists being held still. She sets it down carefully. She contacts Edran. The chapter ends.</p>
+      <div class="callout">The entire first book was predicated on one artifact. The epilogue reveals — without drama, without explanation — that no one understood the story they were in. Not the Learned. Not Edran. Not the reader. And the cave artifact Edran just reported, now in transit to Threshold Station, is not the one the archivist found. There are at least three.</div>
+    </div>
+  </div>
+
+  <!-- X. BOOK TWO -->
+  <div class="section" id="book2">
+    <div class="section-header" onclick="toggle(this)">
+      <div style="display:flex;align-items:center">
+        <span class="section-num">X</span>
+        <h2>Book Two — The Round Table</h2>
+      </div>
+      <span class="toggle-icon">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="book-block">
+        <div class="book-title">The Round Table</div>
+        <div class="book-meta">
+          <div class="book-meta-item"><strong>Thematic Question</strong>Can a just system survive contact with human nature?</div>
+          <div class="book-meta-item"><strong>Edran's Age</strong>~45–53</div>
+          <div class="book-meta-item"><strong>Analog Pairing</strong>Artificial Condition + The Hollow Hills</div>
+          <div class="book-meta-item"><strong>Artifacts in Play</strong>Two known at opening; third surfaces mid-book; fourth located by close</div>
+          <div class="book-meta-item"><strong>POV</strong>Edran 1st person default; more omniscient chapters than Book One</div>
+          <div class="book-meta-item"><strong>Arthurian Phase</strong>Arthur's kingship, the gathering of the Round Table, the height of Camelot</div>
+        </div>
+      </div>
+
+      <h3>Overview</h3>
+      <p>Book Two opens approximately twenty years after Book One ends. Calder is now in his late twenties — no longer the child in the doorway but recognizably continuous with him, which Edran finds both reassuring and faintly alarming. The Learned have two artifacts at Threshold Station. Calder has, through a combination of competence, circumstance, and Edran's quiet architectural work over two decades, inherited his father's sector and begun to do something unexpected with it.</p>
+
+      <p>The <em>Artificial Condition</em> register operates here in the dynamic between Edran and Calder: the older, more experienced, deeply private operative who has spent twenty years managing this situation from a careful distance, now suddenly required to be in the room. Edran is not comfortable being in the room. He is extremely good at being in the room. These two facts do not resolve each other and he finds this exhausting.</p>
+
+      <p>The <em>Hollow Hills</em> register operates in the sweep of the book's middle section — the gathering of the Circle, the arrival of the people who will define the era, the sense of something being built that is larger than any individual's intention.</p>
+
+      <h3>Act Structure</h3>
+
+      <h4>Act One — Calder's Inheritance & The Circle's Formation</h4>
+      <p>Aldric Voss is dead. Calder has the sector and doesn't want it in the way people who want things want things — he wants it the way a person wants to fix something broken, which is to say reluctantly and with full awareness of what it's going to cost. Edran has been managing the transition from the margins for two years. Calder knows he's there. They have not yet had a direct conversation. This is Edran's preference and Calder finds it slightly hilarious, which is the first sign that he is going to be very difficult to manage.</p>
+      <p>The Circle begins as an argument Calder makes in a High Table session that goes slightly wrong and then much better than expected. The round table at the Seat is Brek's idea, deployed ironically, and then the irony quietly becomes sincerity without anyone formally deciding that happened. Edran watches this process with the expression of someone who planned for approximately sixty percent of it.</p>
+
+      <h4>Act Two — Sera, Davan, and the Gathering</h4>
+      <p>Sera Voss arrives to negotiate the Free Reaches' relationship with the Circle. She and Edran have a history he has deliberately kept out of the record — she knows who he was before Vael; she is one of three people alive who know Aldric Voss's damage from the inside rather than the outside. Her negotiation with Calder is formally political and personally something more complicated, which Edran observes with the focused attention of someone watching a slow-motion event he could have prevented and chose not to.</p>
+      <p>Davan arrives as Sera's envoy. A third artifact has been found — buried on an inhabited world, unearthed by a construction project. Pael, the independent explorer who retrieves it, carries it through a transit station for six hours without knowing what she has.</p>
+
+      <div class="oh-shit">
+        <div class="oh-shit-label">Oh Shit Moment · Mid-Book — The Pael Incident</div>
+        <p>Pael carries the newly unearthed artifact through a crowded transit station for six hours, looking for someone to report the strange object to. By the time she finds someone, the station has quietly changed. Arguments running for months have resolved. A man not spoken to his brother in eleven years is sitting with him. A sector administrator who has been embezzling supply allocations walks into the station office and begins confessing before anyone has asked. No one connects this to Pael or the object in her pack. The reader does. Edran, reading the incident report three days later, does too — and the sentence where he realizes what happened is the funniest and most frightening thing in the book. He doesn't describe what he felt. He describes the incident report's formatting, which was atrocious.</p>
+      </div>
+
+      <h4>Act Three — Love and its Architecture</h4>
+      <p>The Calder-Sera relationship develops during the Circle's most productive period. This is narrated by Edran with the determined detachment of someone who has decided this is not his business, which means the reader sees everything. A 3rd person omniscient chapter shows the relationship as it actually is — direct, serious, complicated by the fact that both of them are running political entities and neither can fully separate the personal from the structural. Edran's 1st person chapters around this period are notable for their extremely detailed descriptions of logistics, architecture, and supply chain management.</p>
+      <p>Davan's Answering takes place with two artifacts present. He is in proximity for four hours — longer than anyone on record.</p>
+
+      <div class="oh-shit">
+        <div class="oh-shit-label">Oh Shit Moment · Climax — Davan's Answering</div>
+        <p>Davan emerges unchanged in every visible way. Calm. Present. Exactly who he was. Thessaly, watching from the observation room, tells Edran: <em>He didn't pass. He was already there before he went in.</em> Edran's response in his own narration is a single sentence about the ambient temperature of the observation room. The reader will have to sit with this. That's the point.</p>
+      </div>
+
+      <h4>Act Four — The First Fractures & The Archive Fragment</h4>
+      <p>Kett files his first formal petition. The Circle holds, but the logic of the petition — correct in every particular — begins to circulate. Thessaly presents her replication prototype to the Learned's inner council. Edran recognizes it as a gun. He says so. Thessaly says he is being metaphorical. He says he is being literal. They have had versions of this argument before and will not have it again after this one, because something changes in Thessaly between this conversation and the next time Edran sees her.</p>
+      <p>Late in the book, reviewing pre-Collapse archive material, Edran finds a survey record from a civilization preceding humanity's FTL era — referencing objects matching the artifacts' description. The fragment is incomplete. He cannot determine what happened to that civilization. He files it where only he will see it. He does not tell anyone. In his narration, this decision takes approximately one sentence. The sentence ends mid-thought on a description of what he had for dinner.</p>
+    </div>
+  </div>
+
+  <!-- XI. BOOK THREE -->
+  <div class="section" id="book3">
+    <div class="section-header" onclick="toggle(this)">
+      <div style="display:flex;align-items:center">
+        <span class="section-num">XI</span>
+        <h2>Book Three — Avalon's Fall</h2>
+      </div>
+      <span class="toggle-icon">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="book-block">
+        <div class="book-title">Avalon's Fall</div>
+        <div class="book-meta">
+          <div class="book-meta-item"><strong>Thematic Question</strong>Is wisdom knowing what to do — or knowing what not to do?</div>
+          <div class="book-meta-item"><strong>Edran's Age</strong>~53–56</div>
+          <div class="book-meta-item"><strong>Analog Pairing</strong>The Last Enchantment + Rogue Protocol / Exit Strategy</div>
+          <div class="book-meta-item"><strong>Artifacts in Play</strong>Fourth and fifth found; all five briefly united; all five dispersed</div>
+          <div class="book-meta-item"><strong>POV</strong>Primarily 1st person; final omniscient chapter is the epilogue</div>
+          <div class="book-meta-item"><strong>Arthurian Phase</strong>The fall of Camelot — necessary dissolution, not defeat</div>
+        </div>
+      </div>
+
+      <h3>Overview</h3>
+      <p>The <em>Last Enchantment</em> register operates in Edran's narration throughout: the mentor who has outlived the moment he was built for, watching what he made become something he can no longer fully protect or control, and slowly understanding that this was always what success looked like. The <em>Rogue Protocol / Exit Strategy</em> register operates in the plot's momentum — the escalating crisis, the alliances that shift and break, the mission that keeps changing shape, and the protagonist who has to keep improvising past the point where the original plan was useful.</p>
+      <p>Edran's voice in Book Three is the most complete version of itself. The Murderbot-deflection is still present but the Stewart-depth is closer to the surface. He is fifty-three and tired in the specific way of someone who has been right about too many things for too long and found it less satisfying than expected. The jokes are still there. They land differently.</p>
+
+      <h3>Act Structure</h3>
+
+      <h4>Act One — The Fracturing</h4>
+      <p>The Circle is fracturing under the weight of its own success. The artifact debate has gone public. Kett's Open Reach controls enough of the Concordance to force a referendum. Thessaly has three artifacts at Threshold Station and has stopped asking permission for anything. Edran is managing approximately six simultaneous crises with the focused attention of someone who has done this before and knows exactly how badly it can go.</p>
+      <p>The Davan-Sera relationship becomes public — not through exposure but through Davan's refusal, when directly questioned by an Open Reach investigator, to lie about it. Edran's account of learning this news is one of the most carefully constructed passages in the trilogy: three paragraphs about the investigator's report, the administrative process by which it reached him, and the specific quality of the light in the room where he read it. The reader will understand what he is not saying. Calder's response — when it comes — defines his character once and finally. A 3rd person omniscient chapter shows the conversation between Calder and Sera that night. Edran's 1st person account of the same period describes the logistics of evacuating non-essential personnel from the Seat.</p>
+
+      <div class="oh-shit">
+        <div class="oh-shit-label">Oh Shit Moment · Mid-Book — Thessaly's Activation</div>
+        <p>Thessaly activates her replication prototype with three artifacts present. The prototype amplifies rather than replicates — wildly, indiscriminately, without the threshold quality that makes the Answering survivable. The people in the Station are not harmed. They are simply, suddenly, completely honest. With themselves. With each other. With everything. The Station's logs from the following six hours are the most disturbing document in the trilogy — not because of what people do, but because of what people say when they can no longer say anything else. The artifacts respond: the prototype goes inert. The three artifacts shift, infinitesimally, in orientation — pointing at the same location in unmapped space. Edran, reading the sensor data, recognizes the direction. It matches the archive fragment. He narrates this recognition in one clause of a longer sentence about instrument calibration.</p>
+      </div>
+
+      <h4>Act Two — The Quest for the Remaining Artifacts</h4>
+      <p>The fourth and fifth artifacts must be found before Kett's movement can use the referendum to seize control of the ones already known. This is the <em>Exit Strategy</em> section of the book — improvised, escalating, with Edran coordinating from Threshold Station while simultaneously trying to keep Calder's coalition from collapsing and Thessaly from doing anything else unilateral. Renn is with him throughout. Their exchanges during this period are the most dialogue-dense Edran sections in the trilogy, and the funniest, because Renn is the one person Edran cannot successfully deflect and has given up trying to.</p>
+
+      <h4>Act Three — The Conjunction & The Confrontation</h4>
+
+      <div class="oh-shit">
+        <div class="oh-shit-label">Oh Shit Moment · Climax — The Five-Artifact Conjunction</div>
+        <p>All five artifacts briefly united at Threshold Station. No cataclysm. No light, no sound. Everyone present understands, simultaneously and with complete certainty, that they are not the first civilization to find these objects. The knowledge arrives not as information but as presence — the way you know your own name. The only word anyone agrees on afterward is: <em>already.</em> Edran's narration of this experience is the longest unbroken non-deflecting passage in three books. He doesn't make a single joke. He doesn't describe the furniture. He just says what happened. The reader, by this point, will understand what that costs him.</p>
+      </div>
+
+      <p>Calder and Kett at Threshold Station — a 3rd person omniscient chapter. Not a battle. A conversation. Kett makes every argument correctly. Calder does not refute them. What Calder says instead is not a counter-argument; it is a different kind of question. Calder does not come back from this conversation in the way anyone expected. He comes back <em>smaller</em> — not defeated but genuinely reduced, in the way things become clearer when you remove what was decorative. What he does in the remaining months of his life is what the legend will be built from. Kett leaves changed in a way he has no words for. His movement continues without him for a while. Then it doesn't.</p>
+
+      <h4>Act Four — The Dispersal & The Answering</h4>
+      <p>Sera Voss coordinates the dispersal of all five artifacts — different vectors, unmapped trajectories, centuries to complete. The last act of the Circle as a governing body. Edran's narration of this process is meticulous and practical and entirely about logistics. The reader will know what it cost. He will not say.</p>
+      <p>Before the final Answering: the conversation with Renn. The only time in three books Edran speaks without concealment. He tells Renn what he found in the archive fragment. Why he hid it. What he thinks the artifacts actually are. And then: <em>I don't know if I should have done any of it.</em> Renn's response is three words. Not recorded in the text. The reader, by this point, will have enough information to make a reasonable guess. They will probably be wrong in the right direction.</p>
+      <p>Edran enters the chamber. The reader does not witness what happens inside. We see only what he does afterward: the decisions, the documents, one conversation with Sera, and the last image — Edran at the round table in the Seat, alone, after everyone else has left, with nothing in his hands and nowhere to be. The last line is not a resolution. It is a posture. A man who has finally asked himself the question he spent a lifetime asking everyone else, sitting with the answer, in a voice that for once does not deflect away from what it cost.</p>
+
+      <h3>The Epilogue — 3rd Person Omniscient</h3>
+      <p>Unmapped space. No named location. An artifact comes to rest on a surface no human hands have touched. The stillness is absolute. Something approaches — alive, curious, having never seen anything like this before. The reader is given three sensory details: enough to understand it is not human, not anything that has appeared in the trilogy, and that it has found something it does not have a name for yet. The artifact waits. The prose is the coldest and most distant in the trilogy — genuinely omniscient, unhurried, with no investment in the outcome. As though the story has always been this large, and we have only been seeing a small piece of it.</p>
+      <div class="callout"><em>The story is not over.</em></div>
+    </div>
+  </div>
+
+  <!-- XI. THEMATIC ARCHITECTURE -->
+  <div class="section" id="themes">
+    <div class="section-header" onclick="toggle(this)">
+      <div style="display:flex;align-items:center">
+        <span class="section-num">XII</span>
+        <h2>Thematic Architecture</h2>
+      </div>
+      <span class="toggle-icon">▼</span>
+    </div>
+    <div class="section-body">
+
+      <h3>The Central Argument</h3>
+      <div class="callout">The question of who deserves power cannot be answered by power.</div>
+      <p>The artifacts do not crown anyone. They do not install Calder, validate Davan, or condemn Kett. What they do — individually, progressively, and finally all at once — is remove the stories people tell about themselves. Five different durations and intensities of the same essential process: <em>Who are you, when you can no longer be who you've decided to be?</em></p>
+
+      <h3>The Artifacts as Revealers</h3>
+      <p>The artifacts are not weapons. Every faction that tries to use them as weapons fails — not because the artifacts retaliate, but because the attempt reveals the faction's own nature with the same clarity the artifacts produce in everything nearby. They do not make things happen. They make things <em>visible</em>. The things that were always going to happen, happen faster and more clearly in their presence.</p>
+
+      <h3>The Cycle</h3>
+      <p>The trilogy's final argument — delivered through the five-artifact conjunction, the archive fragment, and the epilogue — is that civilizations are not ends in themselves. They are the form that awareness takes for a while. The artifacts have been through this before. They will go through it again. The question is not whether humanity will last. The question is what humanity chooses to do with the knowledge that it won't.</p>
+      <p>The <strong>Unbroken Circle</strong> of the title is not the Round Table and not the Circle of governance. It is the cycle the artifacts carry: the one that has no head, that is complete at every point, that has been turning long before humanity arrived and will keep turning long after.</p>
+
+      <h3>The Arthurian Resonance</h3>
+      <p>The myth operates as harmonic beneath the narrative rather than as architecture above it. Readers who know the legend will hear it underneath; readers coming fresh will experience only the story. The shape of Calder's fall is implicit in the shape of his rise. The triangle's geometry is inevitable from Davan's first appearance. Edran's final going-away echoes the going-away to Avalon — but reconceived: not the king who will return, but the man who finally arrived at himself.</p>
+
+      <h3>The Philosophical Register</h3>
+      <p>The trilogy aims for the literary register of Le Guin's <em>The Dispossessed</em> and Wolfe's <em>The Book of the New Sun</em> — philosophical argument embodied in character and event rather than stated, moral complexity without moral relativism. The artifacts are not magic. They are the most accurate mirror available. The question is what you owe the person you see in one.</p>
+
+      <div class="note">
+        <strong>Document Version 3.1</strong> — Preliminary Treatment<br>
+        Adds: Voice & POV architecture · Book One restructured as coming-of-age (ages 14–25) · Act-level structure for all three books · Murderbot/Stewart voice hybrid defined · 3rd person omniscient chapter logic · Temporal gap between Books One and Two established · Sample voice excerpts<br><br>
+        <strong>Next phase:</strong> Full Writer's Bible — world history · faction deep-dives · chapter scaffolding · voice & style guide · collective true name · the mythology the civilization tells about itself
+      </div>
+
+    </div>
+  </div>
+
+</main>
+</div>
+
+<script>
+  function toggle(header) {
+    const section = header.parentElement;
+    section.classList.toggle('open');
+    const icon = header.querySelector('.toggle-icon');
+    icon.textContent = section.classList.contains('open') ? '▲' : '▼';
+  }
+
+  // Active nav highlighting on scroll
+  const sections = document.querySelectorAll('.section');
+  const navLinks = document.querySelectorAll('nav a');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(link => link.classList.remove('active'));
+        const id = entry.target.id;
+        const active = document.querySelector(`nav a[href="#${id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { threshold: 0.2 });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
