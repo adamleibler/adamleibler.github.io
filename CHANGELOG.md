@@ -28,6 +28,9 @@ Removed the case-study sub-pages (returning later) and swept all the CSS/JS they
 ### Content
 - Contact intro microcopy: "Either way, I'm glad you made it" → "Whatever the reason, I'm glad you made it"
 
+### Contact form
+- Connected the contact form to its live Formspree endpoint; added a custom email subject and a hidden honeypot spam trap
+
 ### Verification
 - Confirmed (four independent ways) that the prior `style.css` truncation cost no homepage CSS, and that there's no orphaned code in `index.html` / `style.css` / `main.js`
 
