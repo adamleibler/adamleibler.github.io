@@ -1,70 +1,82 @@
 # adamleibler.com
 
-Personal website for Adam Leibler — Learning & Development Leader and creator of Cognitive Agency Architecture (CAA).
+Personal site for **Adam Leibler** — Principal Instructional Designer & AI-Enabled eLearning Developer.
 
-Live site: [https://adamleibler.com](https://adamleibler.com)
-
----
-
-## About This Site
-
-Six static HTML pages — no frameworks, no build tools, no dependencies. Fast, mobile-friendly, and editable in any text editor. Built collaboratively with Claude (Anthropic). Hosted on GitHub Pages.
-
-The site functions as a thought leadership platform and professional home base, anchored to the CAA framework. Primary audience: peers, practitioners, and Director/VP-level hiring managers.
+Live: [https://adamleibler.com](https://adamleibler.com)
 
 ---
 
-## File Structure
+## About
+
+A single-page static site — no frameworks, no build step, no dependencies. Plain HTML, CSS, and vanilla JavaScript, hosted on GitHub Pages. Fast, responsive, and editable in any text editor. Built collaboratively with Claude (Anthropic).
+
+Page flow: **Nav → Hero → Case Studies → Proof Bar → Portfolio → About** (bio · credentials · Ripley) **→ Contact → Footer.**
+
+---
+
+## Structure
 
 ```
 /
-├── index.html        # Homepage — hero, proof bar, what I bring, about/narrative, contact
-├── approach.html     # How I work — CAA origin, philosophy, process, capability areas, sector experience
-├── framework.html    # Cognitive Agency Architecture — full framework definition and intellectual architecture
-├── practice.html     # In Practice — Strategic Outcomes (case studies) + Selected Deliverables (portfolio)
-├── resume.html       # Resume — inline HTML with PDF download
-├── style.css         # Shared stylesheet
-├── main.js           # Shared JavaScript — nav, scroll reveal, email obfuscation
-├── CNAME             # Custom domain mapping for GitHub Pages
+├── index.html        # The entire homepage
+├── style.css         # All styles — cascading design system (~960 lines)
+├── main.js           # Nav/hamburger toggle + Formspree contact-form AJAX
+├── CNAME             # Custom domain (adamleibler.com)
+├── CHANGELOG.md      # Change history
 ├── README.md         # This file
-└── assets/
-    ├── portrait_adamLeibler.webp         # Professional headshot
-    ├── portrait_ripley.webp              # Ripley photo
-    ├── webPreview.webp                   # OpenGraph/X card image
-    ├── brandon-hall-bronze-2015.png      # Brandon Hall Award badge
-    ├── undrift-wordmark.png              # Undrift banner logo
-    ├── claude-ai-icon.svg                # Footer attribution
-    ├── AdamLeibler_Resume_DirLnD.pdf     # Resume PDF download
-    └── fonts/
-        ├── orbitron-700.woff2            # Heading font — weight 700
-        ├── orbitron-800.woff2            # Heading font — weight 800
-        └── orbitron-900.woff2            # Heading font — weight 900
+├── assets/
+│   ├── portrait_adamLeibler.webp · portrait_ripley.webp
+│   ├── webPreview.webp                 # OpenGraph / X card image
+│   ├── favicon.svg · favicon.png
+│   ├── undrift-wordmark.png            # Undrift case card
+│   ├── claude-ai-icon.svg              # Footer attribution
+│   ├── AdamLeibler_PID_Resume.pdf      # Resume download
+│   ├── logo-*.png                      # Credential logos (Brandon Hall, CRI·IMD, U.S. Army, CPTD, U of L, Articulate)
+│   └── fonts/                          # Self-hosted, latin-subset woff2
+│       ├── playfair-300/400/500/700.woff2    # Display (h1 / h2)
+│       └── lato-300/400/400i/700/900.woff2   # Body / UI
+├── case-studies/     # Placeholder — dedicated case-study pages return in a later update
+├── samples/          # Deployed course files linked from the Portfolio section
+└── tools/            # Standalone mini-apps (separate from the main site)
 ```
 
 ---
 
-## Design Tokens
+## Design system
 
-| Token        | Value        | Used For                                      |
-| ------------ | ------------ | --------------------------------------------- |
-| Background   | `#060D1A`    | Page background                               |
-| Surface      | `#0B162C`    | Cards                                         |
-| Border       | `#263d63`    | Card borders                                  |
-| Body text    | `#CBD5E0`    | Paragraphs                                    |
-| Headings     | `#F8FAFC`    | All headings                                  |
-| Gold         | `#C49A28`    | Primary CTA, accents (Starfield Gold)         |
-| Blue         | `#00D2FF`    | Links, ghost buttons (Signal Cyan)            |
-| Amber        | `#FBBF24`    | Pill borders, highlights                      |
-| Heading font | Orbitron     | Self-hosted woff2 (700/800/900)               |
-| Body font    | Lato         | Google Fonts                                  |
+`style.css` is organized in cascading layers: tokens → reset → element defaults → atoms → components → states → responsive.
 
-All text/background combinations meet WCAG 2.1 AA contrast standards.
+| Token         | Value     | Use                              |
+| ------------- | --------- | -------------------------------- |
+| Background    | `#060D1A` | Page background                  |
+| Surface       | `#0B162C` | Cards                            |
+| Border        | `#263d63` | Card borders                     |
+| Body text     | `#CBD5E0` | Paragraphs (18px / Lato)         |
+| Headings      | `#F8FAFC` | Headings (Playfair)              |
+| Gold          | `#C49A28` | Primary CTA, accents             |
+| Blue          | `#00D2FF` | Links, ghost buttons             |
+| Purple        | `#A78BFA` | Card / tag hue                   |
+| Green · Red   | `#4ADE80` · `#EF4444` | Form success / error |
+| Amber         | `#FBBF24` | Proof-bar + supporter pills      |
+
+- **Fonts:** Playfair (display) + Lato (body/UI), self-hosted as latin-subset woff2.
+- **Type:** body 18px / 1.7; H1 64px; H2 32px.
+- **Motion:** reveal-on-scroll via pure-CSS scroll-driven animations (`animation-timeline: view()`), `prefers-reduced-motion` guarded.
+- Text/background combinations target WCAG 2.1 AA contrast.
+
+---
+
+## Contact form
+
+The Contact section posts to [Formspree](https://formspree.io) via `fetch` (AJAX), showing an inline success/error status with no page reload. A hidden honeypot field filters bot spam.
 
 ---
 
 ## Deployment
 
-Deploys automatically via GitHub Pages on every push to `main`. No build step required.
+Served by **GitHub Pages** from `main` (root) — every push to `main` redeploys, no build step. The custom domain is set via the `CNAME` file.
+
+Local preview: open `index.html` directly, or serve the folder (e.g. `python -m http.server`).
 
 ---
 
