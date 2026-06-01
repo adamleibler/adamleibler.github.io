@@ -1,6 +1,6 @@
 # adamleibler.com
 
-Personal website for Adam Leibler — Organizational Learning and Development Leader.
+Personal website for Adam Leibler — Learning & Development Leader and creator of Cognitive Agency Architecture (CAA).
 
 Live site: [https://adamleibler.com](https://adamleibler.com)
 
@@ -8,7 +8,9 @@ Live site: [https://adamleibler.com](https://adamleibler.com)
 
 ## About This Site
 
-Four static HTML pages — no frameworks, no build tools, no dependencies. Fast, mobile-friendly, and editable in any text editor. Built collaboratively with Claude (Anthropic). Hosted on GitHub Pages.
+Six static HTML pages — no frameworks, no build tools, no dependencies. Fast, mobile-friendly, and editable in any text editor. Built collaboratively with Claude (Anthropic). Hosted on GitHub Pages.
+
+The site functions as a thought leadership platform and professional home base, anchored to the CAA framework. Primary audience: peers, practitioners, and Director/VP-level hiring managers.
 
 ---
 
@@ -17,8 +19,9 @@ Four static HTML pages — no frameworks, no build tools, no dependencies. Fast,
 ```
 /
 ├── index.html        # Homepage — hero, proof bar, what I bring, about/narrative, contact
-├── approach.html     # How I work — philosophy, process, capability areas, sector experience
-├── cases.html        # Case studies — outcomes-first project deep-dives
+├── approach.html     # How I work — CAA origin, philosophy, process, capability areas, sector experience
+├── framework.html    # Cognitive Agency Architecture — full framework definition and intellectual architecture
+├── practice.html     # In Practice — Strategic Outcomes (case studies) + Selected Deliverables (portfolio)
 ├── resume.html       # Resume — inline HTML with PDF download
 ├── style.css         # Shared stylesheet
 ├── main.js           # Shared JavaScript — nav, scroll reveal, email obfuscation
@@ -49,11 +52,11 @@ Four static HTML pages — no frameworks, no build tools, no dependencies. Fast,
 | Border       | `#263d63`    | Card borders                                  |
 | Body text    | `#CBD5E0`    | Paragraphs                                    |
 | Headings     | `#F8FAFC`    | All headings                                  |
-| Orange       | `#FF6B35`    | Primary CTA, accents                          |
-| Blue         | `#00D2FF`    | Links, ghost buttons                          |
-| Amber        | `#FBbf24`    | Pill borders, highlights                      |
+| Gold         | `#C49A28`    | Primary CTA, accents (Starfield Gold)         |
+| Blue         | `#00D2FF`    | Links, ghost buttons (Signal Cyan)            |
+| Amber        | `#FBBF24`    | Pill borders, highlights                      |
 | Heading font | Orbitron     | Self-hosted woff2 (700/800/900)               |
-| Body font    | System stack | `-apple-system`, `Segoe UI`, `Helvetica Neue` |
+| Body font    | Lato         | Google Fonts                                  |
 
 All text/background combinations meet WCAG 2.1 AA contrast standards.
 

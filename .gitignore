@@ -1,2 +1,8 @@
-/social
 /admin
+DECISIONS.md
+FLAGS.md
+HANDOFF.md
+TRANSFER_PROMPT.md
+
+# Local backup artifacts
+*.zip

@@ -6,9 +6,9 @@
      0. Tokens & fonts
      1. Reset
      2. Element defaults (the inheritance backbone)
-     3. Atoms (.btn, .card, .pill, .tag, .eyebrow, .sub, .icon-tile, .stat, ...)
+     3. Atoms (.btn, .card, .pill, .tag, .eyebrow, .sub, ...)
      4. Components (page-specific layouts where atoms compose)
-     5. States (:hover, :focus-visible, .visible, .open, animations)
+     5. States (:hover, :focus-visible, .open, animations)
      6. Responsive
    ============================================================ */
 
@@ -18,23 +18,53 @@
    ============================================================ */
 
 @font-face {
-  font-family: 'Orbitron';
-  src: url('assets/fonts/orbitron-700.woff2') format('woff2');
+  font-family: 'Playfair';
+  src: url('assets/fonts/playfair-300.woff2') format('woff2');
+  font-weight: 300; font-style: normal; font-display: block;
+}
+@font-face {
+  font-family: 'Playfair';
+  src: url('assets/fonts/playfair-400.woff2') format('woff2');
+  font-weight: 400; font-style: normal; font-display: block;
+}
+@font-face {
+  font-family: 'Playfair';
+  src: url('assets/fonts/playfair-500.woff2') format('woff2');
+  font-weight: 500; font-style: normal; font-display: block;
+}
+@font-face {
+  font-family: 'Playfair';
+  src: url('assets/fonts/playfair-700.woff2') format('woff2');
   font-weight: 700; font-style: normal; font-display: block;
 }
 @font-face {
-  font-family: 'Orbitron';
-  src: url('assets/fonts/orbitron-800.woff2') format('woff2');
-  font-weight: 800; font-style: normal; font-display: block;
+  font-family: 'Lato';
+  src: url('assets/fonts/lato-300.woff2') format('woff2');
+  font-weight: 300; font-style: normal; font-display: swap;
 }
 @font-face {
-  font-family: 'Orbitron';
-  src: url('assets/fonts/orbitron-900.woff2') format('woff2');
-  font-weight: 900; font-style: normal; font-display: block;
+  font-family: 'Lato';
+  src: url('assets/fonts/lato-400.woff2') format('woff2');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Lato';
+  src: url('assets/fonts/lato-400i.woff2') format('woff2');
+  font-weight: 400; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: 'Lato';
+  src: url('assets/fonts/lato-700.woff2') format('woff2');
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Lato';
+  src: url('assets/fonts/lato-900.woff2') format('woff2');
+  font-weight: 900; font-style: normal; font-display: swap;
 }
 
 :root {
-  /* Surface & text (existing, preserved exactly) */
+  /* Surface & text */
   --bg:        #060D1A;
   --surface:   #0B162C;
   --border:    #263d63;
@@ -42,30 +72,32 @@
   --text:      #CBD5E0;
   --white:     #F8FAFC;
 
-  /* Brand hues (existing, preserved exactly) */
-  --orange:    #C49A28;
+  /* Brand hues */
+  --gold:    #C49A28; /* Starfield Gold */
   --blue:      #00D2FF;
   --slate:     #4A5568;
   --purple:    #A78BFA;
   --green:     #4ADE80;
   --amber:     #FBBF24;
+  --red:       #EF4444;
 
-  /* Typography (existing, preserved exactly) */
-  --font-head: 'Orbitron', sans-serif;
-  --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  /* Typography */
+  --font-head: 'Playfair', serif;
+  --font-body: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
 
   /* RGB-triple companions — let atoms compose rgba(var(--hue), N) */
   --blue-rgb:      0, 210, 255;
-  --orange-rgb:    196, 154, 40;
+  --gold-rgb:    196, 154, 40;
   --purple-rgb:    167, 139, 250;
   --green-rgb:     74, 222, 128;
   --amber-rgb:     251, 191, 36;
+  --red-rgb:       239, 68, 68;
   --slate-rgb:     74, 85, 104;
   --white-rgb:     248, 250, 252;
   --text-rgb:      203, 213, 224;
   --border-rgb:    38, 61, 99;
 
-  /* Bespoke per-platform hues (portfolio) */
+  /* Bespoke per-platform hues (portfolio cards) */
   --rise-rgb:      232, 115, 75;
   --storyline-rgb: 196, 101, 158;
 }
@@ -89,8 +121,8 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-body);
-  font-size: 15px;
-  font-weight: 300;
+  font-size: 18px;
+  font-weight: 400;
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
 }
@@ -126,29 +158,32 @@ nav {
 
 section { padding: 72px 0; }
 
-footer { border-top: 0.5px solid var(--border-lt); padding: 0; }
-footer span { font-size: 13px; font-weight: 300; }
+footer { padding: 0; }
+footer span { font-size: 14px; font-weight: 300; line-height: 1.6; color: var(--text); opacity: 0.8; }
 
-/* Headings — Orbitron + white at the element level.
-   Page-level h1 size = hero size (most common). Inner pages override smaller. */
-h1, h2, h3, h4 {
+/* Headings — Playfair on h1/h2 (display), Lato on h3/h4 (UI) */
+h1, h2 {
   font-family: var(--font-head);
+  color: var(--white);
+  font-weight: 400;
+  line-height: 1.3;
+}
+h3, h4 {
+  font-family: var(--font-body);
   color: var(--white);
   font-weight: 700;
   line-height: 1.3;
 }
 h1 {
-  font-size: clamp(26px, 4vw, 36px);
-  font-weight: 800;
+  font-size: 64px;
+  font-weight: 500;
   letter-spacing: 0.02em;
-  text-transform: uppercase;
   line-height: 1.12;
   margin-bottom: 24px;
   max-width: 800px;
 }
 h2 {
-  font-size: 24px;
-  margin-bottom: 16px;
+  font-size: 32px;
 }
 h3 {
   font-size: 14px;
@@ -172,9 +207,9 @@ h4 {
 
 
 /* ---- Color hue modifiers ----
-   Compose onto any atom that reads --hue (.pill, .tag, .stat, bullet-list bullet color) */
+   Compose onto any atom that reads --hue (.pill, .tag, .stat) */
 .hue-blue       { --hue: var(--blue-rgb);      color: var(--blue); }
-.hue-orange     { --hue: var(--orange-rgb);    color: var(--orange); }
+.hue-gold     { --hue: var(--gold-rgb);    color: var(--gold); }
 .hue-purple     { --hue: var(--purple-rgb);    color: var(--purple); }
 .hue-green      { --hue: var(--green-rgb);     color: var(--green); }
 .hue-amber      { --hue: var(--amber-rgb);     color: var(--amber); }
@@ -182,39 +217,31 @@ h4 {
 .hue-storyline  { --hue: var(--storyline-rgb); color: rgb(var(--storyline-rgb)); }
 
 
-/* ---- Text color utilities (inline overrides) ---- */
-.text-orange      { color: var(--orange); }
-.text-blue        { color: var(--blue); }
-.text-white       { color: var(--white); }
-.text-orange-bold { color: var(--orange); font-weight: 700; }
+/* ---- Text color utilities ---- */
+.text-gold      { color: var(--gold); }
 
-
-/* ---- Icon background tints ---- */
-.icon-bg-orange { background: rgba(var(--orange-rgb), 0.12); }
-.icon-bg-blue   { background: rgba(var(--blue-rgb),   0.10); }
-.icon-bg-purple { background: rgba(var(--purple-rgb), 0.12); }
-.icon-bg-green  { background: rgba(var(--green-rgb),  0.10); }
+/* ---- Font weight utility ---- */
+.bold { font-weight: 700; }
 
 
 /* ---- Eyebrow — uppercase tracked label ---- */
 .eyebrow {
   display: block;
   font-family: var(--font-body);
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--text);
 }
-.eyebrow-sm { font-size: 11px; letter-spacing: 0.08em; }
-.eyebrow-lg { font-size: 14px; letter-spacing: 0.12em; margin-bottom: 16px; }
+.eyebrow-lg { font-size: 16px; letter-spacing: 0.12em; margin-bottom: 8px; }
 
 
 /* ---- Sub — small body line under a title or label ---- */
 .sub {
   display: block;
-  font-size: 13px;
-  font-weight: 300;
+  font-size: 14px;
+  font-weight: 500;
   line-height: 1.5;
   color: var(--text);
 }
@@ -226,46 +253,31 @@ h4 {
   border: none;
   border-radius: 8px;
   padding: 14px 28px;
-  font-family: var(--font-head);
+  font-family: var(--font-body);
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 900;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   line-height: 1.2;
   cursor: pointer;
   transition: opacity 0.2s, background 0.2s, border-color 0.2s;
 }
-.btn-primary { background: var(--orange); color: var(--bg); }
-.btn-amber   { background: var(--amber);  color: var(--bg); }
+.btn-primary { background: var(--gold); color: var(--bg); }
 .btn-ghost {
   background: transparent;
   color: var(--blue);
   border: 1px solid rgba(var(--blue-rgb), 0.4);
-  padding: 13px 28px;  /* compensate for 1px border */
+  padding: 13px 28px; /* compensate for 1px border */
   font-family: var(--font-body);
-  font-weight: 400;
+  font-weight: 700;
   letter-spacing: normal;
   text-transform: none;
 }
 .btn-ghost-head {
-  font-family: var(--font-head);
-  font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
-.btn-slate {
-  background: var(--slate);
-  color: var(--white);
-  padding: 8px 18px;
-  font-family: var(--font-body);
-  font-weight: 400;
-  font-size: 14px;
-  letter-spacing: normal;
-  text-transform: none;
-}
-.btn-primary:hover,
-.btn-amber:hover,
-.btn-slate:hover { opacity: 0.88; }
+.btn-primary:hover { background: var(--amber); }
 .btn-ghost:hover { background: rgba(var(--blue-rgb), 0.07); }
 
 
@@ -308,18 +320,19 @@ h4 {
 .card {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: 12px;
 }
-.card-sm { border-radius: 8px; }
-.card-lg { border-radius: 12px; }
+/* Card hover: border glow + 3px lift. The reveal entrance animates the
+   `translate` property (not `transform`), so this hover `transform` composes
+   with it cleanly — no specificity workaround needed. */
 .card-hover { transition: border-color 0.2s, transform 0.2s; }
-.card-hover:hover { border-color: rgba(var(--blue-rgb), 0.3); }
-.card-lift:hover  { transform: translateY(-2px); }
+.card-hover:hover {
+  border-color: rgba(var(--blue-rgb), 0.45);
+  transform: translateY(-3px);
+}
 
 
-/* ---- Card-meta — flex row of tags/pills at the top of a card ----
-   Shared across cases.html and portfolio.html. Sits as the card's first child
-   so that an adjacent .eyebrow (next-row label) gets a top-margin gap. */
+/* ---- Card-meta — flex row of tags/pills at card top ---- */
 .card-meta {
   display: flex;
   align-items: center;
@@ -330,72 +343,28 @@ h4 {
 .card-meta + .eyebrow { margin-top: 12px; }
 
 
-/* ---- Icon tile — flex-centered colored tile ---- */
-.icon-tile {
-  width: 36px; height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 8px;
-  flex-shrink: 0;
-}
-.icon-tile-sm { width: 32px; height: 32px; border-radius: 6px; }
-.icon-tile-lg { width: 48px; height: 48px; border-radius: 10px; }
+/* ---- Card prose body copy size ---- */
+.card-design { font-size: 14px; line-height: 1.75; }
 
 
-/* ---- Stat — outcome block with colored border-left ----
-   Default hue: orange (via fallback). Compose .hue-X to recolor border. */
-.stat {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding: 16px 18px;
-  background: rgba(15,23,42,0.5);
-  border-radius: 8px;
-  border-left: 3px solid rgb(var(--hue, var(--orange-rgb)));
+/* Pillowed / pseudo-3D image — img sits behind the container's inset shadows */
+.pillow-container {
+  position: relative;
+  display: inline-block;
+  border-radius: 30px;
+  overflow: hidden;
+  box-shadow:
+    0 10px 20px rgba(0, 0, 0, 0.2),
+    inset 0 4px 10px rgba(255, 255, 255, 0.6),
+    inset 0 -4px 10px rgba(0, 0, 0, 0.4);
 }
-.stat-num {
-  font-family: var(--font-head);
-  font-size: 22px;
-  font-weight: 900;
-  color: var(--white);
-  letter-spacing: 0.04em;
-}
-
-
-/* ---- Bullet-list — UL with custom ::before bullets ---- */
-.bullet-list {
-  --bullet-color: var(--border-rgb);
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.bullet-list li {
-  font-size: 14px;
-  font-weight: 300;
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  line-height: 1.7;
-}
-.bullet-list li::before {
-  content: '';
+.pillow-container img {
   display: block;
-  width: 5px; height: 5px;
-  border-radius: 50%;
-  background: rgb(var(--bullet-color));
-  flex-shrink: 0;
-  margin-top: 8px;
+  width: 100%;
+  height: auto;
+  position: relative;
+  z-index: -1;
 }
-.bullet-list-blue {
-  --bullet-color: var(--blue-rgb);
-}
-.bullet-list-blue li::before { margin-top: 7px; }
-.bullet-list li strong { color: var(--white); font-weight: 700; }
-
-
-/* ---- Photo positioning utility ---- */
-.photo-cover-top { object-fit: cover; object-position: center top; }
 
 
 /* ============================================================
@@ -412,8 +381,8 @@ h4 {
 }
 .nav-logo {
   font-family: var(--font-head);
-  font-size: 14px;
-  font-weight: 800;
+  font-size: 24px;
+  font-weight: 300;
   color: var(--white);
   letter-spacing: 0.08em;
 }
@@ -422,8 +391,7 @@ h4 {
   align-items: center;
   gap: 32px;
 }
-.nav-links a { font-size: 14px; transition: color 0.2s; }
-.nav-links a[aria-current="page"] { color: var(--amber); }
+.nav-links a { font-size: 16px; font-weight: 500; transition: color 0.2s; }
 
 .nav-toggle {
   display: none;
@@ -456,83 +424,37 @@ h4 {
   border-bottom: 0.5px solid var(--border-lt);
   transition: color 0.2s;
 }
-.nav-mobile-menu .btn { margin-top: 16px; text-align: center; border-bottom: none; }
-
-/* Nav "Let's Connect" desktop — gold override (variant on .btn-slate) */
-#nav-contact-desktop {
-  background: var(--orange);
-  color: var(--bg);
-  font-family: var(--font-head);
-  font-weight: 700;
-  font-size: 12px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
 
 
-/* ── HERO (index.html) ── */
+/* ── HOMEPAGE HERO ── */
 #hero { padding: 88px 0 72px; }
-#hero h1 { margin-bottom: 24px; max-width: 800px; }
-#hero p  { font-size: 17px; max-width: 640px; margin-bottom: 40px; }
 
-.hero-grid {
-  display: grid;
-  grid-template-columns: 1fr 360px;
-  gap: 64px;
-  align-items: center;
-  margin-top: 8px;
-}
-.hero-content { display: flex; flex-direction: column; }
-.hero-photo-wrap {
-  min-height: 460px;
-  border-radius: 10px;
-  overflow: hidden;
-}
-.hero-photo {
-  width: 100%; height: 100%;
-  min-height: 460px;
-  object-fit: cover;
-  object-position: center 18%;
-  display: block;
-  border-radius: 10px;
-}
+/* Stacked copy block — tagline + lede share one readable measure */
+.hero-copy { max-width: 720px; }
+#hero p { font-size: 24px; font-style: italic; }
+
 .hero-ctas {
   display: flex;
   align-items: center;
   gap: 14px;
   flex-wrap: wrap;
+  margin-top: 40px;
 }
 
-/* Hero pill — section-top placement needs bottom margin */
-#hero > .container > .pill { margin-bottom: 20px; }
-
-
-/* ── PAGE HERO (inner pages) ── */
-#page-hero {
-  padding: 56px 0 40px;
-  border-bottom: 0.5px solid var(--border-lt);
-}
-#page-hero h1 {
-  font-size: clamp(22px, 3.5vw, 38px);
-  margin-bottom: 20px;
-  max-width: 700px;
-}
-#page-hero p { font-size: 16px; max-width: 620px; }
-#page-hero > .container > .pill { margin-bottom: 20px; }
+/* Pill spacing — the two About title pills (Adam + Ripley) need bottom margin */
+#about > .container > .pill { margin: 20px 0; }
 
 
 /* ── PROOF BAR (index.html) ── */
 #proof {
   border-top: 0.5px solid var(--border-lt);
   border-bottom: 0.5px solid var(--border-lt);
-  padding: 16px 0;
+  padding: 36px 0;
   overflow: hidden;
 }
 #proof .eyebrow {
-  font-size: 12px;
-  letter-spacing: 0.09em;
   text-align: center;
-  margin-bottom: 10px;
+  margin-bottom: 14px;
 }
 .proof-marquee-track {
   overflow: hidden;
@@ -543,15 +465,17 @@ h4 {
 .proof-marquee {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 28px;
   width: max-content;
   animation: marquee 60s linear infinite;
 }
 .proof-marquee:hover { animation-play-state: paused; }
 .proof-marquee .pill {
-  font-size: 12px;
+  --hue: var(--amber-rgb);
+  border-color: rgba(var(--hue), 0.5);
+  font-size: 13px;
   letter-spacing: 0.07em;
-  padding: 5px 14px;
+  padding: 6px 18px;
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -561,280 +485,74 @@ h4 {
 }
 
 
-/* ── PILLARS (index.html) ── */
-.pillars-grid {
+/* ── ABOUT (index.html) ── */
+#about p { margin-bottom: 20px; }
+
+/* Row One — bio + portrait */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 56px;
+  align-items: start;
+}
+
+/* Row Two — credential cards (3 × 2) */
+.about-credentials {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 16px;
-  margin-top: 40px;
+  margin-top: 56px;
 }
-.pillars-grid > .card { padding: 28px 24px; }
-.pillars-grid .icon-tile { margin-bottom: 16px; }
-
-
-/* ── ABOUT (index.html) ── */
-#about p { margin-bottom: 20px; }
-.about-grid {
-  display: grid;
-  grid-template-columns: 1fr 240px;
-  gap: 48px;
-  align-items: start;
-}
-.about-heading { margin-bottom: 32px; }
-
-.about-award-wrap {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding-top: 0;
-}
-.about-award-wrap > .card {
-  padding: 16px;
+.about-credentials > .card {
+  padding: 24px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   gap: 8px;
 }
-/* Typography — DOM order: about-award-img/icon-tile, eyebrow(label), sub(byline) */
 .about-award-img {
-  width: 80px;
-  max-width: 80px;
-  height: auto;
+  height: 80px;
+  max-height: 80px;
+  width: auto;
   border-radius: 0;
   display: block;
   opacity: 0.92;
   margin: 0 auto 8px;
 }
-.about-award-wrap .eyebrow { color: var(--white); }
-.about-award-wrap .sub { font-size: 11px; line-height: 1.5; }
+.about-credentials .eyebrow { color: var(--white); }
 
 
-/* ── RIPLEY (index.html) ── */
-#ripley h2 { font-size: 22px; }
-#ripley p  { margin-bottom: 16px; }
+/* Row Three — Ripley (mirrors Adam's structure: eyebrow + h2 above the grid).
+   The portrait is ordered first so it sits LEFT on desktop — Adam's photo is
+   right, Ripley's left, so the alternating layout comes from one CSS swap. */
 .ripley-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 64px;
-  align-items: center;
-}
-.ripley-photo {
-  border-radius: 10px;
-  display: block;
-  width: 100%;
-  height: 480px;
-  object-fit: cover;
-  object-position: center 15%;
-}
-#about h2 { font-size: 22px; line-height: 1.3; margin-bottom: 20px; }
-
-
-/* ── UNDRIFT BANNER (index.html) ── */
-.undrift-banner {
-  background: rgba(17, 0, 17, 0.75);
-  padding: 16px 0;
-}
-.undrift-banner-rule {
-  height: 2px;
-  background: linear-gradient(90deg, transparent, #C084FC 30%, #1A6BFF 70%, transparent);
-  max-width: 1280px;
-  margin: 0 auto;
-}
-.undrift-banner-inner {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 24px;
-}
-.undrift-banner-logo { flex-shrink: 0; }
-.undrift-banner-logo img { height: 32px; width: auto; }
-.undrift-banner-text { text-align: left; }
-.undrift-banner-text p { margin: 0 0 6px 0; line-height: 1.4; color: white; }
-.undrift-banner-text p:last-child { margin: 0; font-size: 14px; }
-.undrift-banner-link {
-  color: var(--blue);
-  font-weight: 600;
-  transition: color 0.2s;
-}
-.undrift-banner-sep { color: rgba(255,255,255,0.6); margin: 0 8px; }
-
-
-/* ── APPROACH PAGE — METRICS / INDUSTRIES / TOOLBOX / PROCESS ── */
-
-.metrics-strip {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
-  margin-top: 40px;
-}
-.metrics-strip > .card { padding: 24px 20px; text-align: center; }
-/* metrics use stat-num with .hue-X modifier; size/weight differ from .stat-num default */
-.metrics-strip .stat-num {
-  display: block;
-  font-size: 28px;
-  font-weight: 800;
-  margin-bottom: 6px;
-  letter-spacing: normal;
-}
-.metrics-strip .sub { font-size: 13px; line-height: 1.5; }
-
-.industries-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
-  margin-top: 32px;
-}
-.industries-grid > .card { padding: 20px; text-align: center; }
-.industries-grid h4 {
-  font-size: 11px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  margin-bottom: 8px;
-}
-.industries-grid p { font-size: 13px; line-height: 1.6; }
-
-.toolbox-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-  margin-top: 40px;
-}
-.toolbox-grid > .card { padding: 28px 24px; }
-/* Typography — DOM order: eyebrow(label), h3(title), tool-list */
-.toolbox-grid .eyebrow { font-size: 11px; letter-spacing: 0.1em; margin-bottom: 12px; }
-.toolbox-grid h3 { margin-bottom: 12px; }
-.tool-list { display: flex; flex-wrap: wrap; gap: 8px; }
-
-.pullquote {
-  --hue: var(--orange-rgb);
-  border-left: 2px solid rgb(var(--hue));
-  border-radius: 0 10px 10px 0;
-  padding: 20px 28px;
-  margin: 40px 0;
-  background: var(--surface);
-}
-.pullquote p {
-  font-size: 18px;
-  font-weight: 300;
-  color: var(--white);
-  line-height: 1.65;
-  font-style: italic;
-}
-.pullquote cite {
-  display: block;
-  margin-top: 12px;
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--text);
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
-
-.approach-list {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  margin-top: 32px;
-}
-.approach-item {
-  display: grid;
-  grid-template-columns: 48px 1fr;
-  gap: 20px;
-  align-items: flex-start;
-}
-.approach-item h4 { margin-bottom: 8px; }
-.approach-item p  { font-size: 14px; line-height: 1.75; }
-
-.process-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-  margin-top: 40px;
-}
-.process-grid > .card { padding: 32px 28px; }
-.process-card-num {
-  display: block;
-  font-family: var(--font-head);
-  font-size: 32px;
-  font-weight: 900;
-  color: var(--border);
-  margin-bottom: 16px;
-}
-.process-grid h3 { margin-bottom: 12px; }
-.process-grid p  { font-size: 14px; line-height: 1.75; }
-
-/* ── CASES PAGE — CASE CARDS ── */
-
-.cases-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 32px;
-  margin-top: 40px;
-}
-.cases-grid > .card {
-  padding: 40px 40px 36px;
-  display: grid;
-  grid-template-columns: 1fr 280px;
-  gap: 40px;
+  grid-template-columns: 360px 1fr;
+  gap: 56px;
   align-items: start;
 }
-/* Internal layout — DOM order: card-body, case-sidebar */
-.case-card-body {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+.ripley-grid .pillow-container { order: -1; }
+
+/* Row Two → Row Three gap now rides on Ripley's eyebrow (the heading moved above
+   the grid), since the grid no longer carries the separation. */
+.about-credentials + .eyebrow-lg { margin-top: 56px; }
+
+/* Desktop: nudge both portraits down ~7px to top-align with the body text. */
+@media (min-width: 769px) {
+  .about-grid .pillow-container,
+  .ripley-grid .pillow-container { margin-top: 7px; }
 }
-.case-sidebar {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  padding-top: 4px;
-}
-/* Typography — DOM order: eyebrow(org), h3(title), eyebrow-sm(problem-label), body */
-.cases-grid .case-card-body > div > .eyebrow {
-  font-size: 12px;
-  letter-spacing: 0.1em;
-}
-.cases-grid h3 {
+
+
+/* ── DELIVERABLE CARDS (index.html portfolio) ── */
+
+/* Deliverable card title treatment */
+.cards-grid h3 {
   font-size: 20px;
   font-weight: 800;
   letter-spacing: 0.03em;
 }
-.cases-grid .case-card-body .eyebrow-sm { margin-bottom: 6px; }
-.case-problem,
-.case-approach { font-size: 14px; line-height: 1.75; }
-.case-sidebar > .eyebrow { margin-bottom: 12px; }
-.case-sidebar .sub { font-size: 12px; line-height: 1.5; }
-/* Variants */
-.case-card-placeholder { border-style: dashed; }
-.case-card-placeholder.visible { opacity: 0.7; }
-
-/* Case placeholder badge — chip with leading amber dot (one-off, not an atom) */
-.case-placeholder-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text);
-  background: rgba(255,255,255,0.04);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 5px 12px;
-  margin-top: 8px;
-}
-.case-placeholder-badge::before {
-  content: '';
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: var(--amber);
-}
-
-
-/* ── PORTFOLIO PAGE — PROJECT CARDS ── */
 
 .cards-grid {
   display: grid;
@@ -848,48 +566,11 @@ h4 {
   flex-direction: column;
   gap: 16px;
 }
-/* Typography — DOM order: eyebrow(category), h3(title), eyebrow-sm(The Design), card-design, eyebrow-sm(The Deliverables), card-deliverables */
-.cards-grid h3 {
-  font-size: 20px;
-  font-weight: 800;
-  letter-spacing: 0.03em;
-}
-.cards-grid .eyebrow { font-size: 12px; letter-spacing: 0.1em; }
-/* All block eyebrows in cards-grid get a 6px gap above their content,
-   matching the cases.html .case-card-body .eyebrow-sm rhythm. */
-.cards-grid .eyebrow-sm { margin-bottom: 6px; }
-.card-design { font-size: 14px; line-height: 1.75; color: var(--text); }
+.cards-grid .eyebrow { font-size: 12px; letter-spacing: 0.1em; margin-bottom: 6px; }
 .card-disclaimer { margin-top: 8px; font-size: 12px; font-weight: 600; line-height: 1.5; color: #e05a3a; }
 .card-deliverables { display: flex; flex-wrap: wrap; gap: 8px; }
 
-.wip-note {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--amber);
-  background: rgba(var(--amber-rgb), 0.08);
-  border: 0.5px solid rgba(var(--amber-rgb), 0.3);
-  border-radius: 6px;
-  padding: 8px 16px;
-  margin-top: 20px;
-}
-.wip-dot {
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  background: var(--amber);
-  animation: pulse 2s ease-in-out infinite;
-  flex-shrink: 0;
-}
-@keyframes pulse {
-  0%, 100% { opacity: 1;   transform: scale(1); }
-  50%      { opacity: 0.4; transform: scale(0.8); }
-}
-
-/* Card-link — chip-styled anchor used inside .card-deliverables */
+/* Card-link — chip anchor inside .card-deliverables */
 .card-link {
   --hue: var(--text-rgb);
   display: inline-flex;
@@ -911,168 +592,86 @@ h4 {
   background: rgba(var(--hue), 0.12);
   border-color: rgba(var(--hue), 0.4);
 }
-.card-link.primary       { --hue: var(--orange-rgb); }
+.card-link.primary       { --hue: var(--gold-rgb); }
 .card-link.preview       { --hue: var(--amber-rgb); }
 .card-link.storyline-src { --hue: var(--storyline-rgb); }
 .card-link:not(.primary):not(.preview):not(.storyline-src) { --hue: var(--blue-rgb); }
 .card-link svg { flex-shrink: 0; color: inherit; }
-.card-link.primary svg       { color: var(--orange); }
+.card-link.primary svg       { color: var(--gold); }
 .card-link.preview svg       { color: var(--amber); }
 .card-link.storyline-src svg { color: rgb(var(--storyline-rgb)); }
 .card-link:not(.primary):not(.preview):not(.storyline-src) svg { color: var(--blue); }
 
 
-/* ── RESUME PAGE ── */
-
-#resume { padding: 32px 0 80px; }
-.resume-wrap { max-width: 860px; margin: 0 auto; }
-.resume-actions {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin-top: 28px;
-  flex-wrap: wrap;
-}
-.resume-location-text { color: var(--text); max-width: 560px; margin-top: 12px; }
-
-.r-section { margin-bottom: 48px; }
-
-/* Resume section title — eyebrow with underline + extra margin via parent context */
-.r-section > .eyebrow {
-  letter-spacing: 0.14em;
-  border-bottom: 0.5px solid var(--border);
-  padding-bottom: 10px;
-  margin-bottom: 24px;
-}
-
-.r-summary { line-height: 1.85; }
-
-.r-award {
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
-  background: rgba(var(--orange-rgb), 0.06);
-  border: 0.5px solid rgba(var(--orange-rgb), 0.25);
-  border-radius: 8px;
-  padding: 18px 20px;
-  margin-bottom: 12px;
-}
-.r-award-text h4 { font-size: 14px; letter-spacing: normal; margin-bottom: 4px; }
-.r-award-text p  { font-size: 13px; color: var(--text); line-height: 1.5; }
-
-.r-competencies {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px 32px;
-}
-.r-competencies li { gap: 10px; line-height: 1.6; }
-
-.r-entry { margin-bottom: 36px; }
-.r-entry:last-child { margin-bottom: 0; }
-.r-entry-header {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 8px 24px;
-  align-items: baseline;
-  margin-bottom: 4px;
-}
-.r-title {
-  font-family: var(--font-head);
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--white);
-  letter-spacing: 0.03em;
-}
-.r-dates {
-  font-size: 12px;
-  font-weight: 400;
-  color: var(--blue);
-  letter-spacing: 0.04em;
-  white-space: nowrap;
-}
-.r-org { font-size: 13px; font-weight: 700; color: var(--orange); margin-bottom: 12px; }
-.r-org-clients { font-size: 12px; font-weight: 300; color: var(--text); margin-top: -8px; margin-bottom: 12px; }
-.r-location { font-size: 12px; font-weight: 300; color: var(--text); opacity: 0.7; }
-
-.r-edu-entry {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 4px 24px;
-  align-items: baseline;
-  padding: 14px 0;
-  border-bottom: 0.5px solid var(--border-lt);
-}
-.r-edu-entry:last-child { border-bottom: none; }
-.r-edu-degree { font-size: 14px; font-weight: 700; color: var(--white); }
-.r-edu-school { font-size: 13px; font-weight: 300; color: var(--text); margin-top: 2px; }
-.r-edu-year   { font-size: 12px; color: var(--blue); letter-spacing: 0.04em; white-space: nowrap; }
-
-.r-tech-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
-}
-.r-tech-grid > .card {
-  border-width: 0.5px;
-  padding: 18px 20px;
-}
-.r-tech-grid h4 {
-  font-size: 11px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  margin-bottom: 10px;
-}
-.r-tech-grid p { font-size: 13px; font-weight: 300; color: var(--text); line-height: 1.7; }
-
-/* ── DRAMATIC CTA (resume.html contact) ── */
-.dramatic-cta-wrap { position: relative; }
-.dramatic-cta-rule {
-  height: 2px;
-  background: linear-gradient(90deg, transparent 0%, var(--amber) 50%, transparent 100%);
-}
+/* ── DRAMATIC CTA ── */
 .dramatic-cta-section {
   background: linear-gradient(135deg, var(--surface) 0%, #1a3a52 100%);
   padding: 56px 0;
-  text-align: center;
 }
 .dramatic-cta-section h2 { margin-bottom: 16px; }
-.dramatic-cta-section p {
-  line-height: 1.6;
-  color: var(--text);
-  margin-bottom: 32px;
-  max-width: 680px;
-  margin-left: auto;
-  margin-right: auto;
-}
 
 
 /* ── SHARED SECTION CHROME ── */
-
-.section-h2-lg { font-size: 26px; margin-bottom: 16px; }
-.section-intro { margin-top: 12px; max-width: 640px; }
 
 .wwm-rule {
   height: 2px;
   background: linear-gradient(90deg, transparent 0%, #4a7fa5 50%, transparent 100%);
 }
-.wwm-section {
-  padding: 72px 0;
-  background: rgba(0, 0, 0, 0.25);
+
+/* CTA single column: heading + intro + form, centered column, left-aligned content */
+.cta-single {
+  max-width: 640px;
+  margin: 32px auto 0;
+  text-align: left;
 }
-.wwm-centered { text-align: center; }
-.wwm-centered h2 { margin-bottom: 16px; }
-.wwm-centered .section-intro {
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 32px;
+.cta-intro {
+  line-height: 1.6;
+  color: var(--text);
+  margin: 0 0 32px;
 }
-.cta-row {
+.cta-form {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 14px;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 16px;
 }
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.form-field label {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+.form-field input,
+.form-field textarea {
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--white);
+  background: rgba(6, 13, 26, 0.5);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+}
+.form-field textarea { resize: vertical; }
+.form-field input:focus,
+.form-field textarea:focus {
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 0 0 2px rgba(var(--gold-rgb), 0.2);
+}
+.cta-form .btn { align-self: flex-start; }
+.form-status {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0;
+}
+.form-status:empty { display: none; }
+.form-status.is-success { color: var(--green); }
+.form-status.is-error   { color: var(--red); }
 
 
 /* ── FOOTER ── */
@@ -1084,13 +683,13 @@ h4 {
   gap: 12px;
 }
 .footer-links { display: flex; gap: 24px; }
-.footer-links a { font-size: 13px; transition: color 0.2s; }
+.footer-links a { font-size: 14px; font-weight: 300; line-height: 1.6; color: var(--text); opacity: 0.8; transition: opacity 0.2s; }
 .footer-collab { display: flex; align-items: center; gap: 6px; }
 .footer-collab span,
-.footer-collab a { font-size: 11px; font-weight: 300; color: var(--text); opacity: 0.6; }
+.footer-collab a { font-size: 14px; font-weight: 300; line-height: 1.6; color: var(--text); opacity: 0.8; }
 .footer-collab a { transition: opacity 0.2s; }
 .footer-collab a:hover { opacity: 1; }
-.footer-collab img { width: 14px; height: 14px; opacity: 0.6; transition: opacity 0.2s; }
+.footer-collab img { width: 14px; height: 14px; opacity: 0.85; transition: opacity 0.2s; }
 .footer-collab a:hover img { opacity: 1; }
 
 
@@ -1106,10 +705,42 @@ button:focus-visible {
   border-radius: 4px;
 }
 
-/* Anchor hover — consolidated across all navigation contexts */
+/* Anchor hover — all navigation contexts share one rule */
 nav a:hover,
+.nav-mobile-menu a:hover,
 .footer-links a:hover { color: var(--white); }
-.nav-mobile-menu a:hover { color: var(--white); }
+
+/* Inline gold body links — underline on hover */
+a.text-gold:hover { text-decoration: underline; }
+
+/* Supporter block — label over a side-by-side pill pair, under Ripley's text */
+.supporter-row {
+  margin-top: 24px;
+}
+.supporter-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-top: 10px;
+}
+.supporter-label {
+  display: block;
+  line-height: 1;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--text);
+}
+.supporter-row .pill {
+  --hue: var(--amber-rgb);
+  border-color: rgba(var(--hue), 0.5);
+  font-size: 14px;
+  letter-spacing: 0.07em;
+  padding: 6px 18px;
+}
+.supporter-row a.pill:hover {
+  background: rgba(var(--hue), 0.15);
+}
 
 /* Entrance animations */
 @keyframes fadeUp {
@@ -1121,25 +752,30 @@ nav a:hover,
 .fade-up:nth-child(3) { animation-delay: 0.2s; }
 .fade-up:nth-child(4) { animation-delay: 0.3s; }
 
-@keyframes floatUp {
-  from { opacity: 0; transform: translateY(36px); }
-  to   { opacity: 1; transform: translateY(0); }
+/* Symmetric fade-up, fully scroll-driven and bidirectional. The keyframe
+   offsets use named timeline ranges, so the animation runs FORWARD on the way
+   in (fade up into place during `entry`) and BACKWARD on the way out (fade up
+   and away during `exit`); scrolling either direction plays it accordingly.
+   It holds fully visible across the `cover` phase in between. No JS. */
+@keyframes revealInOut {
+  entry  0%   { opacity: 0; translate: 0 36px; }
+  entry 100%  { opacity: 1; translate: 0 0; }
+  exit   0%   { opacity: 1; translate: 0 0; }
+  exit 100%   { opacity: 0; translate: 0 -36px; }
 }
-.reveal {
-  opacity: 0;
-  transform: translateY(36px);
-  transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
-              transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+.reveal,
+.about-grid,
+.ripley-grid {
+  animation: revealInOut linear both;
+  animation-timeline: view();
 }
-.reveal.visible { opacity: 1; transform: translateY(0); }
-
-.reveal-right {
-  opacity: 0;
-  transform: translateX(60px);
-  transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
-              transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .about-grid,
+  .ripley-grid {
+    animation: none;
+  }
 }
-.reveal-right.visible { opacity: 1; transform: translateX(0); }
 
 
 /* ============================================================
@@ -1151,47 +787,171 @@ nav a:hover,
   .nav-inner  { padding: 16px 20px; }
   section     { padding: 48px 0; }
 
-  .nav-links,
-  .nav-inner .btn-slate { display: none; }
+  .nav-links { display: none; }
   .nav-toggle { display: flex; }
 
-  #page-hero { padding: 48px 0 40px; }
   #hero      { padding: 48px 0 40px; }
   #hero h1   { font-size: 24px; }
   #hero p    { font-size: 15px; }
 
-  .hero-grid       { grid-template-columns: 1fr; gap: 32px; }
-  .hero-photo-wrap { min-height: 300px; }
-  .hero-ctas       { flex-direction: column; align-items: stretch; }
-  .hero-ctas .btn  { text-align: center; padding: 14px; }
+  .hero-ctas         { flex-direction: column; align-items: stretch; }
+  .hero-ctas .btn    { text-align: center; padding: 14px; }
 
-  .pillars-grid     { grid-template-columns: 1fr; }
-  .about-grid       { grid-template-columns: 1fr; gap: 28px; }
-  .ripley-grid      { grid-template-columns: 1fr; gap: 28px; }
-  .ripley-photo     { order: -1; }
-  .about-award-wrap { flex-direction: row; flex-wrap: wrap; padding-top: 0; gap: 10px; justify-content: center; }
-  .about-award-wrap > .card { width: calc(50% - 5px); }
-  .about-award-img  { width: 60px; max-width: 60px; }
+  #about h2          { padding-bottom: 24px; }
+  .about-grid        { grid-template-columns: 1fr; gap: 28px; }
+  .about-credentials { grid-template-columns: repeat(2, 1fr); margin-top: 24px; }
+  .ripley-grid       { grid-template-columns: 1fr; gap: 28px; }
+  .pillow-container  { order: -1; }
+  .about-award-img   { height: 60px; max-height: 60px; }
 
-  .metrics-strip   { grid-template-columns: 1fr 1fr; }
-  .industries-grid { grid-template-columns: 1fr 1fr; }
-  .toolbox-grid    { grid-template-columns: 1fr; }
-  .process-grid    { grid-template-columns: 1fr; }
-
-  .cases-grid > .card { grid-template-columns: 1fr; padding: 28px 24px; }
   .cards-grid         { grid-template-columns: 1fr; }
 
-  .resume-actions { flex-direction: column; align-items: stretch; text-align: center; }
-  .r-competencies { grid-template-columns: 1fr; }
-  .r-entry-header { grid-template-columns: 1fr; }
-  .r-tech-grid    { grid-template-columns: 1fr; }
-  .r-edu-entry    { grid-template-columns: 1fr; }
-
-  .cta-row     { flex-direction: column; align-items: stretch; text-align: center; }
-  .footer-main { padding: 20px; flex-direction: column; align-items: center; text-align: center; gap: 16px; }
+  footer             { margin-top: 24px; }
+  .footer-main       { padding: 20px; flex-direction: column; align-items: center; text-align: center; gap: 16px; }
 }
 
 @media (max-width: 480px) {
-  #hero h1         { font-size: 20px; }
-  .industries-grid { grid-template-columns: 1fr; }
+  #hero h1           { font-size: 20px; }
+  .about-credentials { grid-template-columns: 1fr; }
 }
+
+
+/* ============================================================
+   CASE STUDY INDEX CARDS (single-page redesign)
+   Mel-style clickable cards with gradient visual header.
+   ============================================================ */
+
+.cases-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-top: 40px;
+}
+/* Collapse to one card per row on mobile. This block lives after LAYER 6, so
+   the override must be co-located here to win the cascade (same specificity). */
+@media (max-width: 768px) {
+  .cases-grid { grid-template-columns: 1fr; }
+}
+
+/* Case cards build on the shared .card atom (+ .card-hover).
+   Surface, border, radius, transition, :hover, and link reset all come from
+   .card and the global a{} rule — these are the case-only extras. */
+.cases-card {
+  display: block;     /* the whole <a> is the card */
+  overflow: hidden;   /* clip the gradient header to the card's radius */
+}
+
+/* Gradient visual header — brand-keyed per case */
+.cases-visual {
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 18px 24px 20px;
+  border-bottom: 1px solid var(--border-lt);
+  position: relative;
+  overflow: hidden;
+}
+
+.cases-visual.vis-blue {
+  background: linear-gradient(135deg,
+    rgba(0,210,255,0.16) 0%,
+    rgba(0,100,180,0.07) 60%,
+    transparent 100%);
+}
+.cases-visual.vis-purple {
+  background: linear-gradient(135deg,
+    rgba(167,139,250,0.18) 0%,
+    rgba(100,65,200,0.07) 60%,
+    transparent 100%);
+}
+.cases-visual.vis-gold {
+  background: linear-gradient(135deg,
+    rgba(251,191,36,0.18) 0%,
+    rgba(196,140,20,0.07) 60%,
+    transparent 100%);
+}
+.cases-visual.vis-green {
+  background: linear-gradient(135deg,
+    rgba(74,222,128,0.18)  0%,
+    rgba(20,120,50,0.07)   60%,
+    transparent 100%);
+}
+.cases-visual.vis-red {
+  background: linear-gradient(135deg,
+    rgba(239,68,68,0.18)   0%,
+    rgba(185,28,28,0.07)   60%,
+    transparent 100%);
+}
+.cases-visual.vis-magenta {
+  background: linear-gradient(135deg,
+    rgba(232,72,229,0.18)  0%,
+    rgba(160,30,180,0.07)  60%,
+    transparent 100%);
+}
+
+/* Large stat/number displayed inside the visual header */
+.cases-stat {
+  font-family: var(--font-head);
+  font-size: clamp(22px, 3vw, 32px);
+  font-weight: 900;
+  color: var(--white);
+  letter-spacing: 0.02em;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+/* Undrift card: wordmark stands in for the numeric stat in the header */
+.cases-wordmark {
+  height: 30px;
+  width: auto;
+  align-self: flex-start;
+  border-radius: 0;
+  opacity: 0.92;
+  margin-bottom: 8px;
+}
+
+/* Company + sector line inside visual header */
+.cases-org {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text);
+  opacity: 0.8;
+}
+
+/* Card body below the visual */
+.cases-body {
+  padding: 20px 24px 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cases-title {
+  font-family: var(--font-head);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: 0.03em;
+  line-height: 1.45;
+}
+
+.cases-problem {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text);
+}
+
+.cases-link {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--blue);
+  letter-spacing: 0.04em;
+  display: inline-block;
+  margin-top: 4px;
+  transition: color 0.2s;
+}
+.cases-card:hover .cases-link { color: var(--white); }

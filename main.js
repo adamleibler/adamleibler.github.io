@@ -5,12 +5,6 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  /* ── NAV: show contact button on desktop ── */
-  const desktopContact = document.getElementById('nav-contact-desktop');
-  if (desktopContact && window.innerWidth > 768) {
-    desktopContact.style.display = 'inline-block';
-  }
-
   /* ── NAV: hamburger menu toggle ── */
   const navToggle  = document.getElementById('nav-toggle');
   const mobileMenu = document.getElementById('nav-mobile-menu');
@@ -31,55 +25,51 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  /* ── SCROLL REVEAL ── */
+  /* ── SCROLL REVEAL ──
+     Handled entirely in CSS now via scroll-driven animations on `.reveal`
+     (+ .about-grid / .ripley-grid). See the `revealInOut` keyframe in style.css. */
 
-  function observeAll(selector, options) {
-    const els = document.querySelectorAll(selector);
-    if (!els.length) return;
-    const obs = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (!e.isIntersecting) return;
-        const el = e.target;
-        const siblings = Array.from(
-          el.parentElement.querySelectorAll(':scope > ' + selector)
-        );
-        const idx = siblings.indexOf(el);
-        el.style.transitionDelay = (100 + Math.min(idx, 5) * 80) + 'ms';
-        el.classList.add('visible');
-        obs.unobserve(el);
-      });
-    }, options);
-    els.forEach(el => obs.observe(el));
-  }
+  /* ── CONTACT FORM: AJAX submit to Formspree with inline status ── */
+  const contactForm = document.getElementById('contact-form');
+  if (contactForm) {
+    const status = contactForm.querySelector('.form-status');
+    const submitBtn = contactForm.querySelector('button[type="submit"]');
 
-  observeAll('.reveal',       { threshold: 0.08 });
-  observeAll('.reveal-right', { threshold: 0.02 });
+    contactForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      status.className = 'form-status';
+      status.textContent = '';
+      submitBtn.disabled = true;
+      const btnLabel = submitBtn.textContent;
+      submitBtn.textContent = 'Sending…';
 
-  /* ── FADE-UP REVEAL: homepage about/ripley sections ── */
-  const fadeEls = document.querySelectorAll('.about-grid, .ripley-grid');
-  if (fadeEls.length) {
-    const fadeObserver = new IntersectionObserver(
-      entries => entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.style.opacity = '1';
-          entry.target.style.transform = 'translateY(0)';
+      try {
+        const res = await fetch(contactForm.action, {
+          method: 'POST',
+          body: new FormData(contactForm),
+          headers: { Accept: 'application/json' }
+        });
+
+        if (res.ok) {
+          status.classList.add('is-success');
+          status.textContent = 'Thanks — your message is on its way. I’ll be in touch soon.';
+          contactForm.reset();
+        } else {
+          const data = await res.json().catch(() => null);
+          const msg = data && data.errors
+            ? data.errors.map(er => er.message).join(', ')
+            : 'Something went wrong. Please email adam@adamleibler.com directly.';
+          status.classList.add('is-error');
+          status.textContent = msg;
         }
-      }),
-      { threshold: 0.12 }
-    );
-    fadeEls.forEach(el => {
-      el.style.opacity = '0';
-      el.style.transform = 'translateY(36px)';
-      el.style.transition = 'opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1), transform 0.55s cubic-bezier(0.22, 1, 0.36, 1)';
-      fadeObserver.observe(el);
+      } catch (err) {
+        status.classList.add('is-error');
+        status.textContent = 'Network error. Please email adam@adamleibler.com directly.';
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = btnLabel;
+      }
     });
-  }
-
-  /* ── EMAIL ASSEMBLY: render address at runtime, never in source ── */
-  const emailEl = document.getElementById('contact-email');
-  if (emailEl) {
-    const u = 'adam', d = 'adamleibler.com';
-    emailEl.textContent = u + '\u0040' + d;
   }
 
 });
